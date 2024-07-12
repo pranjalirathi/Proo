@@ -7,6 +7,7 @@ import Register from './components/Register';
 import Test from './components/Test';
 import Error from './components/Error';
 
+
 const App = () => {
   const location = useLocation();
   const pathsWithoutNavbar = ['*', '/test'];

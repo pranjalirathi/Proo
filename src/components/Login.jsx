@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import midbot from '../assets/midbot.svg'
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -25,6 +26,8 @@ const Login = () => {
       password: password,
     };
 
+    console.log('Submitting:', requestBody);
+
     try {
       const response = await fetch('http://127.0.0.1:8000/api/login/', {
         method: 'POST',
@@ -34,16 +37,18 @@ const Login = () => {
         body: JSON.stringify(requestBody),
       });
 
+      console.log('Response:', response);
+
       if (!response.ok) {
         throw new Error('Login failed');
       }
 
       const data = await response.json();
-      console.log('Login successful', data);
 
       localStorage.setItem('access_token', data.access);
-      
-      window.location.href = '/';
+      console.log(localStorage);
+
+      navigate('/');  
     } catch (error) {
       console.error('Error:', error);
       setError('Login failed. Please check your username and password and try again.');

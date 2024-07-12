@@ -15,7 +15,7 @@ const RoomList = () => {
   };
 
   return (
-    <div className="flex-1 flex-col h-screen w-full bg-gray-800 text-white p-4">
+    <div className=" mr-2 mt-2 mb-4 rounded-lg flex-1 flex-col h-screen w-full bg-gray-800 text-white p-4" style={{ marginBottom: '0.75rem' }}>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-lg font-bold">Rooms</h1>
         <button
@@ -26,7 +26,7 @@ const RoomList = () => {
         </button>
       </div>
       {rooms.map(room => (
-        <div key={room.id} className="border border-gray-600 p-4 mb-4 rounded-lg">
+        <div key={room.id} className="border border-gray-600 p-4 mb-4 rounded-lg bg-gray-900">
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center">
               <div className="bg-gray-500 h-10 w-10 rounded-full flex items-center justify-center mr-3">
