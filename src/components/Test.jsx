@@ -6,7 +6,7 @@ import RoomList from './RoomList';
 
 const Test = () => {
   return (
-    <div className='flex h-screen'>
+    <div className='flex h-screen bg-customBackground1 '>
       <Sidebar/>
       <Topics/>
       <RoomList/>

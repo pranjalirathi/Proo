@@ -17,6 +17,10 @@ export default {
         'orange-md': '0 4px 6px -1px rgba(249, 115, 22, 0.5), 0 2px 4px -2px rgba(249, 115, 22, 0.5)',
         'orange-lg': '0 10px 15px -3px rgba(249, 115, 22, 0.5), 0 4px 6px -4px rgba(249, 115, 22, 0.5)',
       },
+      colors: {
+        customBackground1: 'rgb(20, 22, 26)',
+        customBackground2: 'rgb(41, 45, 54)',
+      },
     },
   },
   plugins: [

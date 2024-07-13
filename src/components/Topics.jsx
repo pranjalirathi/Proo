@@ -19,7 +19,7 @@ const Topics = () => {
   }, []);
 
   return (
-    <div className="w-full m-2 max-w-xs bg-gray-800 p-4 rounded-lg">
+    <div className="w-full m-2 max-w-xs bg-customBackground2 p-4 rounded-lg">
       <div className="text-white flex items-center mb-4">
         <span className="ml-2 text-gray-400">#</span>
         <h2 className="font-bold text-lg">Topics</h2>
@@ -28,7 +28,7 @@ const Topics = () => {
         {languages.map((language, index) => (
           <li
             key={index}
-            className="flex items-center text-gray-400 bg-gray-900 p-2 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors"
+            className="flex items-center text-gray-400 bg-customBackground1 p-2 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors"
           >
             <BookOpenCheck className="text-blue-500" />
             <span className="ml-3 flex-grow">{language.name}</span>
