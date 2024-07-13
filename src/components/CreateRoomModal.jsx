@@ -6,7 +6,7 @@ const Modal = ({ onClose }) => {
       <div className="bg-gray-900 p-6 rounded-lg border border-white max-w-lg mx-4 sm:w-2/3 lg:w-1/3">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-gray-100">Create a New Room</h2>
-          <button onClick={onClose} className="text-gray-100 hover:text-gray-200">
+          <button onClick={onClose} className=" text-red-500 hover:text-red-600 text-3xl">
             &times;
           </button>
         </div>
@@ -71,5 +71,3 @@ const Modal = ({ onClose }) => {
 };
 
 export default Modal;
-
-

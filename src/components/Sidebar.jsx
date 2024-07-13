@@ -23,11 +23,6 @@ const Sidebar = () => {
     setShowSearch(!showSearch);
   };
 
-  const handleSearch = () => {
-    console.log('Search query:', searchQuery);
-    // Add search logic here
-  };
-
   return (
     <div className={`h-screen bg-customBackground1 text-white flex flex-col justify-between ${collapsed ? 'w-20' : 'w-64'}`}>
       <div className="flex flex-col p-2">
@@ -70,7 +65,7 @@ const Sidebar = () => {
         </div>
       </div>
       <div className="flex items-center p-4 border-t border-gray-700">
-        <img src="path/to/profile-pic.png" alt="Profile" className="h-8 w-8 rounded-full mr-2" />
+        <img src="path/to/profile-pic.png" alt="Profile" className={`h-8 w-8 rounded-full ${collapsed ? 'mx-auto' : 'mr-2'}`} />
         {!collapsed && (
           <div className="flex-1">
             <div className="text-sm">Pranjali Rathi</div>
