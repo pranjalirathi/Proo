@@ -1,8 +1,9 @@
 import React from 'react';
 
 import Sidebar from './Sidebar';
-import Topics from './Topics'
+import Topics from './Topics';
 import RoomList from './RoomList';
+import RoomChat from './RoomChat'
 
 const Test = () => {
   return (
@@ -10,6 +11,7 @@ const Test = () => {
       <Sidebar/>
       <Topics/>
       <RoomList/>
+      {/* <RoomChat/> */}
     </div>
   )
 }
