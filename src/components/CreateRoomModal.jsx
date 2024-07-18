@@ -3,7 +3,7 @@ import React from 'react';
 const Modal = ({ onClose }) => {
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 backdrop-filter backdrop-blur-sm">
-      <div className="bg-gray-900 bg-opacity-40 p-6 rounded-lg border border-white max-w-lg mx-4 sm:w-2/3 lg:w-1/3">
+      <div className="bg-gray-900 bg-opacity-20 p-6 rounded-lg border border-white max-w-lg mx-4 sm:w-2/3 lg:w-1/3">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-gray-100">Create a New Room</h2>
           <button onClick={onClose} className="text-red-500 hover:text-red-600 text-3xl">

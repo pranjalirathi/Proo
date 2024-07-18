@@ -8,6 +8,13 @@ export default {
   ],
   theme: {
     extend: {
+      zIndex: {
+        '50': '50',
+        '0': '0',
+      },
+      transitionProperty: {
+        'width-zindex': 'width, z-index',
+      },
       backgroundImage: {
         'gradient-blur-circle-3': 'radial-gradient(circle, rgba(255, 0, 150, 0.5), transparent 60%)',
         'gradient-blur-circle-2': 'radial-gradient(circle, rgba(0, 150, 255, 0.5), transparent 60%)',

@@ -6,7 +6,7 @@ const RoomChat = () => {
     <div className="flex m-2 rounded-lg w-full flex-col h-full bg-customBackground2 text-white">
 
       {/* ---------------ROOM TITLE AND ROOM PIC---------------------------------------------- */}
-      <div className="flex items-center p-4 border-b border-gray-700 bg-gray-800 rounded-lg">
+      <div className="flex items-center p-4 border-b border-gray-700 bg-customBackground2 rounded-lg">
         <img src="path/to/roompic.png" alt="Room" className="h-10 w-10 rounded-full ml-2 mr-6" />
         <h1 className="text-xl font-medium flex-1">Room Title</h1>
         <div className="flex -space-x-4 rtl:space-x-reverse">
@@ -28,7 +28,7 @@ const RoomChat = () => {
             <input
             type="text"
             placeholder="Type your message here..."
-            className="flex-1 bg-gray-900 text-white p-2 rounded-lg outline-none border-none"
+            className="flex-1 bg-customBackground1 text-white p-2 rounded-lg outline-none border-none"
             />
             <button className="ml-4 p-2 bg-blue-600 rounded-full hover:bg-blue-700">
             <Send className="text-white" />
