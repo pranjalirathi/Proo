@@ -47,7 +47,7 @@ const SignUp = () => {
       });
 
       if (response.status === 200) {
-        navigate('/test');
+        navigate('/login');
       } else if (response.status === 400) {
         const errorData = await response.json();
         setError('User with this email already exists');

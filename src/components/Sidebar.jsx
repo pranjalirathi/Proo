@@ -120,7 +120,7 @@ const Sidebar = () => {
         <ModalProfile
           username="Pranjali Rathi"
           bio="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel."
-          onClose={() => setIsProfileModalOpen(false)} // Add an onClose prop to close the modal
+          onClose={() => setIsProfileModalOpen(false)} 
         />
       )}
     </div>
