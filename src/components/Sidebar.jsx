@@ -8,21 +8,23 @@ import {
   ChevronRight,
   Folder,
   Settings,
-  Hash
 } from 'lucide-react';
+import ModalRules from './ModalRules';
+import ModalProfile from './ModalProfile'; // Import the ModalProfile component
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false); 
   const [searchActive, setSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); // State for profile modal
   const navigate = useNavigate();
 
   const Menus = [
     { title: "Search", icon: <Search className='text-green-500' />, search: true },
     { title: "Chats", icon: <MessageSquareText className='text-blue-600' /> },
-    { title: "Topics", icon: <Hash className='text-orange-500' /> },
     { title: "Welcome", icon: <Folder className='text-yellow-500' />, gap: true },
-    { title: "Rules", icon: <Settings className='text-gray-400' /> },
+    { title: "Rules", icon: <Settings className='text-gray-400' />, onClick: () => setIsModalOpen(true) },
   ];
 
   const handleSearchClick = () => {
@@ -43,7 +45,7 @@ const Sidebar = () => {
     <div className={`fixed top-0 left-0 h-screen z-50 ${open ? 'w-56 bg-customBackground1' : 'w-20 bg-dark-purple'} p-5 pt-8 transition-width duration-300 flex flex-col justify-between`}>
       <div>
         <button
-          className={`absolute -right-3 top-11 w-5 border-dark-purple border-2 rounded-full transform transition-transform duration-300 ${!open && "rotate-180"}`}
+          className="absolute -right-3 top-11 w-5 border-dark-purple border-2 rounded-full"
           onClick={() => setOpen(!open)}
         >
           {open ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
@@ -64,6 +66,7 @@ const Sidebar = () => {
             <li
               key={index}
               className={`flex items-center gap-x-4 p-2 text-sm text-gray-300 cursor-pointer hover:bg-gray-800 rounded-md ${Menu.gap ? "mt-9" : "mt-2"} ${index === 0 && "bg-light-white"}`}
+              onClick={Menu.onClick}
             >
               <div className="w-6 h-6">{Menu.icon}</div>
               {Menu.search ? (
@@ -95,7 +98,10 @@ const Sidebar = () => {
       </div>
 
       {/* -----------USER PROFILE SECTION----------------*/}
-      <div className={`flex items-center pt-3 bottom-0 border-t border-gray-700 ${!open ? 'justify-center' : ''}`}>
+      <div 
+        className={`flex items-center pt-3 bottom-0 border-t border-gray-700 ${!open ? 'justify-center' : ''}`}
+        onClick={() => setIsProfileModalOpen(true)} // Open the profile modal on click
+      >
         <img
           src="path/to/profile-pic.png"
           alt="Profile"
@@ -108,6 +114,15 @@ const Sidebar = () => {
           </div>
         )}
       </div>
+
+      {isModalOpen && <ModalRules onClose={() => setIsModalOpen(false)} />}
+      {isProfileModalOpen && (
+        <ModalProfile
+          username="Pranjali Rathi"
+          bio="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel."
+          onClose={() => setIsProfileModalOpen(false)} // Add an onClose prop to close the modal
+        />
+      )}
     </div>
   );
 };

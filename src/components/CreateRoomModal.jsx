@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Modal = ({ onClose }) => {
+  const [isPublic, setIsPublic] = useState(true);
+
+  const handleCheckboxChange = () => {
+    setIsPublic(!isPublic);
+  };
+
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 backdrop-filter backdrop-blur-sm">
       <div className="bg-gray-900 bg-opacity-20 p-6 rounded-lg border border-white max-w-lg mx-4 sm:w-2/3 lg:w-1/3">
@@ -49,6 +55,31 @@ const Modal = ({ onClose }) => {
               <option value="django">Django</option>
             </select>
           </div>
+          <div className="mb-4">
+            <label className="block text-gray-100 text-sm font-bold mb-2">Room Type</label>
+            <div className="flex items-center">
+              <div className="mr-4">
+                <input
+                  type="checkbox"
+                  id="public"
+                  checked={isPublic}
+                  onChange={handleCheckboxChange}
+                  className="mr-2"
+                />
+                <label htmlFor="public" className="text-gray-100">Public</label>
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  id="private"
+                  checked={!isPublic}
+                  onChange={handleCheckboxChange}
+                  className="mr-2"
+                />
+                <label htmlFor="private" className="text-gray-100">Private</label>
+              </div>
+            </div>
+          </div>
           <div className="flex justify-end">
             <button
               type="button"
@@ -71,4 +102,3 @@ const Modal = ({ onClose }) => {
 };
 
 export default Modal;
-
