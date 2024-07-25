@@ -10,21 +10,27 @@ import {
   Settings,
 } from 'lucide-react';
 import ModalRules from './ModalRules';
-import ModalProfile from './ModalProfile'; // Import the ModalProfile component
+import ModalProfile from './ModalProfile';
+import { Hash, User, MessageCircle } from 'lucide-react';
 
-const Sidebar = () => {
-  const [open, setOpen] = useState(false); 
+const Sidebar = ({ setIsSearchActive }) => {
+  const [open, setOpen] = useState(false);
   const [searchActive, setSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); // State for profile modal
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const Menus = [
-    { title: "Search", icon: <Search className='text-green-500' />, search: true },
-    { title: "Chats", icon: <MessageSquareText className='text-blue-600' /> },
+    { title: "Search", icon: <Search className='text-green-500' />, search: true, onClick: () => setIsSearchActive(true) },
+    { title: "Topics", icon: <Hash className='text-orange-500'/>},
+    { title: "Rooms", icon: <User className='text-blue-600'/>},
+    { title: "Blogs", icon: <MessageCircle className='text-green-700'/>},
+
+    // { title: "Chats", icon: <MessageSquareText className='text-blue-600' /> },
     { title: "Welcome", icon: <Folder className='text-yellow-500' />, gap: true },
     { title: "Rules", icon: <Settings className='text-gray-400' />, onClick: () => setIsModalOpen(true) },
+
   ];
 
   const handleSearchClick = () => {
@@ -128,3 +134,8 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
+
+
+
+

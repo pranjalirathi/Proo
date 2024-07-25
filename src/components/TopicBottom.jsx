@@ -3,7 +3,6 @@ import axios from 'axios';
 
 const Topics = () => {
   const [languages, setLanguages] = useState([]);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 780);
 
   useEffect(() => {
     const fetchTopics = async () => {
@@ -16,22 +15,10 @@ const Topics = () => {
     };
 
     fetchTopics();
-
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 750);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
   }, []);
 
-  if (isMobile) return null;
-
   return (
-    <div className={`w-full m-2 ${isMobile ? 'p-1 w-1/3' : 'p-2 w-1/4'} ${isMobile ? 'max-w-sm' : 'max-w-xs'} bg-customBackground2 rounded-lg`}>
+    <div className="flex flex-col w-full m-2 p-2 bg-customBackground2 rounded-lg overflow-auto">
       <div className="text-white text-xl flex items-center mt-3 mb-4">
         <span className="ml-2 pt-2 text-gray-400">#</span>
         <h2 className="font-bold pt-2 text-xl sm:text:xl">Topics</h2>
@@ -40,19 +27,15 @@ const Topics = () => {
         {languages.map((language, index) => (
           <li
             key={index}
-            className={`flex items-center text-gray-400 mr-0 p-2 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors ${isMobile ? 'justify-center' : ''}`}
+            className="flex items-center text-gray-400 mr-0 p-2 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors"
           >
             <img
               src="path/to/your/image.png"
               alt="Topic"
               className="h-8 w-8 rounded-full"
             />
-            {!isMobile && (
-              <>
-                <span className="ml-3 flex-grow">{language.name}</span>
-                <span className="text-sm text-gray-500">[{language.room_count}]</span>
-              </>
-            )}
+            <span className="ml-3 flex-grow">{language.name}</span>
+            <span className="text-sm text-gray-500">[{language.room_count}]</span>
           </li>
         ))}
       </ul>

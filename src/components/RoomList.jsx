@@ -1,18 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import Modal from './CreateRoomModal';
+import JoinByCode from './JoinByCode';
 
-const RoomList = () => {
+const RoomList = ({ isSearchActive }) => {
   const [rooms, setRooms] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showJoinModal, setShowJoinModal] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 650);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/rooms');
+        const token = localStorage.getItem('access_token');
+        const response = await axios.get('http://127.0.0.1:8000/api/rooms', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (response.data.detail && Array.isArray(response.data.detail)) {
           setRooms(response.data.detail);
+          setSearchResults(response.data.detail); 
         } else {
           console.error('API response does not contain an array:', response.data);
         }
@@ -31,8 +44,55 @@ const RoomList = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const handleSearchChange = async (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    if (query) {
+      try {
+        const token = localStorage.getItem('access_token');
+        const response = await axios.get(`http://127.0.0.1:8000/api/search?q=${query}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.data.detail) {
+          setSearchResults(response.data.detail.rooms); 
+        }
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+      }
+    } else {
+      setSearchResults(rooms); 
+    }
+  };
+
   const toggleModal = () => {
     setShowModal(!showModal);
+  };
+
+  const toggleJoinModal = (room) => {
+    setSelectedRoom(room);
+    setShowJoinModal(!showJoinModal);
+  };
+
+  const handleJoinByCode = async (code) => {
+    try {
+      const token = localStorage.getItem('access_token');
+      const response = await axios.post(`http://127.0.0.1:8000/api/join_room/${selectedRoom.id}`, { code }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.data.detail === 'Added as a member') {
+        navigate(`/roomchat/${selectedRoom.id}`);
+        setShowJoinModal(false);
+      } else {
+        alert('Invalid code. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error joining room:', error);
+      alert('Invalid code. Please try again.');
+    }
   };
 
   const calculateDaysAgo = (dateString) => {
@@ -41,6 +101,10 @@ const RoomList = () => {
     const timeDiff = Math.abs(currentDate - createdDate);
     const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     return diffDays;
+  };
+
+  const handleRoomClick = (roomId) => {
+    navigate(`/roomchat/${roomId}`);
   };
 
   return (
@@ -67,9 +131,23 @@ const RoomList = () => {
           </svg>
         </button>
       </div>
-      {rooms.length > 0 ? (
-        rooms.map(room => (
-          <div key={room.id} className={`border border-gray-600 p-4 mb-4 rounded-lg bg-customBackground1 sm:p-3 sm:mb-3 ${isMobile ? 'p-2 mb-2' : ''}`}>
+      {isSearchActive && (
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          placeholder="Search..."
+          className="mb-4 p-2 rounded-full bg-gray-800 text-white"
+        />
+      )}
+
+      {searchResults.length > 0 ? (
+        searchResults.map(room => (
+          <div
+            key={room.id}
+            className={`border border-gray-600 p-4 mb-4 rounded-lg bg-customBackground1 sm:p-3 sm:mb-3 ${isMobile ? 'p-2 mb-2' : ''}`}
+            onClick={() => handleRoomClick(room.id)}
+          >
             <div className="flex flex-col sm:flex-row justify-between mb-2 sm:mb-1">
               <div className="flex items-center mb-2 sm:mb-0">
                 <div className={`bg-gray-500 h-10 w-10 rounded-full flex items-center justify-center mr-3 sm:h-8 sm:w-8 sm:mr-2 ${isMobile ? 'h-8 w-8' : ''}`}>
@@ -96,11 +174,21 @@ const RoomList = () => {
                 <p className="text-sm text-gray-400 sm:text-xs">{`Created ${calculateDaysAgo(room.created)} days ago`}</p>
               )}
               <div className="flex items-center mt-2 sm:mt-0">
-                <span className={`text-sm mr-2 ${room.is_public ? 'text-green-400' : 'text-red-400'} sm:text-l ${isMobile ? 'text-xs' : ''}`}>
+                <span className={`text-sm mr-2 ${room.is_public ? 'text-yellow-400' : 'text-red-400'} sm:text-l ${isMobile ? 'text-xs' : ''}`}>
                   {room.is_public ? 'Public' : 'Private'}
                 </span>
-                <button className={`bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded sm:py-0.5 sm:px-2 sm:text-xs ${isMobile ? 'py-0.5 px-0.5 text-xs' : ''}`}>
-                  Join
+                <button
+                  className={`font-bold py-1 px-3 rounded sm:py-0.5 sm:px-2 sm:text-xs ${isMobile ? 'py-0.5 px-0.5 text-xs' : ''} ${room.is_public ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-green-500 hover:bg-green-700'}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (room.is_public) {
+                      handleRoomClick(room.id);
+                    } else {
+                      toggleJoinModal(room);
+                    }
+                  }}
+                >
+                  {room.is_member ? 'Open' : 'Join'}
                 </button>
               </div>
             </div>
@@ -110,6 +198,7 @@ const RoomList = () => {
         <p className="text-sm sm:text-xs">No rooms available</p>
       )}
       {showModal && <Modal onClose={toggleModal} />}
+      {showJoinModal && <JoinByCode roomId={selectedRoom.id} onClose={() => setShowJoinModal(false)} onSubmit={handleJoinByCode} />}
     </div>
   );
 };

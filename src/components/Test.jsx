@@ -1,14 +1,57 @@
+// import React, { useState, useEffect } from 'react';
+// import Sidebar from './Sidebar';
+// import Topics from './Topics';
+// import RoomList from './RoomList';
+// import Navigation from './Navigation';
+// import Blogs from './Blogs';
+
+// const Test = () => {
+//   const [isMobile, setIsMobile] = useState(window.innerWidth < 750);
+//   const [activeComponent, setActiveComponent] = useState('Rooms');
+//   const [isSearchActive, setIsSearchActive] = useState(false);
+//   const [searchBar, isSearchBar] = useState(false);
+
+//   useEffect(() => {
+//     const handleResize = () => {
+//       setIsMobile(window.innerWidth < 750);
+//       if (window.innerWidth < 750) {
+//         setActiveComponent('Rooms');
+//       }
+//     };
+
+//     window.addEventListener('resize', handleResize);
+//     return () => window.removeEventListener('resize', handleResize);
+//   }, []);
+
+//   return (
+//     <div className='flex h-screen bg-customBackground1 overflow-hidden'>
+//       <Sidebar setIsSearchActive={setIsSearchActive}  />
+//       <div className='flex-1 flex ml-20 md:ml-20'>
+//         <Topics/>
+//         {activeComponent === 'Rooms' && <RoomList isSearchActive={isSearchActive}  />}
+//         {activeComponent === 'Blogs' && <Blogs />}
+//       </div>
+//       {isMobile && (
+//         <Navigation setActiveComponent={setActiveComponent} defaultActive="Rooms" />
+//       )}
+//     </div>
+//   );
+// };
+
+// export default Test;
+
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
-import RoomChat from './RoomChat';
 import Topics from './Topics';
 import RoomList from './RoomList';
 import Navigation from './Navigation';
 import Blogs from './Blogs';
+import TopicBottom from './TopicBottom';
 
 const Test = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 750);
   const [activeComponent, setActiveComponent] = useState('Rooms');
+  const [isSearchActive, setIsSearchActive] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -24,13 +67,12 @@ const Test = () => {
 
   return (
     <div className='flex h-screen bg-customBackground1 overflow-hidden'>
-      <Sidebar />
+      <Sidebar setIsSearchActive={setIsSearchActive} />
       <div className='flex-1 flex ml-20 md:ml-20'>
-        <Topics/>
-        {/* {activeComponent === 'Topics' && <Topics />} */}
-        {activeComponent === 'Rooms' && <RoomList />}
+        <Topics />
+        {activeComponent === 'Topics' && <TopicBottom />}
+        {activeComponent === 'Rooms' && <RoomList isSearchActive={isSearchActive} />}
         {activeComponent === 'Blogs' && <Blogs />}
-        {/* {activeComponent === 'RoomChat' && <RoomChat />} */}
       </div>
       {isMobile && (
         <Navigation setActiveComponent={setActiveComponent} defaultActive="Rooms" />
@@ -40,6 +82,12 @@ const Test = () => {
 };
 
 export default Test;
+
+
+
+
+  
+
 
 
 
