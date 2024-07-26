@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import homeimg from '../assets/home.jpg'
 
-const Topics = () => {
-  const [languages, setLanguages] = useState([]);
+const Topics = ({ onSelectTopic, selectedTopic }) => {
+  const [topics, setTopics] = useState([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 780);
 
   useEffect(() => {
     const fetchTopics = async () => {
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/topics');
-        setLanguages(response.data);
+        setTopics(response.data);
       } catch (error) {
         console.error('Error fetching topics:', error);
       }
@@ -18,7 +19,7 @@ const Topics = () => {
     fetchTopics();
 
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 750);
+      setIsMobile(window.innerWidth <= 780);
     };
 
     window.addEventListener('resize', handleResize);
@@ -37,10 +38,28 @@ const Topics = () => {
         <h2 className="font-bold pt-2 text-xl sm:text:xl">Topics</h2>
       </div>
       <ul className="space-y-2">
-        {languages.map((language, index) => (
+        <li
+          className={`flex items-center text-gray-400 mr-0 p-2 rounded-lg cursor-pointer transition-colors ${isMobile ? 'justify-center' : ''} ${
+            selectedTopic === 'All Rooms' ? 'bg-customBackground1 text-white' : 'hover:bg-gray-700'
+          }`}
+          onClick={() => onSelectTopic('All Rooms')}
+        >
+          <img
+            src={homeimg}
+            alt="All Rooms"
+            className="h-8 w-8 rounded-full"
+          />
+          {!isMobile && (
+            <span className="ml-3 flex-grow">All Rooms</span>
+          )}
+        </li>
+        {topics.map((topic, index) => (
           <li
             key={index}
-            className={`flex items-center text-gray-400 mr-0 p-2 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors ${isMobile ? 'justify-center' : ''}`}
+            className={`flex items-center text-gray-400 mr-0 p-2 rounded-lg cursor-pointer transition-colors ${isMobile ? 'justify-center' : ''} ${
+              selectedTopic === topic.name ? 'bg-customBackground1 text-white' : 'hover:bg-gray-700'
+            }`}
+            onClick={() => onSelectTopic(topic.name)}
           >
             <img
               src="path/to/your/image.png"
@@ -49,8 +68,8 @@ const Topics = () => {
             />
             {!isMobile && (
               <>
-                <span className="ml-3 flex-grow">{language.name}</span>
-                <span className="text-sm text-gray-500">[{language.room_count}]</span>
+                <span className="ml-3 flex-grow">{topic.name}</span>
+                <span className="text-sm text-gray-500">[{topic.room_count}]</span>
               </>
             )}
           </li>

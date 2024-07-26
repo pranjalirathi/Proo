@@ -29,7 +29,7 @@ const RoomChat = ({ roomId }) => {
   }, [roomId]);
 
   if (!roomDetails) {
-    return <div>Loading...</div>;
+    return <div>Loading the room details...</div>;
   }
 
   const openRoomDetails = () => {

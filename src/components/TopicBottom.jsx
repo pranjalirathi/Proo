@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const Topics = () => {
-  const [languages, setLanguages] = useState([]);
+const Topics = ( {onSelectTopic} ) => {
+  const [topics, setTopics] = useState([]);
+  // const [languages, setLanguages] = useState([]);
 
   useEffect(() => {
     const fetchTopics = async () => {
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/topics');
-        setLanguages(response.data);
+        // setLanguages(response.data);
+        setTopics(response.data);
       } catch (error) {
         console.error('Error fetching topics:', error);
       }
@@ -24,18 +26,19 @@ const Topics = () => {
         <h2 className="font-bold pt-2 text-xl sm:text:xl">Topics</h2>
       </div>
       <ul className="space-y-2">
-        {languages.map((language, index) => (
+        {topics.map((topic, index) => (
           <li
             key={index}
             className="flex items-center text-gray-400 mr-0 p-2 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors"
+            onClick={() => onSelectTopic(topic.name)}
           >
             <img
               src="path/to/your/image.png"
               alt="Topic"
               className="h-8 w-8 rounded-full"
             />
-            <span className="ml-3 flex-grow">{language.name}</span>
-            <span className="text-sm text-gray-500">[{language.room_count}]</span>
+            <span className="ml-3 flex-grow">{topic.name}</span>
+            <span className="text-sm text-gray-500">[{topic.room_count}]</span>
           </li>
         ))}
       </ul>

@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import ModalRules from './ModalRules';
 import ModalProfile from './ModalProfile';
+import WelcomeModal from './WelcomeModal';
 import { Hash, User, MessageCircle } from 'lucide-react';
 
 const Sidebar = ({ setIsSearchActive }) => {
@@ -19,6 +20,7 @@ const Sidebar = ({ setIsSearchActive }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const Menus = [
@@ -28,9 +30,8 @@ const Sidebar = ({ setIsSearchActive }) => {
     { title: "Blogs", icon: <MessageCircle className='text-green-700'/>},
 
     // { title: "Chats", icon: <MessageSquareText className='text-blue-600' /> },
-    { title: "Welcome", icon: <Folder className='text-yellow-500' />, gap: true },
+    { title: "Welcome", icon: <Folder className='text-yellow-500' />, gap: true, onClick: () => setIsWelcomeModalOpen(true) },
     { title: "Rules", icon: <Settings className='text-gray-400' />, onClick: () => setIsModalOpen(true) },
-
   ];
 
   const handleSearchClick = () => {
@@ -129,13 +130,9 @@ const Sidebar = ({ setIsSearchActive }) => {
           onClose={() => setIsProfileModalOpen(false)} 
         />
       )}
+      {isWelcomeModalOpen && <WelcomeModal onClose={() => setIsWelcomeModalOpen(false)} />}
     </div>
   );
 };
 
 export default Sidebar;
-
-
-
-
-
