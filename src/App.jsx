@@ -7,13 +7,14 @@ import Register from './components/Register';
 import Test from './components/Test';
 import Error from './components/Error';
 import RoomPage from './pages/RoomPage';
+import AccountPage from './pages/AccountPage';
 
 const App = () => {
   const location = useLocation();
   // const pathsWithoutNavbar = ['*', '/test', '/roomchat/:roomId'];
   // const showNavbar = !pathsWithoutNavbar.includes(location.pathname);
 
-  const pathsWithoutNavbar = ['*', '/test', /^\/roomchat\/.+$/];
+  const pathsWithoutNavbar = ['*', '/test', '/myAccount', /^\/roomchat\/.+$/];
   
   const showNavbar = !pathsWithoutNavbar.some(path => {
     if (typeof path === 'string') {
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/test" element={<Test />} />
         <Route path="/roomchat/:roomId" element={<RoomPage/>} />
+        <Route path="/myAccount" element={<AccountPage/>} />
         <Route path="*" element={<Error />} />
       </Routes>
     </div>

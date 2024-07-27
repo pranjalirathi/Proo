@@ -6,6 +6,7 @@ import Navigation from './Navigation';
 import Blogs from './Blogs';
 import TopicBottom from './TopicBottom';
 
+
 const Test = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 750);
   const [activeComponent, setActiveComponent] = useState('Rooms');
@@ -56,23 +57,7 @@ export default Test;
 
 
 
-{/* <div className='flex-1 overflow-auto ml-20 md:ml-20'>
-      <Sidebar/>
-         <div className='flex'>
-          <Topics />
-          <RoomList />
-          </div>
-      </div> */}
 
 
-      // < className='flex h-screen bg-customBackground1 overflow-hidden'>
-    //   <Sidebar />
-    //   <div className='flex flex-1 flex-col'>
-    //     <RoomChat />
-    //   </div>
-
-
-    // ------------------------------------
-          
 
 

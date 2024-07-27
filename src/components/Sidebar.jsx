@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import coderoom1 from '../assets/coderoom1.png';
 import {
   MessageSquareText,
@@ -8,28 +9,60 @@ import {
   ChevronRight,
   Folder,
   Settings,
+  Hash,
+  User,
+  MessageCircle
 } from 'lucide-react';
 import ModalRules from './ModalRules';
-import ModalProfile from './ModalProfile';
 import WelcomeModal from './WelcomeModal';
-import { Hash, User, MessageCircle } from 'lucide-react';
+import Profile from './Profile';
 
 const Sidebar = ({ setIsSearchActive }) => {
   const [open, setOpen] = useState(false);
   const [searchActive, setSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [userData, setUserData] = useState({
+    username: '',
+    profile_pic: '',
+    name: ''
+  });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('access_token'); // Get the token from local storage
+      if (!token) {
+        console.error('No access token found');
+        return;
+      }
+
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/user_detail', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setUserData({
+          username: response.data.username,
+          profile_pic: response.data.profile_pic,
+          name: response.data.name
+        });
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const Menus = [
     { title: "Search", icon: <Search className='text-green-500' />, search: true, onClick: () => setIsSearchActive(true) },
     { title: "Topics", icon: <Hash className='text-orange-500'/>},
     { title: "Rooms", icon: <User className='text-blue-600'/>},
     { title: "Blogs", icon: <MessageCircle className='text-green-700'/>},
-
-    // { title: "Chats", icon: <MessageSquareText className='text-blue-600' /> },
     { title: "Welcome", icon: <Folder className='text-yellow-500' />, gap: true, onClick: () => setIsWelcomeModalOpen(true) },
     { title: "Rules", icon: <Settings className='text-gray-400' />, onClick: () => setIsModalOpen(true) },
   ];
@@ -46,6 +79,10 @@ const Sidebar = ({ setIsSearchActive }) => {
 
   const handleLogoClick = () => {
     navigate('/');
+  };
+
+  const handleProfileClick = () => {
+    setIsProfileOpen(!isProfileOpen);
   };
 
   return (
@@ -104,32 +141,30 @@ const Sidebar = ({ setIsSearchActive }) => {
         </ul>
       </div>
 
-      {/* -----------USER PROFILE SECTION----------------*/}
       <div 
         className={`flex items-center pt-3 bottom-0 border-t border-gray-700 ${!open ? 'justify-center' : ''}`}
-        onClick={() => setIsProfileModalOpen(true)} // Open the profile modal on click
       >
         <img
-          src="path/to/profile-pic.png"
+          src={userData.profile_pic}
           alt="Profile"
-          className="h-10 w-10 rounded-full"
+          className="h-10 w-10 rounded-full cursor-pointer"
+          onClick={handleProfileClick}
         />
         {open && (
           <div className="ml-2">
-            <div className="text-sm">Pranjali Rathi</div>
-            <div className="text-xs text-green-400">@iPrash05</div>
+            <div className="text-sm">{userData.name || 'No Name'}</div>
+            <div className="text-xs text-green-400">@{userData.username}</div>
           </div>
         )}
       </div>
 
-      {isModalOpen && <ModalRules onClose={() => setIsModalOpen(false)} />}
-      {isProfileModalOpen && (
-        <ModalProfile
-          username="Pranjali Rathi"
-          bio="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel."
-          onClose={() => setIsProfileModalOpen(false)} 
-        />
+      {isProfileOpen && (
+        <div className="absolute bottom-16 left-0 w-56">
+          <Profile onClose={() => setIsProfileOpen(false)} />
+        </div>
       )}
+
+      {isModalOpen && <ModalRules onClose={() => setIsModalOpen(false)} />}
       {isWelcomeModalOpen && <WelcomeModal onClose={() => setIsWelcomeModalOpen(false)} />}
     </div>
   );
