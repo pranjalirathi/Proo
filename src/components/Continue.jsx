@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ModalUpdatePassword from './ModalUpdatePassword';
+import ModalDeactivateUser from './ModalDeactivateUser';
 
 const Continue = () => {
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isDeactivateModalOpen, setIsDeactivateModalOpen] = useState(false);
+
   return (
     <div className="flex flex-col m-2 rounded-xl w-full max-w-2xl bg-customBackground2 text-white">
       <div className="bg-gray-800 rounded-xl overflow-hidden shadow-lg w-full p-6">
@@ -9,30 +14,44 @@ const Continue = () => {
           <div className="space-y-4">
             <div>
               <p className="text-xs text-gray-500">
-                Protect your account with an extra layer of security. Once configured, you'll be required to enter your password and complete one additional step in order to sign in.
+                Wanna change the password cause you may be bored of the old one, right? It's fine, we've got you!
               </p>
-            <div className="flex space-x-2 mt-2">
-                <button className="bg-blue-500 px-4 py-2 rounded text-sm ">Change Password</button>
+              <div className="flex space-x-2 mt-2">
+                <button
+                  className="bg-blue-500 px-4 py-2 rounded text-sm"
+                  onClick={() => setIsPasswordModalOpen(true)}
+                >
+                  Change Password
+                </button>
               </div>
             </div>
             <div>
               <h2 className="text-lg font-bold mb-1">Account Status</h2>
               <p className="text-xs text-gray-500">
-                Disabling your account means you can recover it at any time after taking this action.
+                Deactivating your account means you don't want to show your profile to others for some time, but it will save your data. Deleting the account will permanently delete all of your data.
               </p>
               <div className="flex space-x-2 mt-2">
-                <button className="border border-red-600 bg-gray-800 px-4 py-2 rounded text-sm ">Deactivate</button>
-                <button className="bg-red-600 px-4 py-2 rounded text-sm">Delete</button>
+                <button
+                  className="border border-red-600 bg-gray-800 px-4 py-2 rounded text-sm"
+                  onClick={() => setIsDeactivateModalOpen(true)}
+                >
+                  Deactivate
+                </button>
+                <button
+                  className="bg-red-600 px-4 py-2 rounded text-sm"
+                  onClick={() => setIsDeleteModalOpen(true)}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <ModalUpdatePassword isOpen={isPasswordModalOpen} onClose={() => setIsPasswordModalOpen(false)} />
+      <ModalDeactivateUser isOpen={isDeactivateModalOpen} onClose={() => setIsDeactivateModalOpen(false)} />
     </div>
   );
 };
 
 export default Continue;
-
-
-//  px-5 py-2 rounded w-full mt-2
