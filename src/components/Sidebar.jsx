@@ -87,7 +87,7 @@ const Sidebar = ({ setIsSearchActive }) => {
   };
 
   return (
-    <div className={`fixed top-0 left-0 h-screen z-50 ${open ? 'w-56 bg-customBackground1' : 'w-20 bg-dark-purple'} p-5 pt-8 transition-width duration-300 flex flex-col justify-between`}>
+    <div className={`fixed top-0 left-0 h-screen z-50 ${open ? 'w-56 bg-customBackground1' : 'w-20 bg-dark-purple'} p-3 pt-8 transition-width duration-300 flex flex-col justify-between`}>
       <div>
         <button
           className="absolute -right-3 top-11 w-5 border-dark-purple border-2 rounded-full"
@@ -142,22 +142,29 @@ const Sidebar = ({ setIsSearchActive }) => {
         </ul>
       </div>
 
-      <div 
-        className={`flex items-center pt-3 bottom-0 border-t border-gray-700 ${!open ? 'justify-center' : ''}`}
-      >
-        <img
-          src={userData.profile_pic}
-          alt="Profile"
-          className="h-10 w-10 rounded-full cursor-pointer"
-          onClick={handleProfileClick}
-        />
+
+{/* ----------PROFILE SECTION ---------------- */}
+<div className={`flex flex-col items-center pt-3 border-t bg-customBackground2 rounded-lg border-gray-700 ${!open ? 'justify-center' : ''}`}>
+        <div className="flex items-center">
+          <img
+            src={userData.profile_pic}
+            alt="Profile"
+            className="h-10 w-10 rounded-full cursor-pointer"
+          />
+          {open && (
+            <div className="ml-2">
+              <div className="text-sm">{userData.name || 'No Name'}</div>
+              <div className="text-sm mt-1 text-logoColour2 hover:text-logoColour3 hover:underline" onClick={handleProfileClick}>@{userData.username}</div>
+            </div>
+          )}
+        </div>
         {open && (
-          <div className="ml-2">
-            <div className="text-sm">{userData.name || 'No Name'}</div>
-            <div className="text-xs text-green-400">@{userData.username}</div>
+          <div className="mt-4 w-full px-4">
+            <button className="w-full py-1 mb-2 border border-gray-400 hover:bg-customBackground1 text-white rounded-md">Logout</button>
           </div>
         )}
       </div>
+
 
       {isProfileOpen && (
         <div className="absolute bottom-16 left-0 w-56">
@@ -172,3 +179,10 @@ const Sidebar = ({ setIsSearchActive }) => {
 };
 
 export default Sidebar;
+
+//changed the padding of the main verall container from p-5 to p-3
+//the logout bg colour being of the custombackgrounds instaed of being red kyonki mujh mai toh dimaag hi nahi hai
+//i will just copy paste everything now
+
+//removed the profile component opening from ghe image to the username
+//changed the colour of the username from green to blue logoColour

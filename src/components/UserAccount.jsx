@@ -226,7 +226,7 @@ const UserAccount = () => {
                           bio: e.target.value
                         }))
                       }
-                      className="bg-gray-600 text-white p-2 rounded w-full"
+                      className="bg-gray-800 text-white p-2 rounded w-full"
                       rows="3"
                     />
                     <button
