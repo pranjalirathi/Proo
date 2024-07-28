@@ -2,21 +2,19 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import Topics from './Topics';
 import RoomList from './RoomList';
-import Navigation from './Navigation';
 import Blogs from './Blogs';
 import TopicBottom from './TopicBottom';
 
-
 const Test = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 750);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 780);
   const [activeComponent, setActiveComponent] = useState('Rooms');
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState('');
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 750);
-      if (window.innerWidth < 750) {
+      setIsMobile(window.innerWidth <= 780);
+      if (window.innerWidth <= 780) {
         setActiveComponent('Rooms');
       }
     };
@@ -26,38 +24,32 @@ const Test = () => {
   }, []);
 
   const handleSelectTopic = (topic) => {
-    if(topic === 'All'){
+    if (topic === 'All') {
       window.location.reload();
-    }
-    else{
+    } else {
       setSelectedTopic(topic);
       setActiveComponent('Rooms');
     }
-    
   };
 
   return (
     <div className='flex h-screen bg-customBackground1 overflow-hidden'>
-      <Sidebar setIsSearchActive={setIsSearchActive} />
+      <Sidebar setIsSearchActive={setIsSearchActive} setActiveComponent={setActiveComponent} />
       <div className='flex-1 flex ml-20 md:ml-20'>
-         <Topics onSelectTopic={handleSelectTopic} selectedTopic={selectedTopic} />
-        {activeComponent === 'Topics' && <TopicBottom onSelectTopic={handleSelectTopic} selectedTopic={selectedTopic}/>}
-        {activeComponent === 'Rooms' && <RoomList isSearchActive={isSearchActive} selectedTopic={selectedTopic} />}
-        {activeComponent === 'Blogs' && <Blogs />}
+        {isMobile && activeComponent === 'Topics' && <TopicBottom onSelectTopic={handleSelectTopic} selectedTopic={selectedTopic} />}
+        {isMobile && activeComponent === 'Rooms' && <RoomList isSearchActive={isSearchActive} selectedTopic={selectedTopic} />}
+        {isMobile && activeComponent === 'Blogs' && <Blogs />}
+        {!isMobile && (
+          <>
+            <Topics onSelectTopic={handleSelectTopic} selectedTopic={selectedTopic} />
+            {activeComponent === 'Topics' && <TopicBottom onSelectTopic={handleSelectTopic} selectedTopic={selectedTopic} />}
+            {activeComponent === 'Rooms' && <RoomList isSearchActive={isSearchActive} selectedTopic={selectedTopic} />}
+            {activeComponent === 'Blogs' && <Blogs />}
+          </>
+        )}
       </div>
-      {isMobile && (
-        <Navigation setActiveComponent={setActiveComponent} defaultActive="Rooms" />
-      )}
     </div>
   );
 };
 
 export default Test;
-
-
-
-
-
-
-
-

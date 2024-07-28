@@ -3,34 +3,37 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import coderoom1 from '../assets/coderoom1.png';
-import {
-  Search,
-  ChevronLeft,
-  ChevronRight,
-  Folder,
-  Settings,
-  Hash,
-  User,
-  MessageCircle
-} from 'lucide-react';
+import { Hash, User, MessageCircle } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, Folder, Settings } from 'lucide-react';
 
 import ModalRules from './ModalRules';
 import WelcomeModal from './WelcomeModal';
 import Profile from './Profile';
 
-const Sidebar = ({ setIsSearchActive }) => {
+const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
+
   const [open, setOpen] = useState(false);
   const [searchActive, setSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [userData, setUserData] = useState({
     username: '',
     profile_pic: '',
     name: ''
   });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -61,9 +64,9 @@ const Sidebar = ({ setIsSearchActive }) => {
 
   const Menus = [
     { title: "Search", icon: <Search className='text-green-500' />, search: true, onClick: () => setIsSearchActive(true) },
-    { title: "Topics", icon: <Hash className='text-orange-500'/>},
-    { title: "Rooms", icon: <User className='text-blue-600'/>},
-    { title: "Blogs", icon: <MessageCircle className='text-green-700'/>},
+    { title: "Topics", icon: <Hash className='text-orange-500' />, onClick: () => setActiveComponent('Topics') },
+    { title: "Rooms", icon: <User className='text-blue-600' />, onClick: () => setActiveComponent('Rooms') },
+    { title: "Blogs", icon: <MessageCircle className='text-green-700' />, onClick: () => setActiveComponent('Blogs') },
     { title: "Welcome", icon: <Folder className='text-yellow-500' />, gap: true, onClick: () => setIsWelcomeModalOpen(true) },
     { title: "Rules", icon: <Settings className='text-gray-400' />, onClick: () => setIsModalOpen(true) },
   ];
@@ -86,8 +89,12 @@ const Sidebar = ({ setIsSearchActive }) => {
     setIsProfileOpen(!isProfileOpen);
   };
 
+  const filteredMenus = screenWidth <= 780 
+    ? Menus 
+    : Menus.filter(menu => ["Search", "Welcome", "Rules"].includes(menu.title));
+
   return (
-    <div className={`fixed top-0 left-0 h-screen z-50 ${open ? 'w-56 bg-customBackground1' : 'w-20 bg-customBackground1'} p-3 pt-8 transition-width duration-300 flex flex-col justify-between`}>
+    <div className={`fixed top-0 left-0 h-screen z-50 ${open ? 'w-56 bg-customBackground1' : 'w-20 bg-customBackground1'} p-4 pt-8 transition-width duration-300 flex flex-col justify-between`}>
       <div>
         <button
           className="absolute -right-3 top-11 w-5 border-dark-purple border-2 rounded-full"
@@ -107,7 +114,7 @@ const Sidebar = ({ setIsSearchActive }) => {
           </h1>
         </div>
         <ul className="pt-6 flex-1">
-          {Menus.map((Menu, index) => (
+          {filteredMenus.map((Menu, index) => (
             <li
               key={index}
               className={`flex items-center gap-x-4 p-2 text-sm text-gray-300 cursor-pointer hover:bg-gray-800 rounded-md ${Menu.gap ? "mt-9" : "mt-2"} ${index === 0 && "bg-light-white"}`}
@@ -142,9 +149,8 @@ const Sidebar = ({ setIsSearchActive }) => {
         </ul>
       </div>
 
-
-{/* ----------PROFILE SECTION ---------------- */}
-<div className={`flex flex-col items-center pt-3 border-t bg-customBackground2 rounded-lg border-gray-700 ${!open ? 'justify-center' : ''}`}>
+      {/* PROFILE SECTION */}
+      <div className={`flex flex-col items-center pt-3 border-t bg-customBackground2 rounded-lg border-gray-700 ${!open ? 'justify-center' : ''}`}>
         <div className="flex items-center">
           <img
             src={userData.profile_pic}
@@ -166,7 +172,6 @@ const Sidebar = ({ setIsSearchActive }) => {
         )}
       </div>
 
-
       {isProfileOpen && (
         <div className="absolute bottom-16 left-0 w-56">
           <Profile onClose={() => setIsProfileOpen(false)} />
@@ -180,11 +185,3 @@ const Sidebar = ({ setIsSearchActive }) => {
 };
 
 export default Sidebar;
-
-//changed the padding of the main verall container from p-5 to p-3
-
-//removed the profile component opening from ghe image to the username
-//changed the colour of the username from green to blue logoColour
-//
-
-//lbf
