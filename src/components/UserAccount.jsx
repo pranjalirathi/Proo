@@ -9,13 +9,13 @@ const UserAccount = () => {
     bio: '',
     profile_pic: ''
   });
-  
+
   const [editMode, setEditMode] = useState({
     name: false,
     username: false,
     bio: false
   });
-  
+
   const [inputValues, setInputValues] = useState({
     name: '',
     username: '',
@@ -27,7 +27,7 @@ const UserAccount = () => {
   const bioRef = useRef(null);
 
   const fetchUserData = async () => {
-    const token = localStorage.getItem('access_token'); 
+    const token = localStorage.getItem('access_token');
     if (!token) {
       console.error('No access token found');
       return;
@@ -61,7 +61,7 @@ const UserAccount = () => {
   }, []);
 
   const handleSave = async (field) => {
-    const token = localStorage.getItem('access_token'); 
+    const token = localStorage.getItem('access_token');
     if (!token) {
       console.error('No access token found');
       return;
@@ -108,7 +108,7 @@ const UserAccount = () => {
   }, [editMode]);
 
   return (
-    <div className="flex flex-col m-2 rounded-xl w-full max-w-2xl bg-customBackground2 text-white backdrop-blur">
+    <div className="flex flex-col m-2 rounded-xl w-full max-w-2xl bg-customBackground1 text-white backdrop-blur">
       <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg w-full">
         <div className="relative bg-logoColour3 p-6 flex justify-between items-center">
           <div className="flex items-center">
@@ -122,7 +122,7 @@ const UserAccount = () => {
             </div>
           </div>
         </div>
-        <div className="p-6 bg-gray-900">
+        <div className="p-6 bg-customBackground1">
           <h2 className="text-lg font-bold mb-4">My Account</h2>
           <div className="space-y-4">
             <div className="flex justify-between items-center bg-gray-700 p-4 rounded">
@@ -139,10 +139,10 @@ const UserAccount = () => {
                           name: e.target.value
                         }))
                       }
-                      className="bg-gray-600 text-white p-2 rounded w-full"
+                      className="bg-gray-700 border-l-0 border-r-0 border-t-0 text-white p-2 rounded w-full"
                     />
                     <button
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-green-500 hover:bg-green-700 px-3 py-1 rounded text-sm"
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded text-sm"
                       onClick={() => handleSave('name')}
                     >
                       Save
@@ -166,13 +166,13 @@ const UserAccount = () => {
                 </button>
               )}
             </div>
-            <div className="flex justify-between items-center bg-gray-700 p-4 rounded">
+            <div className="flex justify-between items-center bg-gray-700 p-4 rounded ">
               <div>
                 <p className="text-gray-400 text-xs">EMAIL</p>
                 <p>{userData.email}</p>
               </div>
             </div>
-            <div className="flex justify-between items-center bg-gray-700 p-4 rounded">
+            <div className="flex justify-between items-center bg-gray-700 p-4 rounded ">
               <div ref={usernameRef} className="flex-1">
                 <p className="text-gray-400 text-xs">USERNAME</p>
                 {editMode.username ? (
@@ -186,10 +186,10 @@ const UserAccount = () => {
                           username: e.target.value
                         }))
                       }
-                      className="bg-gray-600 text-white p-2 rounded w-full"
+                      className="bg-gray-700 text-white p-2 rounded w-full border-l-0 border-r-0 border-t-0"
                     />
                     <button
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-green-500 hover:bg-green-700 px-3 py-1 rounded text-sm"
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded text-sm"
                       onClick={() => handleSave('username')}
                     >
                       Save
@@ -226,15 +226,19 @@ const UserAccount = () => {
                           bio: e.target.value
                         }))
                       }
-                      className="bg-gray-800 text-white p-2 rounded w-full"
+                      className="bg-gray-700 text-white p-2 rounded w-full border-l-0 border-r-0 border-t-0"
                       rows="3"
+                      maxLength="155"
                     />
-                    <button
-                      className="absolute right-2 bottom-4 bg-green-500 hover:bg-green-700 px-3 py-1 rounded text-sm"
-                      onClick={() => handleSave('bio')}
-                    >
-                      Save
-                    </button>
+                    <div className="flex justify-between items-center mt-2">
+                      <span className="text-gray-400 text-sm">{inputValues.bio.length}/155</span>
+                      <button
+                        className="bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded text-sm"
+                        onClick={() => handleSave('bio')}
+                      >
+                        Save
+                      </button>
+                    </div>
                   </div>
                 ) : (
                   <p>{userData.bio}</p>

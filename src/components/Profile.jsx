@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { X } from 'lucide-react';
 
 const Profile = ({ onClose }) => {
   const [userData, setUserData] = useState({
@@ -46,13 +47,13 @@ const Profile = ({ onClose }) => {
   const isAccountPage = location.pathname === '/myAccount';
 
   return (
-    <div className="relative max-w-sm left-4 mx-auto bg-gray-800 rounded-lg overflow-hidden shadow-lg my-5">
+    <div className="relative max-w-sm left-4 mx-auto bg-customBackground2 rounded-lg overflow-hidden shadow-lg my-5 border-1 border border-gray-500">
       <div className="relative bg-logoColour3 h-20">
         <button
-          className="absolute top-2 right-2 text-white"
+          className="absolute top-2 right-2 text-white hover:text-gray-300 rounded-full"
           onClick={onClose}
         >
-          ×
+          <X size={20} />
         </button>
         <div className="absolute -bottom-10 left-4">
           <img
@@ -85,6 +86,3 @@ const Profile = ({ onClose }) => {
 };
 
 export default Profile;
-
-
-//purple-700

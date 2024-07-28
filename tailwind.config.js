@@ -25,8 +25,8 @@ export default {
         'orange-lg': '0 10px 15px -3px rgba(249, 115, 22, 0.5), 0 4px 6px -4px rgba(249, 115, 22, 0.5)',
       },
       colors: {
-        customBackground1: 'rgb(20, 22, 26)',
-        customBackground2: 'rgb(41, 45, 54)',
+        customBackground1: 'rgb(28, 30, 36)',
+        customBackground2: 'rgb(50, 55, 66)',
         logoColour1: 'rgb(3, 130, 225)',
         logoColour2: 'rgb(62, 165, 218)',
         logoColour3: 'rgb(4, 139, 230)'
