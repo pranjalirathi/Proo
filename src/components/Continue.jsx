@@ -32,14 +32,8 @@ const Continue = () => {
               </p>
               <div className="flex space-x-2 mt-2">
                 <button
-                  className="border border-red-600 bg-gray-800 px-4 py-2 rounded text-sm"
-                  onClick={() => setIsDeactivateModalOpen(true)}
-                >
-                  Deactivate
-                </button>
-                <button
                   className="bg-red-600 px-4 py-2 rounded text-sm"
-                  onClick={() => setIsDeleteModalOpen(true)}
+                  onClick={() => setIsDeactivateModalOpen(true)}
                 >
                   Delete
                 </button>

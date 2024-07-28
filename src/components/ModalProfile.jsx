@@ -12,7 +12,6 @@ const ModalProfile = ({ username, bio, onClose }) => {
         </button>
         <div className="flex items-center mb-4">
           <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center">
-            {/* Placeholder for profile picture */}
             <span className="text-2xl text-gray-500">👤</span>
           </div>
           <div className="ml-4">
@@ -44,39 +43,3 @@ const ModalProfile = ({ username, bio, onClose }) => {
 };
 
 export default ModalProfile;
-
-
-
-
-
-// -------------------------------------------|
-                                           
-
-//                 ---------
-//                 (        )
-// ---------------(           )----------------
-//                 (         )
-//                   (      )
-//                   -------
-
-//                   username
-
-// ----------------------------------------------
- 
-// bio
-
-// ---------------------------------------------
-
-// ---------------------------------------------
-
-// update password                              
-// ---------------------------------------------
-
-// update Profile pic 
-
-// --------------------------------------------
-
-// LogOut
-
-// ---------------------------------------------
-

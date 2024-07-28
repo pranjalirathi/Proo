@@ -27,6 +27,9 @@ export default {
       colors: {
         customBackground1: 'rgb(20, 22, 26)',
         customBackground2: 'rgb(41, 45, 54)',
+        logoColour1: 'rgb(3, 130, 225)',
+        logoColour2: 'rgb(62, 165, 218)',
+        logoColour3: 'rgb(4, 139, 230)'
       },
     },
   },

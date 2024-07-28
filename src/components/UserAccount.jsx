@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import ModalUsername from './ModalUsername';
-import ModalBio from './ModalBio';
 
 const UserAccount = () => {
   const [userData, setUserData] = useState({
@@ -11,9 +9,22 @@ const UserAccount = () => {
     bio: '',
     profile_pic: ''
   });
+  
+  const [editMode, setEditMode] = useState({
+    name: false,
+    username: false,
+    bio: false
+  });
+  
+  const [inputValues, setInputValues] = useState({
+    name: '',
+    username: '',
+    bio: ''
+  });
 
-  const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false);
-  const [isBioModalOpen, setIsBioModalOpen] = useState(false);
+  const nameRef = useRef(null);
+  const usernameRef = useRef(null);
+  const bioRef = useRef(null);
 
   const fetchUserData = async () => {
     const token = localStorage.getItem('access_token'); 
@@ -35,6 +46,11 @@ const UserAccount = () => {
         bio: response.data.bio,
         profile_pic: response.data.profile_pic
       });
+      setInputValues({
+        name: response.data.name,
+        username: response.data.username,
+        bio: response.data.bio
+      });
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -44,10 +60,57 @@ const UserAccount = () => {
     fetchUserData();
   }, []);
 
+  const handleSave = async (field) => {
+    const token = localStorage.getItem('access_token'); 
+    if (!token) {
+      console.error('No access token found');
+      return;
+    }
+
+    try {
+      await axios.patch(
+        'http://127.0.0.1:8000/api/update_profile',
+        { [field]: inputValues[field] },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      fetchUserData();
+      setEditMode((prev) => ({ ...prev, [field]: false }));
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
+  };
+
+  const handleClickOutside = (event) => {
+    if (nameRef.current && !nameRef.current.contains(event.target)) {
+      if (editMode.name) handleSave('name');
+      setEditMode((prev) => ({ ...prev, name: false }));
+    }
+    if (usernameRef.current && !usernameRef.current.contains(event.target)) {
+      if (editMode.username) handleSave('username');
+      setEditMode((prev) => ({ ...prev, username: false }));
+    }
+    if (bioRef.current && !bioRef.current.contains(event.target)) {
+      if (editMode.bio) handleSave('bio');
+      setEditMode((prev) => ({ ...prev, bio: false }));
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [editMode]);
+
   return (
-    <div className="flex flex-col m-2 rounded-xl w-full max-w-2xl bg-customBackground2 text-white">
+    <div className="flex flex-col m-2 rounded-xl w-full max-w-2xl bg-customBackground2 text-white backdrop-blur">
       <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg w-full">
-        <div className="relative bg-purple-700 p-6 flex justify-between items-center">
+        <div className="relative bg-logoColour3 p-6 flex justify-between items-center">
           <div className="flex items-center">
             <img
               className="w-20 h-20 rounded-full border-4 border-gray-800"
@@ -63,10 +126,45 @@ const UserAccount = () => {
           <h2 className="text-lg font-bold mb-4">My Account</h2>
           <div className="space-y-4">
             <div className="flex justify-between items-center bg-gray-700 p-4 rounded">
-              <div>
+              <div ref={nameRef} className="flex-1">
                 <p className="text-gray-400 text-xs">DISPLAY NAME</p>
-                <p>{userData.name || 'Name not set'}</p>
+                {editMode.name ? (
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={inputValues.name}
+                      onChange={(e) =>
+                        setInputValues((prev) => ({
+                          ...prev,
+                          name: e.target.value
+                        }))
+                      }
+                      className="bg-gray-600 text-white p-2 rounded w-full"
+                    />
+                    <button
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-green-500 hover:bg-green-700 px-3 py-1 rounded text-sm"
+                      onClick={() => handleSave('name')}
+                    >
+                      Save
+                    </button>
+                  </div>
+                ) : (
+                  <p>{userData.name || 'Name not set'}</p>
+                )}
               </div>
+              {!editMode.name && (
+                <button
+                  className="bg-customBackground2 hover:bg-gray-900 px-3 py-1 rounded text-sm ml-2"
+                  onClick={() =>
+                    setEditMode((prev) => ({
+                      ...prev,
+                      name: !prev.name
+                    }))
+                  }
+                >
+                  Edit
+                </button>
+              )}
             </div>
             <div className="flex justify-between items-center bg-gray-700 p-4 rounded">
               <div>
@@ -75,46 +173,90 @@ const UserAccount = () => {
               </div>
             </div>
             <div className="flex justify-between items-center bg-gray-700 p-4 rounded">
-              <div>
+              <div ref={usernameRef} className="flex-1">
                 <p className="text-gray-400 text-xs">USERNAME</p>
-                <p>{userData.username}</p>
+                {editMode.username ? (
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={inputValues.username}
+                      onChange={(e) =>
+                        setInputValues((prev) => ({
+                          ...prev,
+                          username: e.target.value
+                        }))
+                      }
+                      className="bg-gray-600 text-white p-2 rounded w-full"
+                    />
+                    <button
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-green-500 hover:bg-green-700 px-3 py-1 rounded text-sm"
+                      onClick={() => handleSave('username')}
+                    >
+                      Save
+                    </button>
+                  </div>
+                ) : (
+                  <p>{userData.username}</p>
+                )}
               </div>
-              <button 
-                className="bg-customBackground2 hover:bg-gray-900 px-3 py-1 rounded text-sm"
-                onClick={() => setIsUsernameModalOpen(true)}
-              >
-                Edit
-              </button>
+              {!editMode.username && (
+                <button
+                  className="bg-customBackground2 hover:bg-gray-900 px-3 py-1 rounded text-sm ml-2"
+                  onClick={() =>
+                    setEditMode((prev) => ({
+                      ...prev,
+                      username: !prev.username
+                    }))
+                  }
+                >
+                  Edit
+                </button>
+              )}
             </div>
             <div className="flex justify-between items-center bg-gray-700 p-4 rounded">
-              <div>
+              <div ref={bioRef} className="flex-1">
                 <p className="text-gray-400 text-xs">BIO</p>
-                <p>{userData.bio}</p>
+                {editMode.bio ? (
+                  <div className="relative">
+                    <textarea
+                      value={inputValues.bio}
+                      onChange={(e) =>
+                        setInputValues((prev) => ({
+                          ...prev,
+                          bio: e.target.value
+                        }))
+                      }
+                      className="bg-gray-600 text-white p-2 rounded w-full"
+                      rows="3"
+                    />
+                    <button
+                      className="absolute right-2 bottom-2 bg-green-500 hover:bg-green-700 px-3 py-1 rounded text-sm"
+                      onClick={() => handleSave('bio')}
+                    >
+                      Save
+                    </button>
+                  </div>
+                ) : (
+                  <p>{userData.bio}</p>
+                )}
               </div>
-              <button 
-                className="bg-customBackground2 hover:bg-gray-900 px-3 py-1 rounded text-sm"
-                onClick={() => setIsBioModalOpen(true)}
-              >
-                Edit
-              </button>
+              {!editMode.bio && (
+                <button
+                  className="bg-customBackground2 hover:bg-gray-900 px-3 py-1 rounded text-sm ml-2"
+                  onClick={() =>
+                    setEditMode((prev) => ({
+                      ...prev,
+                      bio: !prev.bio
+                    }))
+                  }
+                >
+                  Edit
+                </button>
+              )}
             </div>
           </div>
         </div>
       </div>
-
-      {/* Modals */}
-      <ModalUsername
-        isOpen={isUsernameModalOpen}
-        onClose={() => setIsUsernameModalOpen(false)}
-        currentUsername={userData.username}
-        fetchUserData={fetchUserData}
-      />
-      <ModalBio
-        isOpen={isBioModalOpen}
-        onClose={() => setIsBioModalOpen(false)}
-        currentBio={userData.bio}
-        fetchUserData={fetchUserData}
-      />
     </div>
   );
 };

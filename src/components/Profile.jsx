@@ -47,7 +47,7 @@ const Profile = ({ onClose }) => {
 
   return (
     <div className="relative max-w-sm left-4 mx-auto bg-gray-800 rounded-lg overflow-hidden shadow-lg my-5">
-      <div className="relative bg-purple-700 h-20">
+      <div className="relative bg-logoColour3 h-20">
         <button
           className="absolute top-2 right-2 text-white"
           onClick={onClose}
@@ -73,7 +73,7 @@ const Profile = ({ onClose }) => {
         </div>
         <div className="mt-4">
           <button
-            className={`w-full text-left ${isAccountPage ? 'text-gray-200' : 'text-gray-400 hover:text-gray-200'} mt-2`}
+            className={`w-full text-left ${isAccountPage ? 'text-gray-200' : 'text-gray-400 hover:text-logoColour3'} mt-2`}
             onClick={handleAccountSettings}
           >
             Account Settings
@@ -85,3 +85,6 @@ const Profile = ({ onClose }) => {
 };
 
 export default Profile;
+
+
+//purple-700
