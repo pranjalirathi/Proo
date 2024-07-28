@@ -40,7 +40,7 @@ const Topics = ({ onSelectTopic, selectedTopic }) => {
       <ul className="space-y-2">
         <li
           className={`flex items-center text-gray-400 mr-0 p-2 rounded-lg cursor-pointer transition-colors ${isMobile ? 'justify-center' : ''} ${
-            selectedTopic === 'All' ? 'bg-customBackground1 text-white' : 'hover:bg-gray-700'
+            selectedTopic === 'All' ? 'bg-customBackground1 text-white' : 'hover:bg-customBackground1'
           }`}
           onClick={() => onSelectTopic('All')}
         >
@@ -57,7 +57,7 @@ const Topics = ({ onSelectTopic, selectedTopic }) => {
           <li
             key={index}
             className={`flex items-center text-gray-400 mr-0 p-2 rounded-lg cursor-pointer transition-colors ${isMobile ? 'justify-center' : ''} ${
-              selectedTopic === topic.name ? 'bg-customBackground1 text-white' : 'hover:bg-gray-700'
+              selectedTopic === topic.name ? 'bg-customBackground1 text-white' : 'hover:bg-customBackground1'
             }`}
             onClick={() => onSelectTopic(topic.name)}
           >

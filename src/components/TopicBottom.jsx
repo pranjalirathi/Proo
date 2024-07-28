@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import homeimg from '../assets/home.jpg'
 
-const Topics = ( {onSelectTopic} ) => {
+const Topics = ( {onSelectTopic, selectedTopic} ) => {
   const [topics, setTopics] = useState([]);
   // const [languages, setLanguages] = useState([]);
 
@@ -26,10 +27,24 @@ const Topics = ( {onSelectTopic} ) => {
         <h2 className="font-bold pt-2 text-xl sm:text:xl">Topics</h2>
       </div>
       <ul className="space-y-2">
+      <li
+          className={`flex items-center text-gray-400 mr-0 p-2 rounded-lg cursor-pointer transition-colors justify-center ${
+            selectedTopic === 'All' ? 'bg-customBackground1 text-white' : 'hover:bg-customBackground1'
+          }`}
+          onClick={() => onSelectTopic('All')}
+        >
+          <img
+            src={homeimg}
+            alt="All"
+            className="h-8 w-8 rounded-full"
+          />
+            <span className="ml-3 flex-grow">All</span>
+          
+        </li>
         {topics.map((topic, index) => (
           <li
             key={index}
-            className="flex items-center text-gray-400 mr-0 p-2 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors"
+            className="flex items-center text-gray-400 mr-0 p-2 rounded-lg cursor-pointer hover:bg-customBackground1 transition-colors"
             onClick={() => onSelectTopic(topic.name)}
           >
             <img
