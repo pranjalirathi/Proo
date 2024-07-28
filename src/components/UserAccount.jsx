@@ -230,7 +230,7 @@ const UserAccount = () => {
                       rows="3"
                     />
                     <button
-                      className="absolute right-2 bottom-2 bg-green-500 hover:bg-green-700 px-3 py-1 rounded text-sm"
+                      className="absolute right-2 bottom-4 bg-green-500 hover:bg-green-700 px-3 py-1 rounded text-sm"
                       onClick={() => handleSave('bio')}
                     >
                       Save

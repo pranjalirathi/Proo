@@ -40,17 +40,17 @@ const Topics = ({ onSelectTopic, selectedTopic }) => {
       <ul className="space-y-2">
         <li
           className={`flex items-center text-gray-400 mr-0 p-2 rounded-lg cursor-pointer transition-colors ${isMobile ? 'justify-center' : ''} ${
-            selectedTopic === 'All Rooms' ? 'bg-customBackground1 text-white' : 'hover:bg-gray-700'
+            selectedTopic === 'All' ? 'bg-customBackground1 text-white' : 'hover:bg-gray-700'
           }`}
-          onClick={() => onSelectTopic('All Rooms')}
+          onClick={() => onSelectTopic('All')}
         >
           <img
             src={homeimg}
-            alt="All Rooms"
+            alt="All"
             className="h-8 w-8 rounded-full"
           />
           {!isMobile && (
-            <span className="ml-3 flex-grow">All Rooms</span>
+            <span className="ml-3 flex-grow">All</span>
           )}
         </li>
         {topics.map((topic, index) => (

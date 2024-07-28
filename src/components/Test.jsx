@@ -26,7 +26,7 @@ const Test = () => {
   }, []);
 
   const handleSelectTopic = (topic) => {
-    if(topic === 'All Rooms'){
+    if(topic === 'All'){
       window.location.reload();
     }
     else{

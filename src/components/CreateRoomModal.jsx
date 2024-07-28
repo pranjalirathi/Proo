@@ -54,8 +54,11 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
     }
   };
 
+  // <input name="room_no" id="room_no" type="number" class="inpt bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
+  //                         focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="321" required=""></input>
+
   return (
-    <div className="fixed inset-0 bg-customBackground2 bg-opacity-75 flex items-center justify-center z-50 backdrop-filter backdrop-blur-sm">
+    <div className="fixed inset-0 bg-gray-700 shadow bg-opacity-75 flex items-center justify-center z-50 backdrop-filter backdrop-blur-sm">
       <div className="bg-gray-900 bg-opacity-60 p-6 rounded-lg border border-white max-w-lg mx-4 sm:w-2/3 lg:w-1/3">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-gray-100">Create a New Room</h2>

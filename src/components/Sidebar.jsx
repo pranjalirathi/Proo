@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
 import coderoom1 from '../assets/coderoom1.png';
 import {
-  MessageSquareText,
   Search,
   ChevronLeft,
   ChevronRight,
@@ -13,6 +13,7 @@ import {
   User,
   MessageCircle
 } from 'lucide-react';
+
 import ModalRules from './ModalRules';
 import WelcomeModal from './WelcomeModal';
 import Profile from './Profile';
@@ -33,7 +34,7 @@ const Sidebar = ({ setIsSearchActive }) => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const token = localStorage.getItem('access_token'); // Get the token from local storage
+      const token = localStorage.getItem('access_token'); 
       if (!token) {
         console.error('No access token found');
         return;
