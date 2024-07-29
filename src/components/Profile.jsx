@@ -12,6 +12,7 @@ const Profile = ({ onClose }) => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const baseURL = 'http://127.0.0.1:8000';
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -22,7 +23,7 @@ const Profile = ({ onClose }) => {
       }
 
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/user_detail', {
+        const response = await axios.get(`${baseURL}/api/user_detail`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -30,7 +31,7 @@ const Profile = ({ onClose }) => {
         setUserData({
           username: response.data.username,
           bio: response.data.bio,
-          profile_pic: response.data.profile_pic
+          profile_pic: `${baseURL}${response.data.profile_pic}`,
         });
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -86,3 +87,6 @@ const Profile = ({ onClose }) => {
 };
 
 export default Profile;
+
+
+//the image was nnot coming directly from the data, so i craeted a baseurl, and then used it , The issue is likely due to the fact that the image path provided by the backend is relative, and the browser needs an absolute URL to correctly load the image.

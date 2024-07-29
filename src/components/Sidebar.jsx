@@ -22,6 +22,8 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
     profile_pic: '',
     name: ''
   });
+  const baseURL = 'http://127.0.0.1:8000';
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,14 +44,14 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
       }
 
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/user_detail', {
+        const response = await axios.get(`${baseURL}/api/user_detail`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
         setUserData({
           username: response.data.username,
-          profile_pic: response.data.profile_pic,
+          profile_pic: `${baseURL}${response.data.profile_pic}`,
           name: response.data.name
         });
       } catch (error) {
@@ -121,7 +123,7 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
       </div>
 
       {/* PROFILE SECTION */}
-      <div className={`flex flex-col items-center pt-3 border-t bg-customBackground2 rounded-lg border-gray-700 ${!open ? 'justify-center' : ''}`}>
+      <div className={`flex flex-col items-center pt-1 border-t bg-customBackground2 rounded-lg border-gray-700 ${!open ? 'justify-center' : ''}`}>
         <div className="flex items-center">
           <img
             src={userData.profile_pic}
