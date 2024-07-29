@@ -13,8 +13,6 @@ import Profile from './Profile';
 const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
 
   const [open, setOpen] = useState(false);
-  const [searchActive, setSearchActive] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -71,15 +69,7 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
     { title: "Rules", icon: <Settings className='text-gray-400' />, onClick: () => setIsModalOpen(true) },
   ];
 
-  const handleSearchClick = () => {
-    setSearchActive(true);
-  };
 
-  const handleSearchBlur = () => {
-    if (searchQuery === "") {
-      setSearchActive(false);
-    }
-  };
 
   const handleLogoClick = () => {
     navigate('/');
@@ -121,29 +111,10 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
               onClick={Menu.onClick}
             >
               <div className="w-6 h-6">{Menu.icon}</div>
-              {Menu.search ? (
-                searchActive ? (
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onBlur={handleSearchBlur}
-                    autoFocus
-                    className="bg-gray-800 rounded-2xl border-none outline-none text-white h-7 w-full"
-                  />
-                ) : (
-                  <span
-                    className={`${!open && "hidden"} origin-left duration-200`}
-                    onClick={handleSearchClick}
-                  >
-                    {Menu.title}
-                  </span>
-                )
-              ) : (
                 <span className={`${!open && "hidden"} origin-left duration-200`}>
                   {Menu.title}
                 </span>
-              )}
+            
             </li>
           ))}
         </ul>
@@ -185,3 +156,6 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
 };
 
 export default Sidebar;
+
+//removed the serach input on the sidebar
+//

@@ -142,7 +142,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
       value={searchQuery}
       onChange={handleSearchChange}
       placeholder="Search..."
-      className="w-full p-2 rounded-full bg-gray-800 text-white pl-10"
+      className="w-full p-2 rounded-full bg-customBackground1 text-white pl-10"
     />
     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
   </div>
