@@ -7,6 +7,7 @@ const JoinByCode = ({ onClose, onSubmit, roomId }) => {
 
   const handleCodeChange = (e) => {
     setCode(e.target.value);
+    console.log(e.target.value);
   };
 
   const handleSubmit = async (e) => {
@@ -26,7 +27,11 @@ const JoinByCode = ({ onClose, onSubmit, roomId }) => {
 
       if (response.data.detail === 'Added as a member') {
         onSubmit(code);
-      } else {
+      }
+      // else if (response.data.detail === 'Already a member'){
+
+      // }
+      else {
         setError(response.data.detail || 'Invalid code');
       }
     } catch (error) {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { Edit3 } from 'lucide-react';
 
 const UserAccount = () => {
   const [userData, setUserData] = useState({
@@ -25,6 +26,7 @@ const UserAccount = () => {
   const nameRef = useRef(null);
   const usernameRef = useRef(null);
   const bioRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   const fetchUserData = async () => {
     const token = localStorage.getItem('access_token');
@@ -107,19 +109,66 @@ const UserAccount = () => {
     };
   }, [editMode]);
 
+  const handleProfilePicClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      console.error('No access token found');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('profile_pic', file);
+
+    try {
+      await axios.patch(
+        'http://127.0.0.1:8000/api/updateprofilepic',
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      );
+      fetchUserData();
+    } catch (error) {
+      console.error('Error updating profile picture:', error);
+    }
+  };
+
   return (
     <div className="flex flex-col m-2 rounded-xl w-full max-w-2xl bg-customBackground1 text-white backdrop-blur">
       <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg w-full">
-        <div className="relative bg-logoColour3 p-6 flex justify-between items-center">
-          <div className="flex items-center">
+        <div className="relative bg-logoColour3 p-6 flex items-center">
+          <div className="relative group">
             <img
-              className="w-20 h-20 rounded-full border-4 border-gray-800"
+              className="w-20 h-20 rounded-full border-4 border-gray-800 cursor-pointer transition-opacity duration-300 group-hover:opacity-60"
               src={userData.profile_pic}
               alt={`${userData.username} profile`}
+              onClick={handleProfilePicClick}
             />
-            <div className="ml-4">
-              <h1 className="text-xl font-bold">{userData.username}</h1>
-            </div>
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+              onChange={handleFileChange}
+            />
+            <button
+              className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              onClick={handleProfilePicClick}
+            >
+              <Edit3 size={20} className="text-gray-300 hover:text-white" />
+            </button>
+          </div>
+          <div className="ml-4">
+            <h1 className="text-xl font-bold">{userData.username}</h1>
           </div>
         </div>
         <div className="p-6 bg-customBackground1">
@@ -166,13 +215,13 @@ const UserAccount = () => {
                 </button>
               )}
             </div>
-            <div className="flex justify-between items-center bg-gray-700 p-4 rounded ">
+            <div className="flex justify-between items-center bg-gray-700 p-4 rounded">
               <div>
                 <p className="text-gray-400 text-xs">EMAIL</p>
                 <p>{userData.email}</p>
               </div>
             </div>
-            <div className="flex justify-between items-center bg-gray-700 p-4 rounded ">
+            <div className="flex justify-between items-center bg-gray-700 p-4 rounded">
               <div ref={usernameRef} className="flex-1">
                 <p className="text-gray-400 text-xs">USERNAME</p>
                 {editMode.username ? (
@@ -206,51 +255,6 @@ const UserAccount = () => {
                     setEditMode((prev) => ({
                       ...prev,
                       username: !prev.username
-                    }))
-                  }
-                >
-                  Edit
-                </button>
-              )}
-            </div>
-            <div className="flex justify-between items-center bg-gray-700 p-4 rounded">
-              <div ref={bioRef} className="flex-1">
-                <p className="text-gray-400 text-xs">BIO</p>
-                {editMode.bio ? (
-                  <div className="relative">
-                    <textarea
-                      value={inputValues.bio}
-                      onChange={(e) =>
-                        setInputValues((prev) => ({
-                          ...prev,
-                          bio: e.target.value
-                        }))
-                      }
-                      className="bg-gray-700 text-white p-2 rounded w-full border-l-0 border-r-0 border-t-0"
-                      rows="3"
-                      maxLength="155"
-                    />
-                    <div className="flex justify-between items-center mt-2">
-                      <span className="text-gray-400 text-sm">{inputValues.bio.length}/155</span>
-                      <button
-                        className="bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded text-sm"
-                        onClick={() => handleSave('bio')}
-                      >
-                        Save
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <p>{userData.bio}</p>
-                )}
-              </div>
-              {!editMode.bio && (
-                <button
-                  className="bg-customBackground2 hover:bg-gray-900 px-3 py-1 rounded text-sm ml-2"
-                  onClick={() =>
-                    setEditMode((prev) => ({
-                      ...prev,
-                      bio: !prev.bio
                     }))
                   }
                 >
