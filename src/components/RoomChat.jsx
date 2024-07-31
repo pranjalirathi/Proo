@@ -7,12 +7,13 @@ import MembersList from './MembersList';
 const RoomChat = ({ roomId }) => {
   const [roomDetails, setRoomDetails] = useState(null);
   const [activeModal, setActiveModal] = useState(null);
+  const baseURL = 'http://127.0.0.1:8000';
 
   useEffect(() => {
     const fetchRoomDetails = async () => {
       try {
         const token = localStorage.getItem('access_token');
-        const response = await axios.get(`http://127.0.0.1:8000/api/room_details/${roomId}`, {
+        const response = await axios.get(`${baseURL}/api/room_details/${roomId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -55,11 +56,11 @@ const RoomChat = ({ roomId }) => {
         )}
         {activeModal === 'membersList' && (
           <div className="absolute right-2 top-16 w-full sm:w-80">
-            <MembersList members={roomDetails.members} onClose={closeModal} />
+            <MembersList members={roomDetails.members} onClose={closeModal} baseURL={baseURL} />
           </div>
         )}
         <img
-          src="path/to/roompic.png"
+          src={`${baseURL}${roomDetails.room_pic}`}
           alt="Room"
           className="h-8 w-8 sm:h-10 sm:w-10 rounded-full ml-2 mr-4 sm:mr-6 cursor-pointer"
           onClick={openRoomDetails}
@@ -70,7 +71,7 @@ const RoomChat = ({ roomId }) => {
             <img
               key={member.id}
               className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-white rounded-full dark:border-gray-800 cursor-pointer"
-              src={member.profile_pic}
+              src={`${baseURL}${member.profile_pic}`}
               alt={member.username}
               onClick={openMembersList}
             />
