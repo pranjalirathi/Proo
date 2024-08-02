@@ -149,7 +149,7 @@ const UserAccount = () => {
         <div className="relative bg-logoColour3 p-6 flex items-center">
           <div className="relative group">
             <img
-              className="w-20 h-20 rounded-full border-4 border-gray-800 cursor-pointer transition-opacity duration-300 group-hover:opacity-60"
+              className="w-20 h-20 rounded-full cursor-pointer transition-opacity duration-300 group-hover:opacity-60"
               src={userData.profile_pic}
               alt={`${userData.username} profile`}
               onClick={handleProfilePicClick}

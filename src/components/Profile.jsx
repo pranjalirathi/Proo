@@ -31,7 +31,7 @@ const Profile = ({ onClose }) => {
         setUserData({
           username: response.data.username,
           bio: response.data.bio,
-          profile_pic: `${baseURL}${response.data.profile_pic}`,
+          profile_pic: `${response.data.profile_pic}`,
         });
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -44,7 +44,7 @@ const Profile = ({ onClose }) => {
   const handleAccountSettings = () => {
     navigate('/myAccount');
   };
-
+  console.log(userData.profile_pic)
   const isAccountPage = location.pathname === '/myAccount';
 
   return (
@@ -58,7 +58,7 @@ const Profile = ({ onClose }) => {
         </button>
         <div className="absolute -bottom-10 left-4">
           <img
-            className="w-20 h-20 rounded-full border-4 border-gray-800"
+            className="w-20 h-20 rounded-full"
             src={userData.profile_pic}
             alt={`${userData.username} profile`}
           />

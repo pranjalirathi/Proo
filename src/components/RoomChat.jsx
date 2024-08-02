@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { Send, Code } from 'lucide-react';
+import { Send, CodeXml } from 'lucide-react';
 import RoomDetails from './RoomDetailsModal';
 import MembersList from './MembersList';
 
@@ -91,11 +91,13 @@ const RoomChat = ({ roomId }) => {
   }, [roomId]);
 
   const handleSendMessage = () => {
+    let date = new Date().toISOString();
+    console.log("Here is the date: ", date)
     if (socketRef.current && message.trim() !== '') {
       socketRef.current.send(JSON.stringify({
         message,
         is_code: isCode,
-        timestamp: new Date().toISOString(), // Add timestamp to message data
+        // timestamp: new Date().toISOString(), //added the timstamp to the message data
       }));
       setMessage('');
       setIsCode(false);
@@ -135,22 +137,22 @@ const RoomChat = ({ roomId }) => {
         <img
           src={`${baseURL}${roomDetails.room_pic}`}
           alt="Room"
-          className="h-8 w-8 sm:h-10 sm:w-10 rounded-full ml-2 mr-4 sm:mr-6 cursor-pointer"
-          onClick={openRoomDetails}
+          className="h-8 w-8 sm:h-10 sm:w-10 rounded-full ml-2 mr-4 sm:mr-6"
+         
         />
-        <h1 className="text-base sm:text-xl font-medium flex-1">{roomDetails.name}</h1>
+        <h1 className="text-base sm:text-xl font-medium flex-1 cursor-pointer" onClick={openRoomDetails}>{roomDetails.name}</h1>
         <div className="flex -space-x-2 rtl:space-x-reverse ml-2 sm:ml-4">
           {roomDetails.members.map((member) => (
             <img
               key={member.id}
-              className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-white rounded-full dark:border-gray-800 cursor-pointer"
+              className="w-6 h-6 sm:w-8 sm:h-8 rounded-full dark:border-gray-800 cursor-pointer"
               src={`${baseURL}${member.profile_pic}`}
               alt={member.username}
               onClick={openMembersList}
             />
           ))}
           <a
-            className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 text-xs font-medium text-white bg-gray-700 border-2 border-white rounded-full hover:bg-gray-600 dark:border-gray-800"
+            className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 text-xs font-medium text-white bg-gray-700 border-2 rounded-full hover:bg-gray-600 dark:border-gray-800"
             href="#"
             onClick={openMembersList}
           >
@@ -159,36 +161,37 @@ const RoomChat = ({ roomId }) => {
         </div>
       </div>
 
-      {/* Messaging Area */}
-      <div className="flex-1 overflow-y-auto p-2 sm:p-4">
-        {messages.map((msg, index) => (
+     {/* Messaging Area */}
+<div className="flex-1 overflow-y-auto p-2 sm:p-4">
+  {messages.map((msg, index) => (
+    <div
+      key={index}
+      className={`flex items-start mb-4 ${msg.sender_id === localStorage.getItem('user_id') ? 'justify-end' : 'justify-start'}`}
+    >
+      <div className={`flex ${msg.sender_id === localStorage.getItem('user_id') ? 'flex-row-reverse' : ''}`}>
+        <img
+          src={`${baseURL}${msg.profile_pic}`}
+          alt="Profile Pic"
+          className="w-10 h-10 rounded-full mr-4"
+        />
+        <div className="flex flex-col max-w-lg w-auto min-w-[50px]"> 
           <div
-            key={index}
-            className={`flex items-start mb-4 ${msg.sender_id === localStorage.getItem('user_id') ? 'justify-end' : 'justify-start'}`}
+            className={`p-2 rounded-lg ${msg.is_code ? 'bg-gray-800' : msg.sender_id === localStorage.getItem('user_id') ? 'bg-blue-600' : 'bg-gray-700'}`}
+            style={{ overflowWrap: 'break-word' }} 
           >
-            <div className={`flex ${msg.sender_id === localStorage.getItem('user_id') ? 'flex-row-reverse' : ''}`}>
-              <img
-                src={`${baseURL}${msg.profile_pic}`}
-                alt="Profile Pic"
-                className="w-10 h-10 rounded-full mr-4"
-              />
-              <div className="flex flex-col max-w-lg min-w-[50px]">
-                <div
-                  className={`p-2 rounded-lg ${msg.is_code ? 'bg-gray-800' : msg.sender_id === localStorage.getItem('user_id') ? 'bg-blue-600' : 'bg-gray-700'}`}
-                  style={{ overflowWrap: 'break-word' }}
-                >
-                  {msg.is_code ? (
-                    <pre className="whitespace-pre-wrap">{msg.message}</pre>
-                  ) : (
-                    <span>{msg.message}</span>
-                  )}
-                </div>
-                <span className="text-xs text-gray-400 mt-1">{new Date(msg.timestamp).toLocaleTimeString()}</span>
-              </div>
-            </div>
+            {msg.is_code ? (
+              <pre className="whitespace-pre-wrap">{msg.message}</pre>
+            ) : (
+              <span>{msg.message}</span>
+            )}
           </div>
-        ))}
+          <span className="text-xs text-gray-400 mt-1">{new Date(msg.timestamp).toLocaleTimeString()}</span>
+        </div>
       </div>
+    </div>
+  ))}
+</div>
+
 
       
       {/* Typing Bar */}
@@ -205,7 +208,8 @@ const RoomChat = ({ roomId }) => {
             }
           }}
         />
-        <Code
+        
+        <CodeXml
           size={38}
           className={`ml-2 sm:ml-4 p-1 cursor-pointer flex items-center justify-center ${isCode ? 'text-white bg-gray-500 rounded-full' : 'text-gray-400 hover:text-gray-200 rounded-full hover:bg-gray-500'}`}
           onClick={() => setIsCode(!isCode)}
@@ -225,3 +229,5 @@ const RoomChat = ({ roomId }) => {
 };
 
 export default RoomChat;
+
+

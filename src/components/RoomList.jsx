@@ -15,13 +15,13 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 780);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const baseURL = 'http://127.0.0.1:8000/';
+  const baseURL = 'http://127.0.0.1:8000';
 
   useEffect(() => {
     const fetchRooms = async () => {
       try {
         const token = localStorage.getItem('access_token');
-        const response = await axios.get(`${baseURL}api/rooms`, {
+        const response = await axios.get(`${baseURL}/api/rooms`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -92,6 +92,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
 
   const handleJoinByCode = async (code) => {
     try {
+      console.log("From RoomList: ", selectedRoom.id);
       const token = localStorage.getItem('access_token');
       const response = await axios.post(`http://127.0.0.1:8000/api/join_room/${selectedRoom.id}`, { code }, {
         headers: {
@@ -206,8 +207,8 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
                           {room.members.slice(0, 5).map((member) => (
                             <img
                               key={member.id}
-                              className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white rounded-full dark:border-gray-800"
-                              src={member.profile_pic}
+                              className="w-4 h-4 sm:w-5 sm:h-5 rounded-full dark:border-gray-800"
+                              src={`${baseURL}`+member.profile_pic}
                               alt={member.username}
                             />
                           ))}
@@ -267,7 +268,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
         <Modal isOpen={showModal} onClose={toggleModal} />
       )}
       {showJoinModal && selectedRoom && (
-        <JoinByCode isOpen={showJoinModal} onClose={() => setShowJoinModal(false)} onJoin={handleJoinByCode} />
+        <JoinByCode isOpen={showJoinModal} onClose={() => setShowJoinModal(false)} roomId={selectedRoom.id}/>
       )}
     </div>
   );

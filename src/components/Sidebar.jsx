@@ -51,7 +51,7 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
         });
         setUserData({
           username: response.data.username,
-          profile_pic: `${baseURL}${response.data.profile_pic}`,
+          profile_pic: `${response.data.profile_pic}`,
           name: response.data.name
         });
       } catch (error) {

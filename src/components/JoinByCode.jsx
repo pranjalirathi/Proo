@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const JoinByCode = ({ onClose, onSubmit, roomId }) => {
   const [code, setCode] = useState('');
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleCodeChange = (e) => {
     setCode(e.target.value);
     console.log(e.target.value);
   };
-
+  console.log("Here is my: ", roomId);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -24,16 +26,21 @@ const JoinByCode = ({ onClose, onSubmit, roomId }) => {
           },
         }
       );
-
-      if (response.data.detail === 'Added as a member') {
-        onSubmit(code);
+      if (response.status===200){
+        navigate(`/roomchat/${roomId}`);
       }
-      // else if (response.data.detail === 'Already a member'){
-
-      // }
       else {
         setError(response.data.detail || 'Invalid code');
       }
+      // if (response.data.detail === 'Added as a member') {
+      //   onSubmit(code);
+      // }
+      // // else if (response.data.detail === 'Already a member'){
+
+      // // }
+      // else {
+      //   setError(response.data.detail || 'Invalid code');
+      // }
     } catch (error) {
       setError('Invalid code or an error occurred');
     }
