@@ -203,12 +203,12 @@ const Login = () => {
               />
               <FontAwesomeIcon icon={faLock} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white text-2xl" />
             </div>
-            <div className="flex justify-between items-center text-md text-white mb-6">
+            {/* <div className="flex justify-between items-center text-md text-white mb-6">
               <label className="flex items-center">
                 <input type="checkbox" className="mr-2" /> Remember Me
               </label>
               <a href="#" className="hover:underline">Forgot Password</a>
-            </div>
+            </div> */}
             <button className="w-full h-12 bg-white text-black rounded-full font-semibold hover:bg-gray-200">Log In</button>
             {error && <div className="text-red-500 text-center mt-4">{error}</div>}
             <div className="text-md text-white text-center mt-8">

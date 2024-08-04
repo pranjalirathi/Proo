@@ -26,6 +26,11 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
 
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    navigate('/login');
+  };
+
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
@@ -54,7 +59,9 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
           profile_pic: `${response.data.profile_pic}`,
           name: response.data.name
         });
-      } catch (error) {
+        localStorage.setItem('username', response.data.username);
+      } 
+      catch (error) {
         console.error('Error fetching user data:', error);
       }
     };
@@ -123,7 +130,7 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
       </div>
 
       {/* PROFILE SECTION */}
-      <div className={`flex flex-col items-center pt-1 border-t bg-customBackground2 rounded-lg border-gray-700 ${!open ? 'justify-center' : ''}`}>
+      <div className={`flex flex-col items-center pt-1 pb-1 border-t bg-customBackground2 rounded-lg border-gray-700 ${!open ? 'justify-center' : ''}`}>
         <div className="flex items-center">
           <img
             src={userData.profile_pic}
@@ -140,7 +147,7 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
         </div>
         {open && (
           <div className="mt-4 w-full px-4">
-            <button className="w-full py-1 mb-2 border border-gray-400 hover:bg-red-600 text-white rounded-md">Logout</button>
+            <button onClick={handleLogout} className="w-full py-1 mb-2 border border-gray-400 hover:bg-red-600 text-white rounded-md">Logout</button>
           </div>
         )}
       </div>
@@ -159,5 +166,3 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
 
 export default Sidebar;
 
-//removed the serach input on the sidebar
-//

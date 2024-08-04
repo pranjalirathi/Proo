@@ -7,6 +7,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import FormData from 'form-data';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+
 
 const CreateRoomModal = ({ onClose, refreshRooms }) => {
   const [roomName, setRoomName] = useState('');
@@ -85,7 +88,7 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
 
   return (
     <div className="fixed inset-0 shadow z-50 flex items-center justify-center mycontainer">
-      <div className="relative bg-black border border-white p-6 w-full max-w-md max-h-full mycontainer rounded-xl">
+      <div className="relative bg-black border border-gray-400 p-6 w-full max-w-md max-h-full mycontainer rounded-xl">
         <div className="relative flex justify-between items-center mb-4 mycontainer">
           <h2 className="text-xl font-medium text-white">Create a New Room</h2>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-3xl">
@@ -101,7 +104,7 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
               type="text"
               id="roomName"
               required
-              className="inpt border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 
+              className="inpt border border-gray-400 text-gray-100 text-sm rounded-lg focus:ring-blue-500 
                             focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               placeholder="Enter room name"
               value={roomName}
@@ -115,7 +118,7 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
             <textarea
               id="description"
               required
-              className="inpt bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              className="inpt bg-gray-50 border border-gray-400 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               placeholder="Enter description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -131,6 +134,7 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-50"
             >
               {topic ? topic : "Select the room topic"}
+              <FontAwesomeIcon icon={faChevronDown} className="ml-2" />
             </button>
             {dropdownOpen && (
               <div className="absolute bg-gray-700  rounded-lg mt-2 w-full">
@@ -181,7 +185,7 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
             <button
               type="submit"
               className="
-               w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+               w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               Submit
             </button>
