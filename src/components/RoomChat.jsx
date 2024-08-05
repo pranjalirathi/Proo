@@ -241,7 +241,7 @@ const RoomChat = ({ roomId }) => {
          
         </div>
       </div>
-
+      
       {/* Messaging Area */}
       <div className="flex-1 overflow-y-auto p-2 sm:p-4 custom-scrollbar messages-container" >
         {messages.map((msg, index) => (

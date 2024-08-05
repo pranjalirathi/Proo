@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
 import Modal from './CreateRoomModal';
 import JoinByCode from './JoinByCode';
-import { Search } from 'lucide-react';
+import { Search} from 'lucide-react';
+import  BlueTick from '../assets/blueTick.svg';
 
 const RoomList = ({ isSearchActive, selectedTopic }) => {
   const [rooms, setRooms] = useState([]);
@@ -14,6 +16,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 780);
   const [loading, setLoading] = useState(true);
+  const [userSearchResults, setUserSearchResults] = useState([]);
   const navigate = useNavigate();
   const baseURL = 'http://127.0.0.1:8000';
 
@@ -65,13 +68,16 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
           },
         });
         if (response.data.detail) {
+          // console.log(response.data.detail);
           setSearchResults(response.data.detail.rooms);
+          setUserSearchResults(response.data.detail.users);
         }
       } catch (error) {
         console.error('Error fetching search results:', error);
       }
     } else {
       setSearchResults(rooms);
+      setUserSearchResults([]);
     }
   };
 
@@ -264,6 +270,56 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
           <p className="text-xl text-gray-400">Oopsi! No rooms available for this topic</p>
         </div>
       )}
+
+
+{/* 
+{isSearchActive && userSearchResults.length > 0 && (
+  <div className="mt-4">
+    <h2 className="text-xl font-bold mb-2">Users</h2>
+    <div className="flex overflow-x-scroll space-x-4 p-2 no-scrollbar">
+      {userSearchResults.map((user) => (
+        <div key={user.id} className="min-w-[150px] bg-customBackground1 p-4 rounded-lg flex-shrink-0">
+          <img
+            className="h-16 w-16 rounded-full mx-auto"
+            src={user.profile_pic}
+            alt={user.username}
+          />
+          <p className="text-center mt-2 text-white">{user.username}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+)} */}
+
+
+{isSearchActive && userSearchResults.length > 0 && (
+  <div className="mt-4">
+    <h2 className="text-xl font-bold mb-2">Users</h2>
+    <div className="flex overflow-x-scroll space-x-4 p-2 no-scrollbar">
+      {userSearchResults.map((user) => (
+        <div key={user.id} className="relative h-35 w-32 bg-customBackground1 rounded-lg flex flex-col items-center overflow-hidden">
+          <div className="w-full h-12 bg-logoColour3"></div>
+          <div className="relative -mt-10">
+            <img
+              className="w-16 mt-4 h-16 rounded-full"
+              src={user.profile_pic}
+              alt={`${user.username} profile`}
+            />
+          </div>
+          <div className="mt-2 mb-5 text-center">
+            {/* <h2 className="text-gray-400 text-sm font-bold">Username</h2> */}
+            <h1 className="text-white text-xl">@{user.username}</h1>
+            {user.verified && (
+              <BlueTick className="ml-1 w-4 h-4" />
+            )}
+            {user.verified && console.log("done")}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
       {showModal && (
         <Modal isOpen={showModal} onClose={toggleModal} />
       )}

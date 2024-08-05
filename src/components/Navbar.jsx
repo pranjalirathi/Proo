@@ -10,13 +10,6 @@ const Navbar = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
   };
 
-  //   const navItems = [
-  //   { label: "Features", href: "#" },
-  //   { label: "Workflow", href: "#" },
-  //   { label: "Pricing", href: "#" },
-  //   { label: "Testimonials", href: "#" },
-  // ];
-
   return (
     <nav className=" sticky top-0 z-50 py-3 backdrop-blur-lg border-b border-neutral-700/80">
       <div className="container px-4 mx-auto relative lg:text-sm">

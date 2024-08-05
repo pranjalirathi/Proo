@@ -31,10 +31,7 @@ code {
   background: #000 !important; 
 }
 
-/* index.css */
-/* index.css */
-
-/* Custom scrollbar style */
+/* --------------------CUSTOM SCROLLBAR---------------------- */
 .custom-scrollbar::-webkit-scrollbar {
   width: 10px;
 }
@@ -109,6 +106,25 @@ code {
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
 }
+
+
+/* -----------for hiding horizontal scrolling---------------- */
+.no-scrollbar::-webkit-scrollbar {
+  height: 0; 
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  
+  scrollbar-width: none;  
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;  
+}
+
+
+
+
 
 
 
