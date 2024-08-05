@@ -194,9 +194,6 @@ const RoomChat = ({ roomId }) => {
     return `${hours}:${minutes}`;
   };
   
-  
-  
-
   if (!roomDetails) {
     return <LoadingSkeleton />;
   }
@@ -323,7 +320,6 @@ const RoomChat = ({ roomId }) => {
 export default RoomChat;
 
 //time of message
-//last message first
 //search user
 // shape of message
 

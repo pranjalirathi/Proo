@@ -215,12 +215,16 @@ const UserAccount = () => {
                 </button>
               )}
             </div>
+
+            {/* ------------------EMAIL SECTION---------------------------------- */}
             <div className="flex justify-between items-center bg-gray-700 p-4 rounded">
               <div>
                 <p className="text-gray-400 text-xs">EMAIL</p>
                 <p>{userData.email}</p>
               </div>
             </div>
+
+            {/* ----------------------USERNAME SECTION---------------------------- */}
             <div className="flex justify-between items-center bg-gray-700 p-4 rounded">
               <div ref={usernameRef} className="flex-1">
                 <p className="text-gray-400 text-xs">USERNAME</p>
@@ -261,9 +265,55 @@ const UserAccount = () => {
                   Edit
                 </button>
               )}
-              
+
             </div>
             
+            {/* -------------BIO SECTION-------------------- */}
+            <div className="flex justify-between items-center bg-gray-700 p-4 rounded">
+              <div ref={bioRef} className="flex-1">
+                <p className="text-gray-400 text-xs">BIO</p>
+                {editMode.bio ? (
+                  <div className="relative">
+                    <textarea
+                      value={inputValues.bio}
+                      onChange={(e) =>
+                        setInputValues((prev) => ({
+                          ...prev,
+                          bio: e.target.value
+                        }))
+                      }
+                      className="bg-gray-700 text-white p-2 rounded w-full border-l-0 border-r-0 border-t-0"
+                      rows="3"
+                      maxLength="155"
+                    />
+                    <div className="flex justify-between items-center mt-2">
+                      <span className="text-gray-400 text-sm">{inputValues.bio.length}/155</span>
+                      <button
+                        className="bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded text-sm"
+                        onClick={() => handleSave('bio')}
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <p>{userData.bio}</p>
+                )}
+              </div>
+              {!editMode.bio && (
+                <button
+                  className="bg-customBackground2 hover:bg-gray-900 px-3 py-1 rounded text-sm ml-2"
+                  onClick={() =>
+                    setEditMode((prev) => ({
+                      ...prev,
+                      bio: !prev.bio
+                    }))
+                  }
+                >
+                  Edit
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
