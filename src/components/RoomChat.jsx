@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { Send, CodeXml } from 'lucide-react';
+import { Send, CodeXml, Box } from 'lucide-react';
 import RoomDetails from './RoomDetailsModal';
 import MembersList from './MembersList';
 
@@ -241,7 +241,7 @@ const RoomChat = ({ roomId }) => {
          
         </div>
       </div>
-      
+
       {/* Messaging Area */}
       <div className="flex-1 overflow-y-auto p-2 sm:p-4 custom-scrollbar messages-container" >
         {messages.map((msg, index) => (
@@ -263,6 +263,9 @@ const RoomChat = ({ roomId }) => {
                   className={` rounded-lg m-1 p-2  ${msg.is_code ? 'bg-gray-800' : (msg.username === localStorage.getItem('username') ? 'bg-customBackground1 '  : 'bg-gray-700 ')}  `}
                   style={{ overflowWrap: 'break-word',  wordWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'pre-wrap'  }}
                 >
+                  {msg.username !== localStorage.getItem('username') && (
+                    <span className="text-xs text-gray-400 mb-1 block">{msg.username}</span>
+                  )}
                   {msg.is_code ? (
                     <pre className="line-numbers">
                       <code className="language-javascript">{msg.content}</code>
@@ -320,8 +323,16 @@ const RoomChat = ({ roomId }) => {
 export default RoomChat;
 
 //time of message
-//search user
 // shape of message
+//margin bottom of room
+// message Box
+//profile pic on searched users
+//room defualt.jpg to be chnaged
+
+
+//username at messages
+//search user
+//total topics and color on all
 
 
 
