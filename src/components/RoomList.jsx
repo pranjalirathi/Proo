@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import ModalUserPubDetails from './ModalUserPubDetails';
 import Modal from './CreateRoomModal';
 import JoinByCode from './JoinByCode';
 import { Search} from 'lucide-react';
@@ -17,6 +17,8 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 780);
   const [loading, setLoading] = useState(true);
   const [userSearchResults, setUserSearchResults] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
   const navigate = useNavigate();
   const baseURL = 'http://127.0.0.1:8000';
 
@@ -128,6 +130,16 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
     const timeDiff = Math.abs(currentDate - createdDate);
     const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     return diffDays;
+  };
+
+  const openModal = (userId) => {
+    setSelectedUserId(userId);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedUserId(null);
   };
 
   return (
@@ -245,15 +257,9 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
                   onClick={(e) => {
                     e.stopPropagation();
 
-                    //agar koi homosapien room ka member hai toh open karna hai seedhe 
-                    //ab vo group public hai ki private ot does not matter
-                    //hatao
                     if (room.is_member){
                       navigate(`/roomchat/${room.id}`);
                     }
-                    // } else if (room.is_public) {
-                    //   navigate(`/roomchat/${room.id}`);
-                    
                      else {
                       toggleJoinModal(room);
                     }
@@ -272,43 +278,24 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
       )}
 
 
-{/* 
 {isSearchActive && userSearchResults.length > 0 && (
   <div className="mt-4">
     <h2 className="text-xl font-bold mb-2">Users</h2>
     <div className="flex overflow-x-scroll space-x-4 p-2 no-scrollbar">
       {userSearchResults.map((user) => (
-        <div key={user.id} className="min-w-[150px] bg-customBackground1 p-4 rounded-lg flex-shrink-0">
-          <img
-            className="h-16 w-16 rounded-full mx-auto"
-            src={user.profile_pic}
-            alt={user.username}
-          />
-          <p className="text-center mt-2 text-white">{user.username}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-)} */}
-
-
-{isSearchActive && userSearchResults.length > 0 && (
-  <div className="mt-4">
-    <h2 className="text-xl font-bold mb-2">Users</h2>
-    <div className="flex overflow-x-scroll space-x-4 p-2 no-scrollbar">
-      {userSearchResults.map((user) => (
-        <div key={user.id} className="relative h-35 w-32 bg-customBackground1 rounded-lg flex flex-col items-center overflow-hidden">
+        <div key={user.id} className="relative h-35 w-32 bg-customBackground1 rounded-lg flex flex-col items-center overflow-hidden" 
+        >
           <div className="w-full h-12 bg-logoColour3"></div>
           <div className="relative -mt-10">
             <img
               className="w-16 mt-4 h-16 rounded-full"
-              src={user.profile_pic}
+              src={`${baseURL}${user.profile_pic}`}
               alt={`${user.username} profile`}
             />
           </div>
           <div className="mt-2 mb-5 text-center">
             {/* <h2 className="text-gray-400 text-sm font-bold">Username</h2> */}
-            <h1 className="text-white text-xl">@{user.username}</h1>
+            <h1 className="text-white text-xl" onClick={() => openModal(user.id)}>@{user.username}</h1>
             {user.verified && (
               <BlueTick className="ml-1 w-4 h-4" />
             )}
@@ -320,12 +307,15 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
   </div>
 )}
 
+<ModalUserPubDetails isOpen={isModalOpen} onClose={closeModal} userId={selectedUserId} />
+
       {showModal && (
         <Modal isOpen={showModal} onClose={toggleModal} />
       )}
       {showJoinModal && selectedRoom && (
         <JoinByCode isOpen={showJoinModal} onClose={() => setShowJoinModal(false)} roomId={selectedRoom.id}/>
       )}
+      
     </div>
   );
   
@@ -333,3 +323,25 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
 };
 
 export default RoomList;
+
+
+
+// what i added in this for the user Modal
+{/* <ModalUserPubDetails isOpen={isModalOpen} onClose={closeModal} userId={selectedUserId} /> */}
+
+// onClick={() => openModal(user.id)}
+
+
+// const openModal = (userId) => {
+//   setSelectedUserId(userId);
+//   setIsModalOpen(true);
+// };
+
+// const closeModal = () => {
+//   setIsModalOpen(false);
+//   setSelectedUserId(null);
+// };
+
+// const [isModalOpen, setIsModalOpen] = useState(false);
+// const [selectedUserId, setSelectedUserId] = useState(null);
+

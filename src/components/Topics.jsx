@@ -62,7 +62,7 @@ const Topics = ({ onSelectTopic, selectedTopic }) => {
         <ul className="space-y-2">
           <li
             className={`flex items-center text-gray-400 mr-0 p-2 rounded-lg cursor-pointer transition-colors ${isMobile ? 'justify-center' : ''} ${
-              selectedTopic === 'All' ? 'bg-customBackground2 text-white' : 'bg-customBackground1 hover:bg-customBackground1'
+              selectedTopic === 'All' || topics.length === 0  ? 'bg-customBackground2 text-white' : 'bg-customBackground1 hover:bg-customBackground1'
             }`}
             onClick={() => onSelectTopic('All')}
           >
