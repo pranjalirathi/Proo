@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -10,6 +11,7 @@ import RoomPage from './pages/RoomPage';
 import AccountPage from './pages/AccountPage';
 import CompilerPage from './pages/CompilerPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import LoggedInCheck from './components/LoggedInCheck';
 
 const App = () => {
   const location = useLocation();
@@ -28,9 +30,9 @@ const App = () => {
       {showNavbar && <Navbar />}
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/test" element={<Test />} />
+        <Route path="/login" element={<LoggedInCheck><Login /></LoggedInCheck>} />
+        <Route path="/register" element={<LoggedInCheck><Register /></LoggedInCheck>} />
+        <Route path="/test" element={<ProtectedRoute><Test /></ProtectedRoute>} />
         <Route path="/roomchat/:roomId" element={
           <ProtectedRoute>
             <RoomPage />

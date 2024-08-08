@@ -33,7 +33,7 @@ const Test = () => {
   };
 
   return (
-    <div className='flex h-screen bg-customBackground1 overflow-hidden'>
+    <div className='h-screen bg-customBackground1 overflow-hidden'>
       <Sidebar setIsSearchActive={setIsSearchActive} setActiveComponent={setActiveComponent} />
       <div className='flex-1 flex ml-20 md:ml-20'>
         {isMobile && activeComponent === 'Topics' && <TopicBottom onSelectTopic={handleSelectTopic} selectedTopic={selectedTopic} />}

@@ -47,7 +47,7 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
       let data = new FormData();
       data.append('name', roomName);
       data.append('description', description);
-      data.append('topic', topic);
+      data.append('topic', topic?topic:"Others");
 
       const config = {
         method: 'post',
@@ -140,7 +140,7 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
               <div className="absolute bg-gray-700  rounded-lg mt-2 w-full">
                 {topics.map((t) => (
                   <div key={t.name} className="cursor-pointer px-4 py-2 hover:bg-gray-300 rounded-lg">
-                    <label className="flex items-center cursor-pointer w-full text-gray-900 font-medium">
+                    <label className="flex items-center cursor-pointer w-full text-white font-medium">
                       <input
                         type="radio"
                         name="topic"
@@ -165,7 +165,7 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
                   id="public"
                   checked={isPublic}
                   onChange={handleCheckboxChange}
-                  className="mr-2"
+                  className="mr-2 rounded-lg"
                 />
                 <label htmlFor="public" className="text-sm font-medium text-white">Public</label>
               </div>
@@ -175,7 +175,7 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
                   id="private"
                   checked={!isPublic}
                   onChange={handleCheckboxChange}
-                  className="mr-2"
+                  className="mr-2 rounded-lg"
                 />
                 <label htmlFor="private" className="text-sm font-medium text-white">Private</label>
               </div>

@@ -72,7 +72,9 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
         if (response.data.detail) {
           // console.log(response.data.detail);
           setSearchResults(response.data.detail.rooms);
+          console.log("This is the search result of the users")
           setUserSearchResults(response.data.detail.users);
+          console.log(response.data.detail.users);
         }
       } catch (error) {
         console.error('Error fetching search results:', error);
@@ -143,7 +145,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
   };
 
   return (
-    <div className="w-full mr-2 mt-2 rounded-lg flex flex-col h-screen bg-customBackground2 text-white p-4 overflow-auto">
+    <div className="w-full mr-2 mt-2 rounded-lg flex flex-col h-screen bg-customBackground2 text-white p-4 overflow-scroll" style={{height: "97.5vh"}}>
       {isSearchActive && (
         <div className="relative mb-4">
           <input
@@ -202,7 +204,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
             key={room.id}
             className={`border border-gray-600 p-4 mb-4 rounded-lg bg-customBackground1 sm:p-3 sm:mb-3 ${isMobile ? 'p-2 mb-2' : ''}`}
           >
-            <div className="flex flex-col sm:flex-row justify-between mb-2 sm:mb-1">
+            <div className="flex flex-col sm:flex-row justify-between mb-2 sm:mb-0">
               <div className="flex items-center mb-2 sm:mb-0">
                 <div className={`bg-gray-500 h-10 w-10 rounded-full flex items-center justify-center mr-3 sm:h-8 sm:w-8 sm:mr-2 ${isMobile ? 'h-8 w-8' : ''}`}>
                   <img
@@ -289,13 +291,13 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
           <div className="relative -mt-10">
             <img
               className="w-16 mt-4 h-16 rounded-full"
-              src={`${baseURL}${user.profile_pic}`}
+              src={`${baseURL}/${user.profile_pic}`}
               alt={`${user.username} profile`}
             />
           </div>
           <div className="mt-2 mb-5 text-center">
             {/* <h2 className="text-gray-400 text-sm font-bold">Username</h2> */}
-            <h1 className="text-white text-xl" onClick={() => openModal(user.id)}>@{user.username}</h1>
+            <h1 className="text-white text-xl hover:text-logoColour3 cursor-pointer" onClick={() => openModal(user.id)}>@{user.username}</h1>
             {user.verified && (
               <BlueTick className="ml-1 w-4 h-4" />
             )}

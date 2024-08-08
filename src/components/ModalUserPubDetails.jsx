@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { X } from 'lucide-react';
 
 const ModalUserPubDetails = ({ isOpen, onClose, userId }) => {
   const [userDetails, setUserDetails] = useState(null);
@@ -30,49 +31,34 @@ const ModalUserPubDetails = ({ isOpen, onClose, userId }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
-        <button className="text-gray-600 hover:text-gray-900" onClick={onClose}>
-          Close
-        </button>
-        {error ? (
-          <div className="text-red-600">{error}</div>
-        ) : userDetails ? (
-          <div className="text-black">
-            <div className="flex items-center justify-center mb-4">
-              <img
-                className="w-24 h-24 rounded-full"
-                src={userDetails.profile_pic}
-                alt={userDetails.username}
-              />
-              {userDetails.verified && <BlueTick className="ml-2 w-6 h-6" />}
-            </div>
-            <div className="text-left text-black">
-              <p><strong>Username:</strong> {userDetails.username}</p>
-              <p><strong>Name:</strong> {userDetails.name}</p>
-              <p><strong>Bio:</strong> {userDetails.bio}</p>
-            </div>
+    <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full relative"> 
+      <button className="absolute top-4 right-4 text-gray-600 hover:text-gray-900" onClick={onClose}>
+        <X className="w-6 h-6" />
+      </button>
+      {error ? (
+        <div className="text-red-600">{error}</div>
+      ) : userDetails ? (
+        <div className="text-black text-center">
+          <div className="flex items-center justify-center mb-4">
+            <img
+              className="w-24 h-24 rounded-full"
+              src={userDetails.profile_pic}
+              alt={userDetails.username}
+            />
+            {userDetails.verified && <BlueTick className="ml-2 w-6 h-6" />}
           </div>
-        ) : (
-          <div>Loading...</div>
-        )}
-      </div>
+          <div className="text-black space-y-2">
+            <p className='text-xl font-bold'>@{userDetails.username}</p>
+            <p>{userDetails.name}</p>
+            <p>{userDetails.bio}</p>
+          </div>
+        </div>
+      ) : (
+        <div>Loading...</div>
+      )}
     </div>
-  );
+  </div>
+);
 };
 
 export default ModalUserPubDetails;
-
-
-// -------------------------------------------------
-
-
-                // circular profile pic {BlueTick}           
-
-
-// ----------------------------------------------------
-
-//   Username :      username
-//   Name :          name of the user
-//   Bio:            bio of the user
-
-// -----------------------------------------------------

@@ -39,7 +39,7 @@ const Topics = ({ onSelectTopic, selectedTopic }) => {
   const totalTopicCount = topics.reduce((total, topic) => total + topic.room_count, 0);
 
   return (
-    <div className={`w-full m-2 ${isMobile ? 'p-1 w-1/3' : 'p-2 w-1/4'} ${isMobile ? 'max-w-sm' : 'max-w-xs'} bg-customBackground2 rounded-lg`}>
+    <div className={`w-full m-2 ${isMobile ? 'p-1 w-1/3' : 'p-2 w-1/4'} ${isMobile ? 'max-w-sm' : 'max-w-xs'} bg-customBackground2 rounded-lg overflow-scroll`} style={{height: "97.5"}}>
       <div className="text-white text-xl flex items-center mt-3 mb-4">
         <span className="ml-2 pt-2 text-gray-400">#</span>
         <h2 className="font-bold pt-2 text-xl sm:text:xl">Topics</h2>
@@ -62,9 +62,9 @@ const Topics = ({ onSelectTopic, selectedTopic }) => {
         <ul className="space-y-2">
           <li
             className={`flex items-center text-gray-400 mr-0 p-2 rounded-lg cursor-pointer transition-colors ${isMobile ? 'justify-center' : ''} ${
-              selectedTopic === 'All' || topics.length === 0  ? 'bg-customBackground2 text-white' : 'bg-customBackground1 hover:bg-customBackground1'
+              selectedTopic == '' ? 'bg-customBackground1 text-white' : ' hover:bg-customBackground1'
             }`}
-            onClick={() => onSelectTopic('All')}
+            onClick={() => onSelectTopic()}
           >
             {/* <img
               src={homeimg}
