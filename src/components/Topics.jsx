@@ -39,7 +39,7 @@ const Topics = ({ onSelectTopic, selectedTopic }) => {
   const totalTopicCount = topics.reduce((total, topic) => total + topic.room_count, 0);
 
   return (
-    <div className={`w-full m-2 ${isMobile ? 'p-1 w-1/3' : 'p-2 w-1/4'} ${isMobile ? 'max-w-sm' : 'max-w-xs'} bg-customBackground2 rounded-lg overflow-scroll`} style={{height: "97.5"}}>
+    <div className={`w-full m-2 mb-0 ${isMobile ? 'p-1 w-1/3' : 'p-2 w-1/4'} ${isMobile ? 'max-w-sm' : 'max-w-xs'} bg-customBackground2 rounded-lg overflow-y-scroll custom-scrollbar`} style={{height: "97.5"}}>
       <div className="text-white text-xl flex items-center mt-3 mb-4">
         <span className="ml-2 pt-2 text-gray-400">#</span>
         <h2 className="font-bold pt-2 text-xl sm:text:xl">Topics</h2>
@@ -104,3 +104,6 @@ const Topics = ({ onSelectTopic, selectedTopic }) => {
 };
 
 export default Topics;
+
+//added mb-0 to the topic main div
+//added the custom-scrollbar style from the index.css

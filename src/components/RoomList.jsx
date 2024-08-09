@@ -145,7 +145,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
   };
 
   return (
-    <div className="w-full mr-2 mt-2 rounded-lg flex flex-col h-screen bg-customBackground2 text-white p-4 overflow-scroll" style={{height: "97.5vh"}}>
+    <div className="w-full mr-2 mt-2 rounded-lg flex flex-col h-screen bg-customBackground2 text-white p-4 overflow-y-scroll custom-scrollbar" style={{height: "97.5vh"}}>
       {isSearchActive && (
         <div className="relative mb-4">
           <input
