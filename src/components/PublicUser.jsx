@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import  BlueTick from '../assets/blueTick.svg';
+
 
 const PublicUser = ({username}) => {
 
@@ -60,7 +62,11 @@ const PublicUser = ({username}) => {
                   />
                 )}
               </div>
-              <div className="text-lg font-bold mb-1">{userDetails.name}</div>
+              <div className="text-lg font-bold mb-1">{userDetails.name}
+              {userDetails.verified && (
+                  <img src={BlueTick} alt="Verified" className="inline-block ml-2 h-6 w-6" />
+                )}
+              </div>
               {/* Divider line */}
               <div className="w-full h-[1px] bg-gray-600 my-2"></div>
               <div className="text-lg mb-4">@{userDetails.username}</div>

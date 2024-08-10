@@ -281,7 +281,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
           <div className="relative -mt-10">
             <img
               className="w-16 mt-4 h-16 rounded-full"
-              src={`${baseURL}/${user.profile_pic}`}
+              src={`${user.profile_pic}`}
               alt={`${user.username} profile`}
             />
           </div>
