@@ -5,11 +5,11 @@ import RoomDetails from './RoomDetailsModal';
 import MembersList from './MembersList';
 
 import Prism from 'prismjs';
-import 'prismjs/themes/prism-tomorrow.css'; 
+import 'prismjs/themes/prism-tomorrow.css';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-python';
 import 'prismjs/plugins/line-numbers/prism-line-numbers';
-import 'prismjs/plugins/line-numbers/prism-line-numbers.css'; 
+import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 
 const AvatarSkeleton = () => (
   <svg className="w-6 h-6 text-gray-500 dark:text-gray-700 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -47,6 +47,7 @@ const RoomChat = ({ roomId }) => {
   const [message, setMessage] = useState('');
   const [isCode, setIsCode] = useState(false);
   const socketRef = useRef(null);
+  const messagesEndRef = useRef(null);
   const baseURL = 'http://127.0.0.1:8000';
 
   useEffect(() => {
@@ -193,7 +194,15 @@ const RoomChat = ({ roomId }) => {
     const minutes = date.getMinutes().toString().padStart(2, '0');
     return `${hours}:${minutes}`;
   };
+
+  //This is to scroll aat teh bottom of the messages when changes
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
   
+
   if (!roomDetails) {
     return <LoadingSkeleton />;
   }
@@ -220,7 +229,7 @@ const RoomChat = ({ roomId }) => {
         />
         <h1 className="text-base sm:text-xl font-medium flex-1 cursor-pointer" onClick={openRoomDetails}>{roomDetails.name}</h1>
         <div className="flex -space-x-2 rtl:space-x-reverse ml-2 sm:ml-4">
-          {roomDetails.members.slice(0,4).map((member) => (
+          {roomDetails.members.slice(0, 4).map((member) => (
             <img
               key={member.id}
               className="w-6 h-6 sm:w-8 sm:h-8 rounded-full dark:border-gray-800 cursor-pointer"
@@ -230,7 +239,7 @@ const RoomChat = ({ roomId }) => {
             />
           ))}
           {roomDetails.members.length > 4 && (
-              <a
+            <a
               className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 text-xs font-medium text-white bg-gray-700 border-2 rounded-full hover:bg-gray-600 dark:border-gray-800"
               href="#"
               onClick={openMembersList}
@@ -238,7 +247,7 @@ const RoomChat = ({ roomId }) => {
               +{roomDetails.member.length - 4}
             </a>
           )}
-         
+
         </div>
       </div>
 
@@ -250,18 +259,18 @@ const RoomChat = ({ roomId }) => {
             className={`flex items-start mb-4 ${msg.username === localStorage.getItem('username') ? 'justify-end' : 'justify-start'}`}
           >
             <div className={`flex ${msg.sender_id === localStorage.getItem('username') ? 'flex-row-reverse ' : ''}`}>
-                 
-              {msg.username !== localStorage.getItem('username' ) ?  
-              <img
-              src={`${baseURL}${msg.profile_pic}`}
-              alt="Profile Pic"
-              className="w-10 h-10 rounded-full mr-4"
-            /> : '' } 
+
+              {msg.username !== localStorage.getItem('username') ?
+                <img
+                  src={`${baseURL}${msg.profile_pic}`}
+                  alt="Profile Pic"
+                  className="w-10 h-10 rounded-full mr-4"
+                /> : ''}
 
               <div className="flex flex-col max-w-lg w-auto min-w-[50px]">
                 <div
-                  className={` rounded-lg m-1 p-2  ${msg.is_code ? 'bg-gray-800' : (msg.username === localStorage.getItem('username') ? 'bg-customBackground1 '  : 'bg-gray-700 ')}  `}
-                  style={{ overflowWrap: 'break-word',  wordWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'pre-wrap'  }}
+                  className={` rounded-lg m-1 p-2  ${msg.is_code ? 'bg-gray-800' : (msg.username === localStorage.getItem('username') ? 'bg-customBackground1 ' : 'bg-gray-700 ')} ${msg.username === localStorage.getItem('username') ? 'rounded-tl-2xl roudned-tr-2xl rounded-bl-2xl rounded-br-none ' : 'rounded-tl-2xl rounded-tr-2xl rounded-bl-none rounded-br-2xl'} `}
+                  style={{ overflowWrap: 'break-word', wordWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}
                 >
                   {msg.username !== localStorage.getItem('username') && (
                     <span className="text-xs text-gray-400 mb-1 block">{msg.username}</span>
@@ -274,13 +283,16 @@ const RoomChat = ({ roomId }) => {
                     <span className="whitespace-pre-wrap">{msg.content}</span>
                   )}
                 </div>
-                <span className="text-xs text-gray-400 mt-1 self-end">{formatTime(msg.timestamp)}</span>  
+                <span className="text-xs text-gray-400 mt-1 self-end">{formatTime(msg.timestamp)}</span>
 
 
               </div>
             </div>
           </div>
         ))}
+
+        {/* For scrolling */}
+         <div ref={messagesEndRef} />
       </div>
 
       {/* Typing Bar */}
@@ -298,14 +310,14 @@ const RoomChat = ({ roomId }) => {
               handleSendMessage();
             }
           }}
-          style={{ height: 'auto', maxHeight: '100px' }} 
+          style={{ height: 'auto', maxHeight: '100px' }}
         />
         <CodeXml
           size={38}
           className={`ml-2 sm:ml-4 p-1 cursor-pointer bg-blue-600 rounded-full flex items-center justify-center ${isCode ? 'text-white bg-gray-500 rounded-full' : 'text-white rounded-full hover:bg-blue-700'}`}
           onClick={() => setIsCode(!isCode)}
         />
-        
+
         <button
           className="ml-2 sm:ml-4 p-1 sm:p-2 bg-blue-600 rounded-full hover:bg-blue-700 flex items-center justify-center"
           onClick={handleSendMessage}
@@ -323,16 +335,16 @@ const RoomChat = ({ roomId }) => {
 export default RoomChat;
 
 //time of message
-// shape of message
-//margin bottom of room
-// message Box
 //profile pic on searched users
-//room defualt.jpg to be chnaged
 
 
+// message Box
+// shape of message
 //username at messages
 //search user
 //total topics and color on all
+//margin bottom of room
+//room defualt.jpg to be chnaged
 
 
 

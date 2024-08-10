@@ -11,12 +11,13 @@ import RoomPage from './pages/RoomPage';
 import AccountPage from './pages/AccountPage';
 import CompilerPage from './pages/CompilerPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import PublicUserPage from './pages/PublicUserPage'
 import LoggedInCheck from './components/LoggedInCheck';
 
 const App = () => {
   const location = useLocation();
 
-  const pathsWithoutNavbar = ['*', '/test', '/compiler' ,'/myAccount', /^\/roomchat\/.+$/];
+  const pathsWithoutNavbar = ['*', '/test', '/compiler',  /^\/user(\/.*)?$/ ,'/myAccount', /^\/roomchat\/.+$/];
   
   const showNavbar = !pathsWithoutNavbar.some(path => {
     if (typeof path === 'string') {
@@ -33,6 +34,11 @@ const App = () => {
         <Route path="/login" element={<LoggedInCheck><Login /></LoggedInCheck>} />
         <Route path="/register" element={<LoggedInCheck><Register /></LoggedInCheck>} />
         <Route path="/test" element={<ProtectedRoute><Test /></ProtectedRoute>} />
+        <Route path="/user/:username" element = {
+          <ProtectedRoute>
+            <PublicUserPage/>
+          </ProtectedRoute>} 
+          />
         <Route path="/roomchat/:roomId" element={
           <ProtectedRoute>
             <RoomPage />

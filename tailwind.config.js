@@ -19,6 +19,7 @@ export default {
         'gradient-blur-circle-3': 'radial-gradient(circle, rgba(255, 0, 150, 0.5), transparent 60%)',
         'gradient-blur-circle-2': 'radial-gradient(circle, rgba(0, 150, 255, 0.5), transparent 60%)',
         'gradient-blur-circle-1': 'radial-gradient(circle, rgba(150, 0, 255, 0.5), transparent 60%)',
+        'border-gradient': 'linear-gradient(to right, #3b82f6, #8b5cf6, #5b21b6, #e0e7ff)',
       },
       boxShadow: {
         'orange-md': '0 4px 6px -1px rgba(249, 115, 22, 0.5), 0 2px 4px -2px rgba(249, 115, 22, 0.5)',
@@ -29,7 +30,7 @@ export default {
         customBackground2: 'rgb(50, 55, 66)',
         logoColour1: 'rgb(3, 130, 225)',
         logoColour2: 'rgb(62, 165, 218)',
-        logoColour3: 'rgb(4, 139, 230)'
+        logoColour3: 'rgb(4, 139, 230)',
       },
     },
   },

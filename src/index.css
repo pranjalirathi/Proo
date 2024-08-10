@@ -108,6 +108,7 @@ code {
 }
 
 
+
 /* -----------for hiding horizontal scrolling---------------- */
 .no-scrollbar::-webkit-scrollbar {
   height: 0; 
@@ -120,6 +121,92 @@ code {
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;  
+}
+
+.bg-glassmorphism {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.circle {
+  position: relative;
+  width: 100px; /* Adjust size as needed */
+  height: 100px; /* Adjust size as needed */
+  border: 3px solid #adddff;
+  border-radius: 50%;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  text-align: center;
+  height: 100%;
+  color: #adddff;
+  font-family: Bahnschrift;
+  font-weight: bolder;
+  font-size: 20px;
+  background-image: linear-gradient(to right top, #02070e, #04090f, #060a11, #080c12, #0a0d13, #0c0f16, #0e1119, #10131c, #111521, #121727, #13192c, #151b32);
+}
+
+.wave {
+  background-image: linear-gradient(to bottom right, #6055f8, #fd6aee, #9c4af6, #4ea6fc, #6c12eb);
+  position: absolute;
+  top: 110%;
+  height: 200%;
+  width: 200%;
+  border-radius: 38%;
+  left: -50%;
+  transform: rotate(360deg);
+  transition: all 5s ease;
+  animation: wave 30s linear infinite;
+}
+
+@keyframes wave {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(3600deg);
+  }
+}
+
+.circle .wave {
+  top: 58%;
+}
+
+.room-card {
+  background: linear-gradient(
+    to bottom right, 
+    rgba(0, 0, 0, 0.7), /* Dark color */
+    rgb(50, 55, 72) /* Light color */
+  );
+  /* padding: 20px; Adjust padding as needed */
+  /* margin: 10px;  Adjust margin as needed */ 
+  /* border-radius: 10px;  Optional: for rounded corners */ 
+}
+
+
+.gradient-text {
+  background: linear-gradient(
+    to right,
+    #6055f8,
+    #fd6aee,
+    #9c4af6,
+    #4ea6fc,
+    #6c12eb
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 

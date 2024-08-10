@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import ModalUserPubDetails from './ModalUserPubDetails';
 import Modal from './CreateRoomModal';
 import JoinByCode from './JoinByCode';
 import { Search} from 'lucide-react';
@@ -17,8 +16,6 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 780);
   const [loading, setLoading] = useState(true);
   const [userSearchResults, setUserSearchResults] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState(null);
   const navigate = useNavigate();
   const baseURL = 'http://127.0.0.1:8000';
 
@@ -70,7 +67,6 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
           },
         });
         if (response.data.detail) {
-          // console.log(response.data.detail);
           setSearchResults(response.data.detail.rooms);
           console.log("This is the search result of the users")
           setUserSearchResults(response.data.detail.users);
@@ -134,15 +130,9 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
     return diffDays;
   };
 
-  const openModal = (userId) => {
-    setSelectedUserId(userId);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedUserId(null);
-  };
+  const handleUserPublicDetails = (username) => {
+    navigate(`/user/${username}`);
+  }
 
   return (
     <div className="w-full mr-2 mt-2 rounded-lg flex flex-col h-screen bg-customBackground2 text-white p-4 overflow-y-scroll custom-scrollbar" style={{height: "97.5vh"}}>
@@ -296,8 +286,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
             />
           </div>
           <div className="mt-2 mb-5 text-center">
-            {/* <h2 className="text-gray-400 text-sm font-bold">Username</h2> */}
-            <h1 className="text-white text-xl hover:text-logoColour3 cursor-pointer" onClick={() => openModal(user.id)}>@{user.username}</h1>
+            <h1 className="text-white text-xl hover:text-logoColour3 cursor-pointer" onClick={() => handleUserPublicDetails(user.username)}>@{user.username}</h1>
             {user.verified && (
               <BlueTick className="ml-1 w-4 h-4" />
             )}
@@ -308,8 +297,6 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
     </div>
   </div>
 )}
-
-<ModalUserPubDetails isOpen={isModalOpen} onClose={closeModal} userId={selectedUserId} />
 
       {showModal && (
         <Modal isOpen={showModal} onClose={toggleModal} />
@@ -325,25 +312,4 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
 };
 
 export default RoomList;
-
-
-
-// what i added in this for the user Modal
-{/* <ModalUserPubDetails isOpen={isModalOpen} onClose={closeModal} userId={selectedUserId} /> */}
-
-// onClick={() => openModal(user.id)}
-
-
-// const openModal = (userId) => {
-//   setSelectedUserId(userId);
-//   setIsModalOpen(true);
-// };
-
-// const closeModal = () => {
-//   setIsModalOpen(false);
-//   setSelectedUserId(null);
-// };
-
-// const [isModalOpen, setIsModalOpen] = useState(false);
-// const [selectedUserId, setSelectedUserId] = useState(null);
 
