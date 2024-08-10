@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Modal from './CreateRoomModal';
 import JoinByCode from './JoinByCode';
 import { Search} from 'lucide-react';
-import  BlueTick from '../assets/blueTick.svg';
+// import  BlueTick from '../assets/blueTick.svg';
 
 const RoomList = ({ isSearchActive, selectedTopic }) => {
   const [rooms, setRooms] = useState([]);
@@ -281,16 +281,16 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
           <div className="relative -mt-10">
             <img
               className="w-16 mt-4 h-16 rounded-full"
-              src={`${user.profile_pic}`}
+              src={`${baseURL}/${user.profile_pic}`}
               alt={`${user.username} profile`}
             />
           </div>
           <div className="mt-2 mb-5 text-center">
             <h1 className="text-white text-xl hover:text-logoColour3 cursor-pointer" onClick={() => handleUserPublicDetails(user.username)}>@{user.username}</h1>
-            {user.verified && (
+            {/* {user.verified && (
               <BlueTick className="ml-1 w-4 h-4" />
             )}
-            {user.verified && console.log("done")}
+            {user.verified && console.log("done")} */}
           </div>
         </div>
       ))}

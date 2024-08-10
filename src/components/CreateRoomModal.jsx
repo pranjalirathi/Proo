@@ -1,9 +1,3 @@
-// // second div 
-// // bg-gray-900 bg-opacity-60 p-6 rounded-lg border border-white max-w-lg mx-4 sm:w-2/3 lg:w-1/3
-
-// //third div
-// // flex justify-between items-center mb-4
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import FormData from 'form-data';
@@ -48,6 +42,7 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
       data.append('name', roomName);
       data.append('description', description);
       data.append('topic', topic?topic:"Others");
+      data.append('is_public', isPublic);
 
       const config = {
         method: 'post',
@@ -91,7 +86,7 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
       <div className="relative bg-black border border-gray-400 p-6 w-full max-w-md max-h-full mycontainer rounded-xl">
         <div className="relative flex justify-between items-center mb-4 mycontainer">
           <h2 className="text-xl font-medium text-white">Create a New Room</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-3xl">
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-100 text-3xl">
             &times;
           </button>
         </div>
@@ -140,7 +135,7 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
               <div className="absolute bg-gray-700  rounded-lg mt-2 w-full">
                 {topics.map((t) => (
                   <div key={t.name} className="cursor-pointer px-4 py-2 hover:bg-gray-300 rounded-lg">
-                    <label className="flex items-center cursor-pointer w-full text-white font-medium">
+                    <label className="flex items-center cursor-pointer w-full text-white hover:text-black font-medium">
                       <input
                         type="radio"
                         name="topic"
