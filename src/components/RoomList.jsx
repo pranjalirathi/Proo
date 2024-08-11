@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Modal from './CreateRoomModal';
 import JoinByCode from './JoinByCode';
 import { Search} from 'lucide-react';
-// import  BlueTick from '../assets/blueTick.svg';
+import  BlueTick from '../assets/blueTick.svg';
 
 const RoomList = ({ isSearchActive, selectedTopic }) => {
   const [rooms, setRooms] = useState([]);
@@ -135,7 +135,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
   }
 
   return (
-    <div className="w-full mr-2 mt-2 rounded-lg flex flex-col h-screen bg-customBackground2 text-white p-4 overflow-y-scroll custom-scrollbar" style={{height: "97.5vh"}}>
+    <div className="w-full mr-2 mt-2 rounded-lg flex flex-col h-screen bg-customBackground2 text-white sm:p-4 p-2 overflow-y-scroll custom-scrollbar" style={{height: "97.5vh"}}>
       {isSearchActive && (
         <div className="relative mb-4">
           <input
@@ -270,33 +270,39 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
       )}
 
 
-{isSearchActive && userSearchResults.length > 0 && (
-  <div className="mt-4">
-    <h2 className="text-xl font-bold mb-2">Users</h2>
-    <div className="flex overflow-x-scroll space-x-4 p-2 no-scrollbar">
-      {userSearchResults.map((user) => (
-        <div key={user.id} className="relative h-35 w-32 bg-customBackground1 rounded-lg flex flex-col items-center overflow-hidden" 
-        >
-          <div className="w-full h-12 bg-logoColour3"></div>
-          <div className="relative -mt-10">
-            <img
-              className="w-16 mt-4 h-16 rounded-full"
-              src={`${baseURL}/${user.profile_pic}`}
-              alt={`${user.username} profile`}
-            />
-          </div>
-          <div className="mt-2 mb-5 text-center">
-            <h1 className="text-white text-xl hover:text-logoColour3 cursor-pointer" onClick={() => handleUserPublicDetails(user.username)}>@{user.username}</h1>
-            {/* {user.verified && (
-              <BlueTick className="ml-1 w-4 h-4" />
+    {isSearchActive && userSearchResults.length > 0 && (
+      <div className="mt-4">
+        <h2 className="text-xl font-bold mb-2">Users</h2>
+        <div className="flex overflow-x-scroll space-x-4 p-2 no-scrollbar">
+          {userSearchResults.map((user) => (
+            <div key={user.id} className="relative h-35 w-32 bg-customBackground1 rounded-lg flex flex-col items-center overflow-hidden sm:h-28 sm:w-24 md:h-32 md:w-28 lg:h-35 lg:w-32" 
+            >
+              <div className="w-full h-8 bg-logoColour3 sm:h-10 md:h-11"></div>
+              <div className="relative -mt-10">
+                <img
+                  className="w-8 h-8 mt-4 rounded-full sm:w-12 sm:h-12 md:w-14 md:h-14 "
+                  // src={`${baseURL}/${user.profile_pic}`}
+                  src={user.profile_pic ? `${baseURL}/${user.profile_pic}` : `${baseURL}/static/images/profile/default.jpg`}
+                />
+              </div>
+              <div className="mt-2 mb-5 text-center sm:mt-1 sm:mb-3">
+                <div className="flex items-center justify-center">
+                  <h1
+                    className="text-white text-xs hover:text-logoColour3 cursor-pointer sm:text-sm md:text-base"
+                    onClick={() => handleUserPublicDetails(user.username)}
+                  >
+                    @{user.username}
+                  </h1>
+                  {user.verified && (
+                    <img src={BlueTick} className="inline-block ml-1 h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5" />
+                  )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                </div>
+              </div>
             )}
-            {user.verified && console.log("done")} */}
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
 
       {showModal && (
         <Modal isOpen={showModal} onClose={toggleModal} />

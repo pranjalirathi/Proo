@@ -140,7 +140,7 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
           />
           {open && (
             <div className="ml-2">
-              <div className="text-sm">{userData.name || 'No Name'}</div>
+              <div className="text-sm">{userData.name || 'Anonymous User'}</div>
               <div className="text-sm mt-1 text-logoColour2 hover:text-logoColour3 hover:underline hover:cursor-pointer" onClick={handleProfileClick}>@{userData.username}</div>
             </div>
           )}

@@ -63,13 +63,14 @@ const PublicUser = ({username}) => {
                 )}
               </div>
               <div className="text-lg font-bold mb-1">{userDetails.name}
+              </div>
+              {/* Divider line */}
+              <div className="w-full h-[1px] bg-gray-600 my-2"></div>
+              <div className="text-lg mb-4">@{userDetails.username}
               {userDetails.verified && (
                   <img src={BlueTick} alt="Verified" className="inline-block ml-2 h-6 w-6" />
                 )}
               </div>
-              {/* Divider line */}
-              <div className="w-full h-[1px] bg-gray-600 my-2"></div>
-              <div className="text-lg mb-4">@{userDetails.username}</div>
               <div className="text-sm ">{userDetails.bio}</div>
             </div>
           </div>
@@ -82,7 +83,7 @@ const PublicUser = ({username}) => {
             <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
 
               <div className="w-full md:w-1/2 p-4 rounded-2xl shadow text-black min-h-[100px] md:min-h-[150px] backdrop-blur backdrop-brightness-75 relative room-card">
-                <div className="text-xl sm:text-5xl text-gray-200 pl-2"> Created</div>
+                <div className="text-xl sm:text-4xl text-gray-200 pl-2"> Created</div>
                 <div className='text-white mt-2 pt-4 text-7xl bottom-0 gradient-text pl-2'>{userDetails.rooms.length} <span className='text-2xl'>rooms</span></div>
                 {/* <div className="absolute bottom-4 right-4 flex items-center justify-center">
                   <div className="circle relative">
@@ -96,7 +97,7 @@ const PublicUser = ({username}) => {
               
             {/* Joined Rooms Card */}
             <div className="w-full md:w-1/2 p-4 rounded-2xl shadow text-black min-h-[100px] md:min-h-[150px] backdrop-blur backdrop-brightness-75 relative room-card">
-                <div className="text-xl sm:text-5xl text-gray-200 pl-2"> Joined</div>
+                <div className="text-xl sm:text-4xl text-gray-200 pl-2"> Joined</div>
                 <div className='text-white mt-2 pt-4 text-7xl bottom-0 gradient-text pl-2'>{userDetails.joined_rooms_count} <span className='text-2xl'>rooms</span>
                 </div>
             </div>
@@ -126,9 +127,10 @@ const PublicUser = ({username}) => {
                         />
                         <div className="ml-4">{room.name}</div>
                       </div>
-                      <button className="w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-700 font-medium rounded-lg text-sm px-4 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                      <button className="w-auto text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:ring-4 focus:outline-none focus:ring-blue-500 font-medium rounded-lg text-sm px-4 py-1.5 text-center">
                         View
                       </button>
+
                     </div>
                   ))
                 ) : (

@@ -33,7 +33,7 @@ code {
 
 /* --------------------CUSTOM SCROLLBAR---------------------- */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 10px;
+  width: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -58,7 +58,7 @@ code {
 /* ------------for messages------------- */
 
 /* Custom CSS for the sent message bubble with a triangle */
-.sent-message {
+/* .sent-message {
   background-color: #007aff;
   color: white;
   border-radius: 18px 18px 18px 4px;
@@ -67,8 +67,8 @@ code {
   align-self: flex-end;
   position: relative;
   margin-bottom: 10px;
-}
-
+} */
+/* 
 .sent-message::after {
   content: "";
   position: absolute;
@@ -80,10 +80,10 @@ code {
   border-left: 10px solid #007aff;
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
-}
+} */
 
 /* Custom CSS for the received message bubble with a triangle */
-.received-message {
+/* .received-message {
   background-color: #e5e7eb;
   color: black;
   border-radius: 18px 18px 4px 18px;
@@ -105,7 +105,7 @@ code {
   border-right: 10px solid #e5e7eb;
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
-}
+} */
 
 
 
