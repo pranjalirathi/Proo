@@ -34,13 +34,13 @@ const JoinByCode = ({ onClose, onSubmit, roomId }) => {
         setError(response.data.detail || 'Invalid code');
       }
     } catch (error) {
-      setError('Invalid code or an error occurred');
+      setError('Enter the code above');
     }
   };
 
   return (
-    <div className="fixed inset-0 shadow flex items-center justify-center mycontainer bg-opacity-75 z-50 backdrop-filter backdrop-blur-sm rounded-xl">
-      <div className="bg-gray-900 mycontainer bg-opacity-60 border border-gray-400 p-8 rounded shadow-xl">
+    <div className="fixed inset-0 shadow flex items-center justify-center mycontainer z-50 rounded-xl">
+      <div className="bg-customBackground2 bg-opacity-85 border border-gray-400 p-8 rounded shadow-xl">
       <button onClick={onClose} className="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
           <X size={24} />
         </button>
@@ -55,9 +55,6 @@ const JoinByCode = ({ onClose, onSubmit, roomId }) => {
           />
           {error && <p className="text-red-500 mb-4">{error}</p>}
           <div className="flex justify-end">
-            {/* <button type="button" onClick={onClose} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-3">
-              Cancel
-            </button> */}
             <button type="submit" className="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-700 font-medium text-white py-2 px-4 rounded-lg">
               Submit
             </button>

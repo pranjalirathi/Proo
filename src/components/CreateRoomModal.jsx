@@ -83,7 +83,7 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
 
   return (
     <div className="fixed inset-0 shadow z-50 flex items-center justify-center mycontainer">
-      <div className="relative bg-black border border-gray-400 p-6 w-full max-w-md max-h-full mycontainer rounded-xl">
+      <div className="relative border border-gray-400 p-6 w-full max-w-md max-h-full bg-customBackground2 rounded-xl">
         <div className="relative flex justify-between items-center mb-4 mycontainer">
           <h2 className="text-xl font-medium text-white">Create a New Room</h2>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-100 text-3xl">

@@ -3,43 +3,39 @@ import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { X } from 'lucide-react';
 
-const Profile = ({ onClose }) => {
-  const [userData, setUserData] = useState({
-    username: '',
-    bio: '',
-    profile_pic: ''
-  });
+const Profile = ({userdata, onClose }) => {
+  const [userData, setUserData] = useState(userdata);
 
   const navigate = useNavigate();
   const location = useLocation();
   const baseURL = 'http://127.0.0.1:8000';
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const token = localStorage.getItem('access_token'); 
-      if (!token) {
-        console.error('No access token found');
-        return;
-      }
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     const token = localStorage.getItem('access_token'); 
+  //     if (!token) {
+  //       console.error('No access token found');
+  //       return;
+  //     }
 
-      try {
-        const response = await axios.get(`${baseURL}/api/user_detail`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        setUserData({
-          username: response.data.username,
-          bio: response.data.bio,
-          profile_pic: `${response.data.profile_pic}`,
-        });
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
+  //     try {
+  //       const response = await axios.get(`${baseURL}/api/user_detail`, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`
+  //         }
+  //       });
+  //       setUserData({
+  //         username: response.data.username,
+  //         bio: response.data.bio,
+  //         profile_pic: `${response.data.profile_pic}`,
+  //       });
+  //     } catch (error) {
+  //       console.error('Error fetching user data:', error);
+  //     }
+  //   };
 
-    fetchUserData();
-  }, []);
+  //   fetchUserData();
+  // }, []);
 
   const handleAccountSettings = () => {
     navigate('/myAccount');

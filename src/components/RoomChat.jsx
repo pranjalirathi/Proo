@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { Send, CodeXml, Box } from 'lucide-react';
+import { Send, CodeXml, BadgeX, Trash, EllipsisVertical } from 'lucide-react';
 import RoomDetails from './RoomDetailsModal';
 import MembersList from './MembersList';
+import PublicRoomJoinModal from './PublicRoomJoinModal';
+import ModalLeaveRoom from './ModalLeaveRoom';
+import ModalDeleteRoom from './ModalDeleteRoom';
 
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
@@ -40,15 +43,34 @@ const LoadingSkeleton = () => (
     <span className="sr-only">Loading...</span>
   </div>
 );
+
 const RoomChat = ({ roomId }) => {
   const [roomDetails, setRoomDetails] = useState(null);
   const [activeModal, setActiveModal] = useState(null);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [isCode, setIsCode] = useState(false);
+  const [isInfoMenuOpen, setIsInfoMenuOpen] = useState(false);
+  const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isPublicJoinModalOpen, setIsPublicJoinModalOpen] = useState(false);
   const socketRef = useRef(null);
   const messagesEndRef = useRef(null);
   const baseURL = 'http://127.0.0.1:8000';
+
+  const handleOpenLeaveModal = () => {
+    setIsLeaveModalOpen(true);
+  };
+
+  const handleOpenDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseModals = () => {
+    setIsLeaveModalOpen(false);
+    setIsDeleteModalOpen(false);
+    setIsPublicJoinModalOpen(false);
+  };
 
   useEffect(() => {
     const fetchRoomDetails = async () => {
@@ -84,18 +106,10 @@ const RoomChat = ({ roomId }) => {
           setMessages(response.data.detail);
 
           console.log(setMessages);
-          //i am adding this
-          // localStorage.setItem(`messages_${roomId}`, JSON.stringify(response.data.detail));
 
         }
       } catch (error) {
         console.error('Error fetching messages:', error);
-
-        //i am adding this
-        // const localMessages = localStorage.getItem(`messages_${roomId}`);
-        // if (localMessages) {
-        //   setMessages(JSON.parse(localMessages));
-        // }
       }
     };
 
@@ -118,13 +132,6 @@ const RoomChat = ({ roomId }) => {
         console.log('Received message:', data);
         setMessages((prevMessages) => [...prevMessages, data]);
 
-        // setMessages((prevMessages) => {
-        //   const updatedMessages = [...prevMessages, data];
-        //   localStorage.setItem(`messages_${roomId}`, JSON.stringify(updatedMessages));
-        //   return updatedMessages;
-        // });
-
-        //scrolling to bottom if new message is there
         setTimeout(() => {
           const chatContainer = document.querySelector('.messages-container');
           if (chatContainer) {
@@ -135,7 +142,9 @@ const RoomChat = ({ roomId }) => {
 
 
       socketRef.current.onclose = () => {
+        console.log("You are not a member");
         console.error('Chat socket closed unexpectedly');
+        setIsPublicJoinModalOpen(true);
       };
 
       return () => {
@@ -169,8 +178,16 @@ const RoomChat = ({ roomId }) => {
     }
   };
 
+  const handleJoin = () => {
+    setIsPublicJoinModalOpen(false);
+  }
+
   const openRoomDetails = () => {
     setActiveModal('roomDetails');
+  };
+
+  const toggleInfoMenu = () => {
+    setIsInfoMenuOpen((prevState) => !prevState); 
   };
 
   const openMembersList = () => {
@@ -195,7 +212,6 @@ const RoomChat = ({ roomId }) => {
     return `${hours}:${minutes}`;
   };
 
-  //This is to scroll aat teh bottom of the messages when changes
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -208,8 +224,7 @@ const RoomChat = ({ roomId }) => {
   }
 
   return (
-    <div className="flex flex-col h-full m-2 rounded-lg w-full   text-white relative custom-scrollbar bg-customBackground2"
-    >
+    <div className="flex flex-col h-full m-2 rounded-lg w-full text-white relative custom-scrollbar bg-customBackground2">
       {/* Room Title and Room Pic */}
       <div className="flex items-center p-2 sm:p-4 border-b border-gray-700 bg-customBackground2 rounded-lg">
         {activeModal === 'roomDetails' && (
@@ -217,6 +232,7 @@ const RoomChat = ({ roomId }) => {
             <RoomDetails roomDetails={roomDetails} onClose={closeModal} />
           </div>
         )}
+        
         {activeModal === 'membersList' && (
           <div className="absolute right-2 top-16 w-full sm:w-80">
             <MembersList members={roomDetails.members} onClose={closeModal} baseURL={baseURL} />
@@ -228,7 +244,7 @@ const RoomChat = ({ roomId }) => {
           className="h-8 w-8 sm:h-10 sm:w-10 rounded-full ml-2 mr-4 sm:mr-6"
         />
         <h1 className="text-base sm:text-xl font-medium flex-1 cursor-pointer" onClick={openRoomDetails}>{roomDetails.name}</h1>
-        <div className="flex -space-x-2 rtl:space-x-reverse ml-2 sm:ml-4">
+        <div className="flex -space-x-2 rtl:space-x-reverse ml-2 sm:ml-4">     
           {roomDetails.members.slice(0, 4).map((member) => (
             <img
               key={member.id}
@@ -247,8 +263,25 @@ const RoomChat = ({ roomId }) => {
               +{roomDetails.member.length - 4}
             </a>
           )}
-
         </div>
+
+        <EllipsisVertical size={28} className='ml-2 justify-start items-center mt-1 p-1 text-gray-100 cursor-pointer hover:bg-gray-500 hover:rounded-full' onClick={toggleInfoMenu}
+        />
+        {isInfoMenuOpen && (
+            <div className="absolute right-0 top-12 z-50 mt-2 bg-gray-800 text-gray-300 rounded-lg shadow-lg w-48">
+              <div className="flex flex-col py-2">
+                <button className="flex items-center px-4 py-2 hover:bg-gray-700" onClick={handleOpenLeaveModal}>
+                  <BadgeX className="w-4 h-4 mr-2"/>
+                  Leave Room
+                </button>
+                <button className="flex items-center px-4 py-2 hover:bg-gray-700" onClick={handleOpenDeleteModal}>
+                  <Trash className="w-4 h-4 mr-2" />
+                  Delete Room
+                </button>
+                
+              </div>
+            </div>
+          )}
       </div>
 
       {/* Messaging Area */}
@@ -264,26 +297,26 @@ const RoomChat = ({ roomId }) => {
                 <img
                   src={`${baseURL}${msg.profile_pic}`}
                   alt="Profile Pic"
-                  className="w-10 h-10 rounded-full mr-4"
+                  className="sm:w-10 sm:h-10 w-6 h-6 rounded-full sm:mr-4 mr-1"
                 /> : ''}
 
               <div className="flex flex-col max-w-lg w-auto min-w-[50px]">
                 <div
-                  className={` rounded-lg m-1 p-2  ${msg.is_code ? 'bg-gray-800' : (msg.username === localStorage.getItem('username') ? 'bg-customBackground1 ' : 'bg-gray-700 ')} ${msg.username === localStorage.getItem('username') ? 'rounded-tl-2xl roudned-tr-2xl rounded-bl-2xl rounded-br-none ' : 'rounded-tl-2xl rounded-tr-2xl rounded-bl-none rounded-br-2xl'} `}
+                  className={` rounded-lg m-1 p-1 sm:m-1 sm:p-2  ${msg.is_code ? 'bg-gray-800 text-sm' : (msg.username === localStorage.getItem('username') ? 'bg-customBackground1 ' : 'bg-gray-700 ')} ${msg.username === localStorage.getItem('username') ? 'rounded-tl-2xl roudned-tr-2xl rounded-bl-2xl rounded-br-none ' : 'rounded-tl-2xl rounded-tr-2xl rounded-bl-none rounded-br-2xl'} `}
                   style={{ overflowWrap: 'break-word', wordWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}
                 >
-                  {msg.username !== localStorage.getItem('username') && (
-                    <span className="text-xs text-gray-400 mb-1 block">{msg.username}</span>
-                  )}
+                  {msg.username !== localStorage.getItem('username')  ? (
+                    <span className="text-xs pl-1 text-gray-400 mb-1 block">{msg.username}</span>
+                  ) : <span className="text-xs pl-1 text-gray-400 mb-1 block">You</span> }
                   {msg.is_code ? (
-                    <pre className="line-numbers">
+                    <pre className="line-numbers text-base">
                       <code className="language-javascript">{msg.content}</code>
                     </pre>
                   ) : (
                     <span className="whitespace-pre-wrap">{msg.content}</span>
                   )}
                 </div>
-                <span className="text-xs text-gray-400 mt-1 self-end">{formatTime(msg.timestamp)}</span>
+                <span className="text-[10px] sm:text-xs text-gray-400 mt-1 self-end">{formatTime(msg.timestamp)}</span>
 
 
               </div>
@@ -313,7 +346,7 @@ const RoomChat = ({ roomId }) => {
           style={{ height: 'auto', maxHeight: '100px' }}
         />
         <CodeXml
-          size={38}
+          size={34}
           className={`ml-2 sm:ml-4 p-1 cursor-pointer bg-blue-600 rounded-full flex items-center justify-center ${isCode ? 'text-white bg-gray-500 rounded-full' : 'text-white rounded-full hover:bg-blue-700'}`}
           onClick={() => setIsCode(!isCode)}
         />
@@ -323,19 +356,25 @@ const RoomChat = ({ roomId }) => {
           onClick={handleSendMessage}
         >
           <Send
-            size={24}
-            className="text-white"
+            size={22}
+            className="text-white "
           />
         </button>
       </div>
+      <ModalLeaveRoom roomId={roomId} isOpen={isLeaveModalOpen} onClose={handleCloseModals} />
+      <ModalDeleteRoom roomId={roomId} isOpen={isDeleteModalOpen} onClose={handleCloseModals} />
+      {isPublicJoinModalOpen && (<PublicRoomJoinModal isOpen={isPublicJoinModalOpen} onclose={handleCloseModals} roomId={roomId} />)}
     </div>
   );
 };
 
 export default RoomChat;
 
+
+
 //time of message
-//profile pic on searched users
+//profile pic on searched users by set
+//search dropdown
 
 
 // message Box

@@ -1,5 +1,3 @@
-// -----------------WTH ADDED SKELETON--------------------
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 // import homeimg from '../assets/home.jpg';
@@ -104,6 +102,3 @@ const Topics = ({ onSelectTopic, selectedTopic }) => {
 };
 
 export default Topics;
-
-//added mb-0 to the topic main div
-//added the custom-scrollbar style from the index.css

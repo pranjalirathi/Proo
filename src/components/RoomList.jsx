@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Modal from './CreateRoomModal';
 import JoinByCode from './JoinByCode';
-import { Search} from 'lucide-react';
-import  BlueTick from '../assets/blueTick.svg';
+import { Search } from 'lucide-react';
+import BlueTick from '../assets/blueTick.svg';
+
 
 const RoomList = ({ isSearchActive, selectedTopic }) => {
   const [rooms, setRooms] = useState([]);
@@ -16,8 +17,16 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 780);
   const [loading, setLoading] = useState(true);
   const [userSearchResults, setUserSearchResults] = useState([]);
+  const componentRef = useRef(null);
+
   const navigate = useNavigate();
   const baseURL = 'http://127.0.0.1:8000';
+  useEffect(() => {
+    if (isSearchActive && componentRef.current) {
+      componentRef.current.scrollTop = 0; 
+    }
+  }, [isSearchActive]);
+
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -43,17 +52,17 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
         setLoading(false);
       }
     };
-  
+
     fetchRooms();
-  
+
     const handleResize = () => {
       setIsMobile(window.innerWidth < 780);
     };
-  
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [selectedTopic]);
-  
+
 
   const handleSearchChange = async (e) => {
     const query = e.target.value;
@@ -86,11 +95,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
   };
 
   const toggleJoinModal = (room) => {
-    if (!room.is_member) {
-      setSelectedRoom(room);
-      setShowJoinModal(true);
-    }
-    else if (!room.is_member && room.is_public) {
+    if (!room.is_member && !room.is_public) {
       setSelectedRoom(room);
       setShowJoinModal(true);
     }
@@ -108,8 +113,8 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
       if (response.data.detail === 'Added as a member') {
         navigate(`/roomchat/${selectedRoom.id}`);
         setShowJoinModal(false);
-      } 
-      if(response.data.detail === 'Already a member'){
+      }
+      if (response.data.detail === 'Already a member') {
         navigate(`/roomchat/${selectedRoom.id}`);
         setShowJoinModal(false);
       }
@@ -134,8 +139,14 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
     navigate(`/user/${username}`);
   }
 
+  const handleClearSearch = () => {
+    setSearchQuery('');       
+    setUserSearchResults([]); 
+    isSearchActive(false);
+  };
+
   return (
-    <div className="w-full mr-2 mt-2 rounded-lg flex flex-col h-screen bg-customBackground2 text-white sm:p-4 p-2 overflow-y-scroll custom-scrollbar" style={{height: "97.5vh"}}>
+    <div ref={componentRef} className="w-full mr-2 mt-2 rounded-lg flex flex-col h-screen bg-customBackground2 text-white sm:p-4 p-2 overflow-y-scroll custom-scrollbar" style={{ height: "97.5vh" }}>
       {isSearchActive && (
         <div className="relative mb-4">
           <input
@@ -144,10 +155,46 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
             onChange={handleSearchChange}
             placeholder="Search..."
             className="w-full p-2 rounded-full bg-customBackground1 text-white pl-10"
+            onClick={() => setActive(true)}
           />
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-        </div>
+
+          {isSearchActive && userSearchResults.length > 0 && (
+            <div  className="absolute z-10 w-full mt-4 bg-customBackground1 border border-gray-700 rounded-md shadow-lg">
+              <div className="flex justify-between items-center">
+                <span className='ml-3 mt-3 text-sm text-gray-300'>Users</span>
+                <button
+                  onClick={handleClearSearch}
+                  className="text-gray-400 hover:text-gray-100 text-sm mr-3"
+                >
+                  &times;
+                </button>
+              </div>
+              <div className="border-t border-gray-600 my-2"></div>
+
+              {userSearchResults.map((user) => (
+                <div
+                  key={user.id}
+                  className="flex items-center p-2 hover:bg-gray-600 cursor-pointer"
+                  onClick={() => handleUserPublicDetails(user.username)}
+                >
+                  <img
+                    className="w-5 h-5 rounded-full"
+                    src={user.profile_pic ? `${baseURL}/${user.profile_pic}` : `${baseURL}/static/images/profile/default.jpg`}
+                  />
+                  <div className="ml-2 flex items-center">
+                    <h1 className="text-white text-xs sm:text-sm">{user.username}</h1>
+                    {user.verified && (
+                      <img src={BlueTick} className="ml-1 h-3 w-3" />
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          </div>
       )}
+
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl mt-1 font-bold sm:text-xl">Rooms</h1>
         <button
@@ -176,13 +223,13 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
             <div key={index} className="flex items-center justify-between pt-4">
               <div>
                 <div className="h-2.5 bg-gray-500 rounded-full dark:bg-gray-500 w-24 mb-2.5"></div>
-                <div className="w-32 h-2 bg-gray-500 rounded-full dark:bg-gray-700"></div>   
+                <div className="w-32 h-2 bg-gray-500 rounded-full dark:bg-gray-700"></div>
               </div>
               <div className="relative top-0 right-1">
-                  <svg className="w-6 h-6 mb-3 text-gray-500 dark:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
-                  </svg>
-                  <div className="h-2.5 bg-gray-500 rounded-full dark:bg-gray-700 w-12"></div>
+                <svg className="w-6 h-6 mb-3 text-gray-500 dark:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
+                </svg>
+                <div className="h-2.5 bg-gray-500 rounded-full dark:bg-gray-700 w-12"></div>
               </div>
             </div>
           ))}
@@ -196,13 +243,11 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
           >
             <div className="flex flex-col sm:flex-row justify-between mb-2 sm:mb-0">
               <div className="flex items-center mb-2 sm:mb-0">
-                <div className={`bg-gray-500 h-10 w-10 rounded-full flex items-center justify-center mr-3 sm:h-8 sm:w-8 sm:mr-2 ${isMobile ? 'h-8 w-8' : ''}`}>
                   <img
-                    className="rounded-full h-full w-full object-cover"
+                    className={`bg-gray-500 h-10 w-10 rounded-full flex items-center justify-center mr-3 sm:h-8 sm:w-8 sm:mr-2 ${isMobile ? 'img-dimension' : ''}`}
                     src={room.room_pic}
                     alt={room.name}
                   />
-                </div>
                 <div className="max-w-full truncate">
                   <h2 className={`text-lg font-bold sm:text-base ${isMobile ? 'text-xs' : ''} truncate`}>{room.name}</h2>
                   <p className={`text-sm text-gray-400 sm:text-xs ${isMobile ? 'text-xs' : ''}`}>by @{room.host}</p>
@@ -218,7 +263,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
                             <img
                               key={member.id}
                               className="w-4 h-4 sm:w-5 sm:h-5 rounded-full dark:border-gray-800"
-                              src={`${baseURL}`+member.profile_pic}
+                              src={`${baseURL}` + member.profile_pic}
                               alt={member.username}
                             />
                           ))}
@@ -249,10 +294,10 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
                   onClick={(e) => {
                     e.stopPropagation();
 
-                    if (room.is_member){
+                    if (room.is_member || room.is_public) {
                       navigate(`/roomchat/${room.id}`);
                     }
-                     else {
+                    else {
                       toggleJoinModal(room);
                     }
                   }}
@@ -269,8 +314,24 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
         </div>
       )}
 
+      {showModal && (
+        <Modal isOpen={showModal} onClose={toggleModal} />
+      )}
+      {showJoinModal && selectedRoom && (
+        <JoinByCode isOpen={showJoinModal} onClose={() => setShowJoinModal(false)} roomId={selectedRoom.id} />
+      )}
 
-    {isSearchActive && userSearchResults.length > 0 && (
+    </div>
+  );
+
+
+};
+
+export default RoomList;
+
+
+
+{/* {isSearchActive && userSearchResults.length > 0 && (
       <div className="mt-4">
         <h2 className="text-xl font-bold mb-2">Users</h2>
         <div className="flex overflow-x-scroll space-x-4 p-2 no-scrollbar">
@@ -302,20 +363,71 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
                       ))}
                 </div>
               </div>
-            )}
+            )} */}
 
-      {showModal && (
-        <Modal isOpen={showModal} onClose={toggleModal} />
-      )}
-      {showJoinModal && selectedRoom && (
-        <JoinByCode isOpen={showJoinModal} onClose={() => setShowJoinModal(false)} roomId={selectedRoom.id}/>
-      )}
-      
+
+
+{/* -----------part two--------------- */ }
+
+{/* {isSearchActive && userSearchResults.length > 0 && (
+  <div className="mt-4">
+    <h2 className="text-xl font-bold mb-2">Users</h2>
+    <div className="grid grid-cols-3 gap-2 p-2 sm:grid-cols-2 lg:grid-cols-4">
+      {userSearchResults.map((user) => (
+        <div
+          key={user.id}
+          className="relative h-35 w-full bg-customBackground1 rounded-lg flex flex-col items-center overflow-hidden sm:h-28 sm:w-24 md:h-32 md:w-28 lg:h-35 lg:w-32"
+        >
+          <div className="w-full h-8 bg-logoColour3 sm:h-10 md:h-11"></div>
+          <div className="relative -mt-10">
+            <img
+              className="w-8 h-8 mt-4 rounded-full sm:w-12 sm:h-12 md:w-14 md:h-14"
+              src={user.profile_pic ? `${baseURL}/${user.profile_pic}` : `${baseURL}/static/images/profile/default.jpg`}
+              alt={user.username}
+            />
+          </div>
+          <div className="mt-2 mb-5 text-center sm:mt-1 sm:mb-3">
+            <div className="flex items-center justify-center">
+              <h1
+                className="text-white text-xs hover:text-logoColour3 cursor-pointer sm:text-sm md:text-base"
+                onClick={() => handleUserPublicDetails(user.username)}
+              >
+                @{user.username}
+              </h1>
+              {user.verified && (
+                <img src={BlueTick} className="inline-block ml-1 h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5" alt="Verified" />
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
-  );
-  
-  
-};
+  </div>
+)} */}
 
-export default RoomList;
+{/* --------------part three--------------- */ }
+{/* <div className=" relative mr-5"> */ }
+{/* {isSearchActive && userSearchResults.length > 0 && (
+    <div className="absolute z-10 w-full mt-11 bg-customBackground1 border border-gray-300 rounded-md shadow-lg">
+      {userSearchResults.map((user) => (
+        <div
+          key={user.id}
+          className="flex items-center p-2 hover:bg-logoColour3 cursor-pointer"
+          onClick={() => handleUserPublicDetails(user.username)}
+        >
+          <img
+            className="w-8 h-8 rounded-full"
+            src={user.profile_pic ? `${baseURL}/${user.profile_pic}` : `${baseURL}/static/images/profile/default.jpg`}
+          />
+          <div className="ml-3 flex items-center">
+            <h1 className="text-white text-sm">@{user.username}</h1>
+            {user.verified && (
+              <img src={BlueTick} className=" ml-1 h-3 w-3"/>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  )} */}
+{/* </div> */ }
 

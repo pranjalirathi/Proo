@@ -4,8 +4,8 @@ import { X } from 'lucide-react'; // Importing X icon from lucide-react
 
 const WelcomeModal = ({ onClose }) => {
   return (
-    <div className="fixed inset-0 bg-customBackground2 bg-opacity-75 flex justify-center items-center z-50 backdrop-filter backdrop-blur-sm">
-      <div className="relative bg-gray-900 bg-opacity-60 border border-white rounded-lg p-4 sm:p-6 md:p-8 w-full max-w-sm sm:max-w-md md:max-w-lg flex flex-col items-center">
+    <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-filter mycontainer">
+      <div className="relative bg-customBackground2 bg-opacity-80 border border-gray-400 rounded-lg p-4 sm:p-6 md:p-8 w-full max-w-sm sm:max-w-md md:max-w-lg flex flex-col items-center">
         <button
           onClick={onClose}
           className="absolute top-6 right-4 text-gray-400 hover:text-gray-200 text-2xl"

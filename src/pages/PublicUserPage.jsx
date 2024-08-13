@@ -9,7 +9,7 @@ const PublicUserPage = () => {
   return (
     <div className='h-screen bg-customBackground1 overflow-hidden'>
       <Sidebar />
-      <div className='flex-1 flex ml-20 md:ml-20'>
+      <div className='flex-1 flex ml-10 md:ml-20'>
         <PublicUser username={username}/>
       </div>
     </div>

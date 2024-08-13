@@ -8,6 +8,9 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '767px', // Define a custom screen size for less than 480px
+      },
       zIndex: {
         '50': '50',
         '0': '0',
