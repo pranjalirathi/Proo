@@ -8,7 +8,7 @@ const RoomPage = () => {
   return (
     <div className='flex h-screen bg-customBackground1 overflow-hidden'>
       <Sidebar />
-      <div className='flex flex-1 ml-20 md:ml-20'>
+      <div className='flex flex-1 ml-10 sm:ml-20'>
         <RoomChat roomId={roomId} />
       </div>
       

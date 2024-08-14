@@ -46,10 +46,12 @@ const ModalLeaveRoom = ({ roomId, isOpen, onClose }) => {
     <div
       id="popup-modal"
       tabIndex="-1"
-      className="fixed mycontainer inset-0 flex items-center justify-center z-50 overflow-y-auto overflow-x-hidden w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+      ariaHidden="true"
+      className="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto overflow-x-hidden w-full md:inset-0 max-h-full"
+      style={{backgroundColor: 'rgb(17,18,22, 0.83)'}}
     >
-      <div className="relative p-4 w-full max-w-md max-h-full ">
-        <div className="relative rounded-lg shadow bg-gray-700">
+      <div className="relative  p-4 w-full max-w-md max-h-full ">
+        <div className="relative bg-gray-700 rounded-lg shadow ">
           <button
             type="button"
             className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -57,7 +59,7 @@ const ModalLeaveRoom = ({ roomId, isOpen, onClose }) => {
           >
             <svg
               className="w-3 h-3"
-              aria-hidden="true"
+              ariaHidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 14 14"
@@ -103,7 +105,7 @@ const ModalLeaveRoom = ({ roomId, isOpen, onClose }) => {
             <button
               onClick={onClose}
               type="button"
-              className="py-2.5 px-5 ml-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+              className="py-2.5 px-5 ml-3 text-sm font-medium text-gray-900 focus:outline-none bg-gray-300 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
             >
               No, cancel
             </button>

@@ -34,6 +34,7 @@ const UserAccount = () => {
       console.error('No access token found');
       return;
     }
+    
 
     try {
       const response = await axios.get('http://127.0.0.1:8000/api/user_detail', {
@@ -41,17 +42,18 @@ const UserAccount = () => {
           Authorization: `Bearer ${token}`
         }
       });
+
       setUserData({
-        name: response.data.name,
+        name: response.data.name || "Anonymous User",
         username: response.data.username,
         email: response.data.email,
-        bio: response.data.bio,
+        bio: response.data.bio || "Hey Everyone!, I'm new here and exploring the community. 😊",
         profile_pic: response.data.profile_pic
       });
       setInputValues({
-        name: response.data.name,
-        username: response.data.username,
-        bio: response.data.bio
+        name: response.data.name || '',
+        username: response.data.username || '',
+        bio: response.data.bio || "Hey Everyone!, I'm new here and exploring the community. 😊"
       });
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -287,7 +289,11 @@ const UserAccount = () => {
                       maxLength="155"
                     />
                     <div className="flex justify-between items-center mt-2">
-                      <span className="text-gray-400 text-sm">{inputValues.bio.length}/155</span>
+                      {/* <span className="text-gray-400 text-sm">{inputValues.bio.length}/155</span> */}
+                      {inputValues.bio && (
+                        <span className="text-gray-400 text-sm">{inputValues.bio.length}/155</span>
+                      )}
+
                       <button
                         className="bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded text-sm"
                         onClick={() => handleSave('bio')}

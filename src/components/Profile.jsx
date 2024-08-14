@@ -4,6 +4,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { X } from 'lucide-react';
 
 const Profile = ({userdata, onClose }) => {
+
+  //basically yaha prop aa raha hai sidebar se as userdata or us prop mai allready api called hai toh apan yaha userData mai userdata ki values daal rahe hai and phir userData ko access kar rahe hai
+
   const [userData, setUserData] = useState(userdata);
 
   const navigate = useNavigate();
@@ -40,6 +43,7 @@ const Profile = ({userdata, onClose }) => {
   const handleAccountSettings = () => {
     navigate('/myAccount');
   };
+  console.log("this is from profile: ", userData);
   console.log(userData.profile_pic)
   const isAccountPage = location.pathname === '/myAccount';
 

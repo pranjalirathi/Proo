@@ -12,10 +12,10 @@
     background-color: rgb(10 10 10/var(--tw-bg-opacity)); */
 }
 
-.fixed-width{
+/* Riyansh added these */
+.fixed-width {
   width: 65px;
 }
-
 .img-dimension{
   width: 30px;
   height: 30px;
@@ -23,7 +23,7 @@
 
 .mycontainer {
   background-color: rgba(54, 53, 70, 0.166);
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(30px);
 }
 
 .inpt{
