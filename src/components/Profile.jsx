@@ -1,44 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { X } from 'lucide-react';
 
 const Profile = ({userdata, onClose }) => {
 
-  //basically yaha prop aa raha hai sidebar se as userdata or us prop mai allready api called hai toh apan yaha userData mai userdata ki values daal rahe hai and phir userData ko access kar rahe hai
-
   const [userData, setUserData] = useState(userdata);
 
   const navigate = useNavigate();
   const location = useLocation();
   const baseURL = 'http://127.0.0.1:8000';
-
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     const token = localStorage.getItem('access_token'); 
-  //     if (!token) {
-  //       console.error('No access token found');
-  //       return;
-  //     }
-
-  //     try {
-  //       const response = await axios.get(`${baseURL}/api/user_detail`, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`
-  //         }
-  //       });
-  //       setUserData({
-  //         username: response.data.username,
-  //         bio: response.data.bio,
-  //         profile_pic: `${response.data.profile_pic}`,
-  //       });
-  //     } catch (error) {
-  //       console.error('Error fetching user data:', error);
-  //     }
-  //   };
-
-  //   fetchUserData();
-  // }, []);
 
   const handleAccountSettings = () => {
     navigate('/myAccount');

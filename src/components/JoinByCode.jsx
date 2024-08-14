@@ -39,8 +39,14 @@ const JoinByCode = ({ onClose, onSubmit, roomId }) => {
   };
 
   return (
-    <div className="fixed inset-0 shadow flex items-center justify-center mycontainer z-50 rounded-xl">
-      <div className="bg-customBackground2 bg-opacity-85 border border-gray-400 p-8 rounded shadow-xl">
+    <div
+      id="popup-modal"
+      tabIndex="-1"
+      ariaHidden="true" 
+      className="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto overflow-x-hidden w-full md:inset-0 max-h-full"
+      style={{backgroundColor: 'rgb(17,18,22, 0.83)'}}
+      >
+      <div className="bg-customBackground2 bg-opacity-80 border border-gray-400 p-8 rounded shadow-xl">
       <button onClick={onClose} className="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
           <X size={24} />
         </button>

@@ -1,164 +1,4 @@
-// import React, { useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import axios from 'axios';
-
-// const ModalDeleteRoom = ({ roomId, isOpen, onClose}) => {
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState(null);
-//   const navigate = useNavigate();
-
-//   const baseURL = 'http://127.0.0.1:8000';
-
-//   useEffect(() => {
-//     if (isOpen) {
-//       setError(null); 
-//     }
-//   }, [isOpen]);
-
-//   const handleDeleteRoom = async () => {
-//     setLoading(true);
-//     setError(null);
-//     try {
-//       const token = localStorage.getItem('access_token');
-//       await axios.delete(
-//         `https://127.0.0.1/8000/api/delete_room/${roomId}`,
-//         {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         }
-//       );
-//       onClose();
-//       navigate('/test', {state: {successMessage: 'Room deleted successfully!', action: 'delete'} });
-//     } catch (error) {
-//       setError('Error deleting the room');
-//       console.error('Error deleting the room: ', error.response?.data || error.message);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-
-//   if (!isOpen) return null;
-
-//   return (
-//     <div
-//       id="popup-modal"
-//       tabIndex="-1"
-//       className="fixed mycontainer inset-0 flex items-center justify-center z-50 overflow-y-auto overflow-x-hidden w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
-//     >
-//       <div className="relative p-4 w-full max-w-md max-h-full">
-//         <div className="relative rounded-lg shadow bg-gray-700">
-//           <button
-//             type="button"
-//             className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-//             onClick={onClose}
-//           >
-//             <svg
-//               className="w-3 h-3"
-//               aria-hidden="true"
-//               xmlns="http://www.w3.org/2000/svg"
-//               fill="none"
-//               viewBox="0 0 14 14"
-//             >
-//               <path
-//                 stroke="currentColor"
-//                 strokeLinecap="round"
-//                 strokeLinejoin="round"
-//                 strokeWidth="2"
-//                 d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-//               />
-//             </svg>
-//             <span className="sr-only">Close modal</span>
-//           </button>
-//           <div className="p-4 md:p-5 text-center">
-//             <svg
-//               className="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200"
-//               aria-hidden="true"
-//               xmlns="http://www.w3.org/2000/svg"
-//               fill="none"
-//               viewBox="0 0 20 20"
-//             >
-//               <path
-//                 stroke="currentColor"
-//                 strokeLinecap="round"
-//                 strokeLinejoin="round"
-//                 strokeWidth="2"
-//                 d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-//               />
-//             </svg>
-//             <h3 className="mb-5 text-lg font-normal text-gray-300 dark:text-gray-400">
-//               Are you sure you want to delete this room?
-//             </h3>
-//             {error && <p className="text-red-600">{error}</p>}
-//             <button
-//               onClick={handleDeleteRoom}
-//               type="button"
-//               disabled={loading}
-//               className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
-//             >
-//               {loading ? 'Leaving...' : "Yes, I'm sure"}
-//             </button>
-//             <button
-//               onClick={onClose}
-//               type="button"
-//               className="py-2.5 px-5 ml-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-//             >
-//               No, cancel
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ModalDeleteRoom;
-
-
-
-// -----------------------------by backend reposne-----------------------
-
-  // const handleDeleteRoom = async () => {
-  //   setLoading(true);
-  //   setError(null);
-  //   try {
-  //     const token = localStorage.getItem('access_token');
-  //     const response = await axios.delete(
-  //       `${baseURL}/delete_room/${roomId}`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-  
-  //     if (response.status === 200) {
-  //       // Room deleted successfully
-  //       onClose();
-  //     } else if (response.status === 400 && response.data.detail === "Room doesn't exist") {
-  //       setError("Room doesn't exist");
-  //     } else if (response.status === 400 && response.data.detail === "You are not allowed") {
-  //       setError("You are not allowed to delete this room");
-  //     } else {
-  //       setError("An unexpected error occurred");
-  //     }
-  //   } catch (error) {
-  //     if (error.response?.status === 400 && error.response.data.detail === "Room doesn't exist") {
-  //       setError("Room doesn't exist");
-  //     } else if (error.response?.status === 400 && error.response.data.detail === "You are not allowed") {
-  //       setError("You are not allowed to delete this room");
-  //     } else {
-  //       setError("Error deleting the room");
-  //     }
-  //     console.error('Error deleting the room: ', error.response?.data || error.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-
-  import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -180,7 +20,6 @@ const ModalDeleteRoom = ({ roomId, isOpen, onClose }) => {
     try {
       const token = localStorage.getItem('access_token');
       
-      // Configuration for axios request
       const config = {
         method: 'delete',
         maxBodyLength: Infinity,
@@ -190,7 +29,6 @@ const ModalDeleteRoom = ({ roomId, isOpen, onClose }) => {
         }
       };
 
-      // Make the request
       await axios.request(config);
       
       onClose();
@@ -209,7 +47,9 @@ const ModalDeleteRoom = ({ roomId, isOpen, onClose }) => {
     <div
       id="popup-modal"
       tabIndex="-1"
-      className="fixed mycontainer inset-0 flex items-center justify-center z-50 overflow-y-auto overflow-x-hidden w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+      ariaHidden="true"
+      className="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto overflow-x-hidden w-full md:inset-0 max-h-full"
+      style={{backgroundColor: 'rgb(17,18,22, 0.83)'}}
     >
       <div className="relative p-4 w-full max-w-md max-h-full">
         <div className="relative rounded-lg shadow bg-gray-700">
@@ -266,7 +106,7 @@ const ModalDeleteRoom = ({ roomId, isOpen, onClose }) => {
             <button
               onClick={onClose}
               type="button"
-              className="py-2.5 px-5 ml-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+              className="py-2.5 px-5 ml-3 text-sm font-medium text-gray-900 focus:outline-none bg-gray-300 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
             >
               No, cancel
             </button>
