@@ -334,7 +334,7 @@ const RoomChat = ({ roomId }) => {
           type="text"
           placeholder="Type your message here..."
           rows="1"
-          className="flex-1  bg-customBackground1 custom-scrollbar text-white p-1 sm:p-2 rounded-lg outline-none border-none text-sm sm:text-base resize-none overflow-hidden"
+          className="ml-3 flex-1  bg-customBackground1 custom-scrollbar text-white p-1 sm:p-2 rounded-lg outline-none border-none text-sm sm:text-base resize-none overflow-hidden"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => {
