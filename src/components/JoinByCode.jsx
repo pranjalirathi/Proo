@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { X } from 'lucide-react';
 
 const JoinByCode = ({ onClose, onSubmit, roomId }) => {
   const [code, setCode] = useState('');
@@ -12,63 +11,90 @@ const JoinByCode = ({ onClose, onSubmit, roomId }) => {
     setCode(e.target.value);
     console.log(e.target.value);
   };
-  console.log("Here is my: ", roomId);
-  const handleSubmit = async (e) => {
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError(null);
-    try {
-      const token = localStorage.getItem('access_token');
-      const response = await axios.post(
-        `http://127.0.0.1:8000/api/join_room/${roomId}`,
-        { code },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.status===200){
-        navigate(`/roomchat/${roomId}`);
+
+    const token = localStorage.getItem('access_token');
+    axios.post(
+      `http://127.0.0.1:8000/api/join_room/${roomId}`,
+      { code },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-      else {
+    )
+    .then((response) => {
+      if (response.status === 200) {
+        navigate(`/roomchat/${roomId}`);
+      } else {
         setError(response.data.detail || 'Invalid code');
       }
-    } catch (error) {
+    })
+    .catch((error) => {
       setError('Enter the code above');
-    }
+    });
   };
 
   return (
     <div
-      id="popup-modal"
+      id="authentication-modal"
       tabIndex="-1"
-      ariaHidden="true" 
-      className="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto overflow-x-hidden w-full md:inset-0 max-h-full"
-      style={{backgroundColor: 'rgb(17,18,22, 0.83)'}}
-      >
-      <div className="bg-customBackground2 bg-opacity-80 border border-gray-400 p-8 rounded shadow-xl">
-      <button onClick={onClose} className="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
-          <X size={24} />
-        </button>
-        <h2 className="text-xl font-medium mt-2 text-white mb-4">Enter the code to join this private room</h2>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={code}
-            onChange={handleCodeChange}
-            placeholder="Code Here"
-            className="inpt bg-gray-600 text-gray-200 bg-opacity-40 border-gray-400 appearance-none rounded border p-2 mb-4 w-full focus:ring-blue-500 focus:border-blue-500"
-          />
-          {error && <p className="text-red-500 mb-4">{error}</p>}
-          <div className="flex justify-end">
-            <button type="submit" className="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-700 font-medium text-white py-2 px-4 rounded-lg">
-              Submit
+      aria-hidden="true"
+      className="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto overflow-x-hidden w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+      style={{ backgroundColor: 'rgba(17, 18, 22, 0.83)' }}
+    >
+      <div className="relative p-4 w-full max-w-md max-h-full">
+        {/* Modal content */}
+        <div className="relative rounded-lg shadow bg-gray-700">
+          {/* Modal header */}
+          <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-600">
+            <h3 className="text-xl font-semibold text-white">
+              Enter the code to join
+            </h3>
+            <button
+              type="button"
+              className="text-gray-400 bg-transparent rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center hover:bg-gray-600 hover:text-white"
+              data-modal-hide="authentication-modal"
+              onClick={onClose}
+            >
+              <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+              </svg>
+              <span className="sr-only">Close modal</span>
             </button>
           </div>
-        </form>
+          {/* Modal body */}
+          <div className="p-4 md:p-5">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <input
+                  type="text"
+                  value={code}
+                  onChange={handleCodeChange}
+                  placeholder="aKhUOp"
+                  className="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
+                  required
+                />
+                {error && <p className="text-red-500 mt-2">{error}</p>}
+              </div>
+              <div className="flex justify-end mt-4">
+                <button
+                  type="submit"
+                  className=" text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
 export default JoinByCode;
+

@@ -3,6 +3,7 @@ import axios from 'axios';
 import FormData from 'form-data';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { X } from 'lucide-react';
 
 
 const CreateRoomModal = ({ onClose, refreshRooms }) => {
@@ -89,11 +90,16 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
       className="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto overflow-x-hidden w-full md:inset-0 max-h-full"
       style={{backgroundColor: 'rgb(17,18,22, 0.83)'}}
       >
-      <div className="relative border bg-opacity-80 border-gray-400 p-6 w-full max-w-md max-h-full bg-customBackground2 rounded-xl">
+      <div className="relative border bg-opacity-85 border-gray-400 p-6 w-full max-w-md max-h-full bg-gray-700 rounded-xl">
         <div className="relative flex justify-between items-center mb-4 ">
           <h2 className="text-xl font-medium text-white">Create a New Room</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-100 text-3xl">
-            &times;
+          <button
+            type="button"
+            className="text-gray-400 bg-transparent rounded-lg text-sm w-8 h-8 flex justify-center items-center hover:bg-gray-600 hover:text-white"
+            onClick={onClose}
+          >
+            <X size={24} />
+            <span className="sr-only">Close modal</span>
           </button>
         </div>
         <form onSubmit={handleSubmit}>
@@ -105,8 +111,7 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
               type="text"
               id="roomName"
               required
-              className="inpt border border-gray-400 text-gray-100 text-sm rounded-lg focus:ring-blue-500 
-                            focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              className="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
               placeholder="Enter room name"
               value={roomName}
               onChange={(e) => setRoomName(e.target.value)}
@@ -119,7 +124,7 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
             <textarea
               id="description"
               required
-              className="inpt bg-gray-50 border border-gray-400 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              className="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
               placeholder="Enter description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -132,7 +137,7 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
             <button
               type="button"
               onClick={toggleDropdown}
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-50"
+              className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800 w-50"
             >
               {topic ? topic : "Select the room topic"}
               <FontAwesomeIcon icon={faChevronDown} className="ml-2" />
@@ -186,7 +191,7 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
             <button
               type="submit"
               className="
-               w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+               w-full text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
             >
               Submit
             </button>
