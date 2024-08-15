@@ -16,28 +16,34 @@ const ModalLeaveRoom = ({ roomId, isOpen, onClose }) => {
   }, [isOpen]);
 
   const handleLeaveRoom = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const token = localStorage.getItem('access_token');
-      await axios.post(
-        `${baseURL}/api/leave_room/${roomId}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  setLoading(true);
+  setError(null);
+  try {
+    const token = localStorage.getItem('access_token');
+    const response = await axios.post(
+      `${baseURL}/api/leave_room/${roomId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200) {
       onClose();
       navigate('/test', { state: { successMessage: 'You have successfully left the room!', action: 'leave' } });
-    } catch (error) {
+    } else if(response.status === 400) {
       setError('Host cannot leave the room');
-      console.error('Error leaving the room: ', error.response?.data || error.message);
-    } finally {
-      setLoading(false);
+      console.error('Failed to leave the room, unexpected status:', response.status);
     }
-  };
+  } catch (error) {
+    setError('Host cannot leave the room');
+    console.error('Error leaving the room: ', error.response?.data || error.message);
+  } finally {
+    setLoading(false);
+  }
+};
   
 
   if (!isOpen) return null;

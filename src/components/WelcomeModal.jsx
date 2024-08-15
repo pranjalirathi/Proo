@@ -1,6 +1,6 @@
 import React from 'react';
 import welcomeImage from '../assets/welcome.png';
-import { X } from 'lucide-react'; // Importing X icon from lucide-react
+import { X } from 'lucide-react';
 
 const WelcomeModal = ({ onClose }) => {
   return (

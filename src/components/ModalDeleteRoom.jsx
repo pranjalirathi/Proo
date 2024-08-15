@@ -16,30 +16,39 @@ const ModalDeleteRoom = ({ roomId, isOpen, onClose }) => {
   const handleDeleteRoom = async () => {
     setLoading(true);
     setError(null);
+  
+    const token = localStorage.getItem('access_token');
     
-    try {
-      const token = localStorage.getItem('access_token');
-      
-      const config = {
-        method: 'delete',
-        maxBodyLength: Infinity,
-        url: `http://127.0.0.1:8000/api/delete_room/${roomId}`,
-        headers: { 
-          'Authorization': `Bearer ${token}`
+    const config = {
+      method: 'delete',
+      maxBodyLength: Infinity,
+      url: `http://127.0.0.1:8000/api/delete_room/${roomId}`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
+    };
+  
+    axios.request(config)
+      .then((response) => {
+        if (response.status === 200) {
+          onClose();
+          navigate('/test', { state: { successMessage: 'Room deleted successfully!', action: 'delete' } });
+        } else if(response.status === 400) {
+          setError('You are not allowed to delete the room');
+          console.error('Failed to delete the room, unexpected status:', response.status);
+        } else{
+          setError('Some unexpected error ooccured');
         }
-      };
-
-      await axios.request(config);
-      
-      onClose();
-      navigate('/test', { state: { successMessage: 'Room deleted successfully!', action: 'delete' } });
-    } catch (error) {
-      setError('Error deleting the room');
-      console.error('Error deleting the room: ', error.response?.data || error.message);
-    } finally {
-      setLoading(false);
-    }
+      })
+      .catch((error) => {
+        setError('Error deleting the room');
+        console.error('Error deleting the room: ', error.response?.data || error.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
+  
 
   if (!isOpen) return null;
 
