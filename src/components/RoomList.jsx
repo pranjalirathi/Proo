@@ -6,7 +6,6 @@ import JoinByCode from './JoinByCode';
 import { Search } from 'lucide-react';
 import BlueTick from '../assets/blueTick.svg';
 
-
 const RoomList = ({ isSearchActive, selectedTopic }) => {
   const [rooms, setRooms] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -65,30 +64,71 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
 
 
   const handleSearchChange = async (e) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-    if (query) {
-      try {
-        const token = localStorage.getItem('access_token');
-        const response = await axios.get(`http://127.0.0.1:8000/api/search?q=${query}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (response.data.detail) {
-          setSearchResults(response.data.detail.rooms);
-          console.log("This is the search result of the users")
+  //   const query = e.target.value;
+  //   setSearchQuery(query);
+  //   if (query) {
+  //     try {
+  //       const token = localStorage.getItem('access_token');
+  //       const response = await axios.get(`http://127.0.0.1:8000/api/search?q=${query}`, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //       if (response.data.detail) {
+  //         setSearchResults(response.data.detail.rooms);
+  //         console.log("This is the search result of the users")
+  //         setUserSearchResults(response.data.detail.users);
+  //         console.log(response.data.detail.users);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching search results:', error);
+  //     }
+  //   } else {
+  //     setSearchResults(rooms);
+  //     setUserSearchResults([]);
+  //   }
+  // };
+
+
+  let query = e.target.value;
+  setSearchQuery(query);
+
+  let searchType = '';
+  if (query.startsWith('@')) {
+    query = query.slice(1);
+    searchType = 'user';
+  } else {
+    searchType = 'room';
+  }
+
+  if (query) {
+    try {
+      const token = localStorage.getItem('access_token');
+      const response = await axios.get(`${baseURL}/api/search`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          q: query,
+          type: searchType,
+        },
+      });
+
+      if (response.status === 200) {
+        if (searchType === 'user') {
           setUserSearchResults(response.data.detail.users);
-          console.log(response.data.detail.users);
+        } else {
+          setSearchResults(response.data.detail.rooms);
         }
-      } catch (error) {
-        console.error('Error fetching search results:', error);
       }
-    } else {
-      setSearchResults(rooms);
-      setUserSearchResults([]);
+    } catch (error) {
+      console.error('Error fetching search results:', error);
     }
-  };
+  } else {
+    setSearchResults([]);
+    setUserSearchResults([]);
+  }
+};
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -155,7 +195,6 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
             onChange={handleSearchChange}
             placeholder="Search..."
             className="w-full p-2 rounded-full bg-customBackground1 text-white pl-10"
-            onClick={() => setActive(true)}
           />
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
 
@@ -180,7 +219,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
                 >
                   <img
                     className="w-5 h-5 rounded-full"
-                    src={user.profile_pic ? `${baseURL}/${user.profile_pic}` : `${baseURL}/static/images/profile/default.jpg`}
+                    src={user.profile_pic ? `${baseURL}${user.profile_pic}` : `${baseURL}/static/images/profile/default.jpg`}
                   />
                   <div className="ml-2 flex items-center">
                     <h1 className="text-white text-xs sm:text-sm">{user.username}</h1>
@@ -309,7 +348,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
           </div>
         ))
       ) : (
-        <div className="flex justify-center items-center h-full">
+        <div className="flex text-center justify-center items-center h-full">
           <p className="text-xl text-gray-400">Oopsi! No rooms available for this topic</p>
         </div>
       )}

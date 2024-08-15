@@ -206,10 +206,13 @@ const RoomChat = ({ roomId }) => {
   };
 
   const formatTime = (timestamp) => {
+    console.log(timestamp);
     const date = new Date(timestamp);
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
+
     return `${hours}:${minutes}`;
+
   };
 
   useEffect(() => {
@@ -222,6 +225,8 @@ const RoomChat = ({ roomId }) => {
   if (!roomDetails) {
     return <LoadingSkeleton />;
   }
+
+  console.log(messages)
 
   return (
     <div className="flex flex-col h-full m-2 rounded-lg w-full text-white relative custom-scrollbar bg-customBackground2">
@@ -316,7 +321,7 @@ const RoomChat = ({ roomId }) => {
                     <span className="whitespace-pre-wrap">{msg.content}</span>
                   )}
                 </div>
-                <span className="text-[10px] sm:text-xs text-gray-400 mt-1 self-end">{formatTime(msg.timestamp)}</span>
+                <span className="text-[10px] sm:text-xs text-gray-400 mt-1 self-end">{formatTime(msg.created)}</span>
 
 
               </div>

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { isMobile } from 'react-device-detect'
 import coderoom1 from '../assets/coderoom1.png';
-import { Hash, User, MessageCircle } from 'lucide-react';
+import { ScrollText, User, MessageCircle } from 'lucide-react';
 import { Search, ChevronLeft, ChevronRight, Folder, Settings } from 'lucide-react';
 
 import ModalRules from './ModalRules';
@@ -69,7 +69,7 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
 
   const Menus = [
     { title: "Search", icon: <Search className='text-green-500' />, search: true, onClick: () => setIsSearchActive(true) },
-    { title: "Topics", icon: <Hash className='text-orange-500' />, onClick: () => setActiveComponent('Topics') },
+    { title: "Topics", icon: <ScrollText className='text-orange-500' />, onClick: () => setActiveComponent('Topics') },
     { title: "Rooms", icon: <User className='text-blue-600' />, onClick: () => setActiveComponent('Rooms') },
     { title: "Blogs", icon: <MessageCircle className='text-green-700' />, onClick: () => setActiveComponent('Blogs') },
     { title: "Welcome", icon: <Folder className='text-yellow-500' />, gap: true, onClick: () => setIsWelcomeModalOpen(true) },
