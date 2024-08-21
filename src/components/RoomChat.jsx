@@ -533,7 +533,7 @@ export default RoomChat;
 //center the date tag
 //polls
 
-
+//copying of the message content of the code
 //textarea auto resizing according to the content
 //leave delte room authentication
 //yesterday today message
