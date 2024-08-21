@@ -36,7 +36,7 @@ const Test = () => {
     <div className='h-screen bg-customBackground1 overflow-hidden'>
       <Sidebar setIsSearchActive={setIsSearchActive} setActiveComponent={setActiveComponent} />
       <div className='flex-1 flex'
-        style={isMobile ? { "marginLeft": '4rem' }: { "marginLeft": '5rem'}}
+        style={{"marginLeft": '4rem' }}
       >
         {isMobile && activeComponent === 'Topics' && <TopicBottom onSelectTopic={handleSelectTopic} selectedTopic={selectedTopic} />}
         {isMobile && activeComponent === 'Rooms' && <RoomList isSearchActive={isSearchActive} selectedTopic={selectedTopic} />}

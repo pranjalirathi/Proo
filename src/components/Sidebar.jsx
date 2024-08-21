@@ -89,7 +89,7 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
     ? Menus 
     : Menus.filter(menu => ["Search", "Welcome", "Rules"].includes(menu.title));
   return (
-    <div className={`fixed top-0 left-0 h-screen z-50 ${open ? 'w-56 bg-customBackground1 p-4' : isMobile ? 'fixed-width bg-customBackground1 p-2' : 'w-20 bg-customBackground1 p-4'} pt-8 transition-width duration-300 flex flex-col justify-between`}>
+    <div className={`fixed top-0 left-0 h-screen z-50 ${open ? 'w-56 bg-customBackground1 p-4' : isMobile ? 'fixed-width bg-customBackground1 p-2' : 'w-20 bg-customBackground1 pl-2 pr-1 pb-2'} pt-8 transition-width duration-300 flex flex-col justify-between`}>
       <div>
         <button
           className="absolute -right-3 top-11 w-5 border-dark-purple border-2 rounded-full"

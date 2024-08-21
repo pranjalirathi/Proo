@@ -197,14 +197,17 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
                   onClick={() => handleUserPublicDetails(user.username)}
                 >
                   <img
-                    className="w-5 h-5 rounded-full"
+                    className="w-7 h-7 rounded-full"
                     src={user.profile_pic ? `${baseURL}${user.profile_pic}` : `${baseURL}/static/images/profile/default.jpg`}
                   />
-                  <div className="ml-2 flex items-center">
-                    <h1 className="text-white text-xs sm:text-sm">{user.username}</h1>
-                    {user.verified && (
-                      <img src={BlueTick} className="ml-1 h-3 w-3" />
-                    )}
+                  <div className="ml-2 ">
+                   <div className="flex items-center">
+                  <h1 className="text-white text-xs sm:text-sm">{user.username}</h1>
+                  {user.verified && (
+                    <img src={BlueTick} className="ml-1 h-3 w-3" />
+                  )}
+                </div>
+                <h2 className="text-gray-300 text-[12px] sm:text-[12px] mt-1">{user.name || 'null'}</h2>
                   </div>
                 </div>
               ))}

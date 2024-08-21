@@ -34,7 +34,11 @@ const JoinByCode = ({ onClose, onSubmit, roomId }) => {
       }
     })
     .catch((error) => {
-      setError('Enter the code above');
+      if (error.response && error.response.data && error.response.data.detail) {
+        setError(error.response.data.detail);
+      } else {
+        setError('Something went wrong. Please try again.');
+      }
     });
   };
 
