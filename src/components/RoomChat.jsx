@@ -424,9 +424,11 @@ const handleMessageChange = (e) => {
                 return (
                     <React.Fragment key={index}>
                         {showDateTag && (
-                            <div className="sticky top-0 z-10 flex justify-center items-center px-2 py-2 my-2 w-40 bg-gray-900 rounded-lg text-xs text-white text-center self-center">
+                          <div className='flex justify-center items-center'>
+                            <div className="sticky top-0 z-10 flex justify-center items-center px-2 py-2 my-2 w-auto bg-gray-900 rounded-lg text-xs text-white text-center self-center">
                                 {date}
                             </div>
+                          </div>
                         )}
                         <div
                             className={`flex items-start mb-4 ${msg.username === localStorage.getItem('username') ? 'justify-end' : 'justify-start'}`}
@@ -530,9 +532,9 @@ export default RoomChat;
 //roomchat responsive
 //public user page resposnice
 //room details modal
-//center the date tag
 //polls
 
+//center the date tag
 //copying of the message content of the code
 //textarea auto resizing according to the content
 //leave delte room authentication
