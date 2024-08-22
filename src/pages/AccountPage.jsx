@@ -30,6 +30,7 @@ const AccountPage = () => {
       </button>
       {!isMobile && <Sidebar />}
       <div className={`flex-1 flex flex-col items-center p-4 ${isMobile ? 'ml-0' : 'ml-20'}`}>
+      {/* style={{"marginLeft": '4rem' }} */}
         <UserAccount />
         <Continue />
       </div>

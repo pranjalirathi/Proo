@@ -52,7 +52,7 @@ const ModalLeaveRoom = ({ roomId, isOpen, onClose }) => {
     <div
       id="popup-modal"
       tabIndex="-1"
-      ariaHidden="true"
+      aria-hidden="true"
       className="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto overflow-x-hidden w-full md:inset-0 max-h-full"
       style={{backgroundColor: 'rgb(17,18,22, 0.83)'}}
     >
@@ -65,7 +65,7 @@ const ModalLeaveRoom = ({ roomId, isOpen, onClose }) => {
           >
             <svg
               className="w-3 h-3"
-              ariaHidden="true"
+              aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 14 14"

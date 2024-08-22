@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { Send, CodeXml, BadgeX, Trash, EllipsisVertical, ClipboardList } from 'lucide-react';
+import { isMobile } from 'react-device-detect'
 import RoomDetails from './RoomDetailsModal';
 import MembersList from './MembersList';
 import PublicRoomJoinModal from './PublicRoomJoinModal';
@@ -200,6 +201,14 @@ const RoomChat = ({ roomId }) => {
     setActiveModal(null);
   };
 
+
+  const getCurrentDateTime = () => {
+    const current = new Date();
+    const cDate = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
+    const cTime = current.getHours() + ":" + current.getMinutes() + ":" + current.getSeconds();
+    return cDate + ' ' + cTime;
+  };
+
   
   //For days tag in the roomchat messages
   const formatTime = (timestamp) => {
@@ -285,7 +294,7 @@ const handleMessageChange = (e) => {
   }
 
   return (
-    <div className="flex flex-col h-full m-2 rounded-lg w-full text-white relative custom-scrollbar bg-customBackground2">
+    <div className="flex flex-col mt-2 mr-2 mb-2 rounded-lg w-full text-white custom-scrollbar bg-customBackground2">
       {/* Room Title and Room Pic */}
       <div className="flex items-center p-2 sm:p-4 border-b border-gray-700 bg-customBackground2 rounded-lg">
         {activeModal === 'roomDetails' && (
@@ -425,7 +434,7 @@ const handleMessageChange = (e) => {
                     <React.Fragment key={index}>
                         {showDateTag && (
                           <div className='flex justify-center items-center'>
-                            <div className="sticky top-0 z-10 flex justify-center items-center px-2 py-2 my-2 w-auto bg-gray-900 rounded-lg text-xs text-white text-center self-center">
+                            <div className="sticky top-0 z-10 flex justify-center items-center px-1 py-1 sm:px-2 sm:py-2 my-1 sm:my-2 w-auto bg-gray-900 rounded-lg text-xs sm:text-sm text-white text-center self-center">
                                 {date}
                             </div>
                           </div>
@@ -443,13 +452,13 @@ const handleMessageChange = (e) => {
                                 )}
                                 <div className="flex flex-col max-w-lg w-auto min-w-[50px]">
                                     <div
-                                        className={`rounded-lg m-1 p-2 sm:m-1 sm:p-2  ${msg.is_code ? 'bg-gray-800 text-sm' : (msg.username === localStorage.getItem('username') ? 'bg-customBackground1 ' : 'bg-gray-700 ')} ${msg.username === localStorage.getItem('username') ? 'rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-none ' : 'rounded-tl-2xl rounded-tr-2xl rounded-bl-none rounded-br-2xl'}`}
-                                        style={{ overflowWrap: 'break-word', wordWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}
+                                        className={`rounded-lg m-1 p-[0.5rem] sm:m-1 sm:p-2  ${msg.is_code ? 'bg-gray-800 text-xs ' : (msg.username === localStorage.getItem('username') ? 'bg-customBackground1 ' : 'bg-gray-700 text-xs sm:text-sm')} ${msg.username === localStorage.getItem('username') ? 'rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-none ' : 'rounded-tl-2xl rounded-tr-2xl rounded-bl-none rounded-br-2xl'}`}
+                                        style={{ overflowWrap: 'break-word', wordWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'pre-wrap' , fontSize: 'xs'}}
                                     >
                                         <div className='flex justify-between items-center'>
                                             {msg.username !== localStorage.getItem('username') ? (
                                                 <span className="text-xs pl-1 text-gray-400 mb-1 block">{msg.username}</span>
-                                            ) : <span className="text-xs pl-1 text-gray-400 mb-1 block">You</span>}
+                                            ) : <span className="sm:text-[0.75rem] text-[0.50rem] sm:pl-1 text-gray-400 sm:mb-1 block">You</span>}
                                            {msg.is_code && (
                                             <div className="relative">
                                               <button
@@ -467,7 +476,7 @@ const handleMessageChange = (e) => {
                                                 <code className="language-javascript">{msg.content}</code>
                                             </pre>
                                         ) : (
-                                            <span className="whitespace-pre-wrap">{msg.content}</span>
+                                            <span className="whitespace-pre-wrap text-xs sm:text-sm">{msg.content}</span>
                                         )}
                                     </div>
                                     <span className="text-[10px] sm:text-xs text-gray-400 mt-1 self-end">{time}</span>
@@ -487,10 +496,10 @@ const handleMessageChange = (e) => {
           type="text"
           placeholder="Type your message here..."
           rows="1"
-          className="ml-3 flex-1  bg-customBackground1 custom-scrollbar text-white p-1 sm:p-2 rounded-lg outline-none border-none text-sm sm:text-base resize-none overflow-hidden"
+          className="flex-1 bg-customBackground1 custom-scrollbar text-white p-1 sm:p-2 rounded-lg outline-none border-none text-sm sm:text-base resize-none overflow-hidden"
           value={message}
-          // onChange={(e) => setMessage(e.target.value)}
-          onChange={handleMessageChange}
+          onChange={(e) => setMessage(e.target.value)}
+          // onChange={handleMessageChange}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault();
@@ -500,7 +509,7 @@ const handleMessageChange = (e) => {
           style={{ height: 'auto', maxHeight: '96px' }}
         />
         <CodeXml
-          size={34}
+          size={isMobile ? 20 : 34}
           className={`ml-2 sm:ml-4 p-1 cursor-pointer bg-blue-600 rounded-full flex items-center justify-center ${isCode ? 'text-white bg-gray-500 rounded-full' : 'text-white rounded-full hover:bg-blue-700'}`}
           onClick={() => setIsCode(!isCode)}
         />
@@ -510,7 +519,7 @@ const handleMessageChange = (e) => {
           onClick={handleSendMessage}
         >
           <Send
-            size={22}
+            size={isMobile ? 10: 20}
             className="text-white "
           />
         </button>

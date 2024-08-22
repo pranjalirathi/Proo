@@ -56,7 +56,7 @@ const ModalDeleteRoom = ({ roomId, isOpen, onClose }) => {
     <div
       id="popup-modal"
       tabIndex="-1"
-      ariaHidden="true"
+      aria-hidden="true"
       className="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto overflow-x-hidden w-full md:inset-0 max-h-full"
       style={{backgroundColor: 'rgb(17,18,22, 0.83)'}}
     >
