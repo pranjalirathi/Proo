@@ -7,6 +7,7 @@ import MembersList from './MembersList';
 import PublicRoomJoinModal from './PublicRoomJoinModal';
 import ModalLeaveRoom from './ModalLeaveRoom';
 import ModalDeleteRoom from './ModalDeleteRoom';
+import tgbg1 from '../assets/tgbg1.png';
 
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
@@ -172,6 +173,11 @@ const RoomChat = ({ roomId }) => {
       setMessage('');
       setIsCode(false);
 
+    const textarea = document.querySelector('textarea');
+    if (textarea) {
+      textarea.rows = 1;
+    }
+
       setTimeout(() => {
         const chatContainer = document.querySelector('.messages-container');
         if (chatContainer) {
@@ -294,7 +300,7 @@ const handleMessageChange = (e) => {
   }
 
   return (
-    <div className="flex flex-col mt-2 mr-2 mb-2 rounded-lg w-full text-white custom-scrollbar bg-customBackground2">
+    <div className="flex flex-col mt-2 mr-2 mb-2 rounded-lg w-full text-white bg-customBackground2 relative custom-scrollbar" style={{ backgroundImage: `url(${tgbg1})` }}>
       {/* Room Title and Room Pic */}
       <div className="flex items-center p-2 sm:p-4 border-b border-gray-700 bg-customBackground2 rounded-lg">
         {activeModal === 'roomDetails' && (
@@ -423,7 +429,7 @@ const handleMessageChange = (e) => {
 
 
       {/* Messaging area with the dates */}
-      <div className="flex-1 overflow-y-auto p-2 sm:p-4 custom-scrollbar messages-container">
+      <div className="flex-1 overflow-y-auto p-2 sm:p-2 custom-scrollbar messages-container">
             {messages.map((msg, index) => {
                 const { time, date } = formatTime(msg.created);
                 const showDateTag = date !== lastMessageDate;
@@ -450,10 +456,11 @@ const handleMessageChange = (e) => {
                                         className="sm:w-10 sm:h-10 w-6 h-6 rounded-full sm:mr-4 mr-1"
                                     />
                                 )}
-                                <div className="flex flex-col max-w-lg w-auto min-w-[50px]">
+                                {/* */}
+                                <div className="flex flex-col max-w-lg w-auto min-w-[50px] ">
                                     <div
-                                        className={`rounded-lg m-1 p-[0.5rem] sm:m-1 sm:p-2  ${msg.is_code ? 'bg-gray-800 text-xs ' : (msg.username === localStorage.getItem('username') ? 'bg-customBackground1 ' : 'bg-gray-700 text-xs sm:text-sm')} ${msg.username === localStorage.getItem('username') ? 'rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-none ' : 'rounded-tl-2xl rounded-tr-2xl rounded-bl-none rounded-br-2xl'}`}
-                                        style={{ overflowWrap: 'break-word', wordWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'pre-wrap' , fontSize: 'xs'}}
+                                        className={`rounded-lg m-1 p-[0.5rem] sm:m-1 sm:p-2  ${msg.is_code ? 'bg-gray-800 w-60 sm:w-auto text-xs ' : (msg.username === localStorage.getItem('username') ? 'bg-customBackground1 ' : 'bg-gray-700 text-xs sm:text-sm')} ${msg.username === localStorage.getItem('username') ? 'rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-none ' : 'rounded-tl-2xl rounded-tr-2xl rounded-bl-none rounded-br-2xl'}`}
+                                        // style={{ overflowWrap: 'break-word', wordWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'pre-wrap' , fontSize: 'xs'}}
                                     >
                                         <div className='flex justify-between items-center'>
                                             {msg.username !== localStorage.getItem('username') ? (
@@ -462,7 +469,7 @@ const handleMessageChange = (e) => {
                                            {msg.is_code && (
                                             <div className="relative">
                                               <button
-                                                className="text-gray-400 hover:text-gray-200 focus:outline-none p-1"
+                                                className="text-gray-400 hover:text-gray-200 focus:outline-none p-1 w-15"
                                                 onClick={() => handleCopy(msg.content)}
                                               >
                                                 <ClipboardList size={16} />
@@ -481,6 +488,8 @@ const handleMessageChange = (e) => {
                                     </div>
                                     <span className="text-[10px] sm:text-xs text-gray-400 mt-1 self-end">{time}</span>
                                 </div>
+
+                                
                             </div>
                         </div>
                     </React.Fragment>
@@ -498,8 +507,8 @@ const handleMessageChange = (e) => {
           rows="1"
           className="flex-1 bg-customBackground1 custom-scrollbar text-white p-1 sm:p-2 rounded-lg outline-none border-none text-sm sm:text-base resize-none overflow-hidden"
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          // onChange={handleMessageChange}
+          // onChange={(e) => setMessage(e.target.value)}
+          onChange={handleMessageChange}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault();
@@ -538,11 +547,12 @@ export default RoomChat;
 
 
 //search dropdown
-//roomchat responsive
 //public user page resposnice
 //room details modal
 //polls
+//enter does not work after code enabling
 
+//roomchat responsive
 //center the date tag
 //copying of the message content of the code
 //textarea auto resizing according to the content
