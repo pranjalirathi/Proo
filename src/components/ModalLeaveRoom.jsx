@@ -15,12 +15,13 @@ const ModalLeaveRoom = ({ roomId, isOpen, onClose }) => {
     }
   }, [isOpen]);
 
-  const handleLeaveRoom = async () => {
-  setLoading(true);
-  setError(null);
-  try {
+  const handleLeaveRoom = () => {
+    setLoading(true);
+    setError(null);
+  
     const token = localStorage.getItem('access_token');
-    const response = await axios.post(
+  
+    axios.post(
       `${baseURL}/api/leave_room/${roomId}`,
       {},
       {
@@ -28,22 +29,33 @@ const ModalLeaveRoom = ({ roomId, isOpen, onClose }) => {
           Authorization: `Bearer ${token}`,
         },
       }
-    );
-
-    if (response.status === 200) {
-      onClose();
-      navigate('/test', { state: { successMessage: 'You have successfully left the room!', action: 'leave' } });
-    } else if(response.status === 400) {
-      setError('Host cannot leave the room');
-      console.error('Failed to leave the room, unexpected status:', response.status);
-    }
-  } catch (error) {
-    setError('Host cannot leave the room');
-    console.error('Error leaving the room: ', error.response?.data || error.message);
-  } finally {
-    setLoading(false);
-  }
-};
+    )
+    .then((response) => {
+      if (response.status === 200) {
+        onClose();
+        navigate('/test', { state: { successMessage: 'You have successfully left the room!', action: 'leave' } });
+      } else if (response.status === 400) {
+        setError('Host cannot leave the room');
+        console.error('Failed to leave the room, unexpected status:', response.status);
+      } else {
+        setError('Some unexpected error occurred');
+      }
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 401) {
+        localStorage.clear();
+        navigate('/login');
+        console.error('Unauthorized: Redirecting to login');
+      } else {
+        setError('Host cannot leave the room');
+        console.error('Error leaving the room: ', error.response?.data || error.message);
+      }
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+  };
+  
   
 
   if (!isOpen) return null;

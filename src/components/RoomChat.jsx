@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Send, CodeXml, BadgeX, Trash, EllipsisVertical, ClipboardList } from 'lucide-react';
 import { isMobile } from 'react-device-detect'
@@ -60,6 +61,7 @@ const RoomChat = ({ roomId }) => {
   const socketRef = useRef(null);
   const messagesEndRef = useRef(null);
   const baseURL = 'http://127.0.0.1:8000';
+  const navigate = useNavigate();
 
   let lastMessageDate = null;
 
@@ -78,48 +80,75 @@ const RoomChat = ({ roomId }) => {
   };
 
   useEffect(() => {
-    const fetchRoomDetails = async () => {
-      try {
-        const token = localStorage.getItem('access_token');
-        const response = await axios.get(`${baseURL}/api/room_details/${roomId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+    const fetchRoomDetails = () => {
+      const token = localStorage.getItem('access_token');
+  
+      axios.get(`${baseURL}/api/room_details/${roomId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
         if (response.data.detail) {
           setRoomDetails(response.data.detail);
         }
-      } catch (error) {
+      })
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status === 401) {
+            setError('Unauthorized. Please log in again.');
+            localStorage.removeItem('access_token');
+            navigate('/login');
+          } else {
+            setError('Error fetching room details.');
+          }
+        } else {
+          setError('An unknown error occurred.');
+        }
         console.error('Error fetching room details:', error);
-      }
+      });
     };
-
+  
     fetchRoomDetails();
   }, [roomId]);
+  
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const token = localStorage.getItem('access_token');
-        const response = await axios.get(`${baseURL}/api/message/${roomId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+    const fetchMessages = () => {
+      const token = localStorage.getItem('access_token');
+  
+      axios.get(`${baseURL}/api/message/${roomId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
         if (response.data.detail) {
           console.log('Fetched messages:', response.data.detail);
           setMessages(response.data.detail);
-
-          console.log(setMessages);
-
         }
-      } catch (error) {
-        console.error('Error fetching messages:', error);
-      }
+      })
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status === 401) {
+            console.error('Unauthorized. Redirecting to login.');
+            setError('Unauthorized. Please log in again.');
+            localStorage.removeItem('access_token');
+            navigate('/login');
+          } else {
+            console.error('Error fetching messages:', error.response.data);
+            setError('Error fetching messages.');
+          }
+        } else {
+          console.error('An unknown error occurred:', error.message);
+          setError('An unknown error occurred.');
+        }
+      });
     };
-
+  
     fetchMessages();
-  }, []);
+  }, [roomId]);
+  
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');

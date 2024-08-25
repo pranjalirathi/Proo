@@ -4,21 +4,21 @@ import axios from 'axios';
 
 const Topics = ( {onSelectTopic, selectedTopic} ) => {
   const [topics, setTopics] = useState([]);
-  // const [languages, setLanguages] = useState([]);
 
   useEffect(() => {
-    const fetchTopics = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/api/topics');
-        // setLanguages(response.data);
-        setTopics(response.data);
-      } catch (error) {
-        console.error('Error fetching topics:', error);
-      }
+    const fetchTopics = () => {
+      axios.get('http://127.0.0.1:8000/api/topics')
+        .then(response => {
+          setTopics(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching topics:', error);
+        });
     };
-
+  
     fetchTopics();
   }, []);
+  
 
   const totalTopicCount = topics.reduce((total, topic) => total + topic.room_count, 0);
 

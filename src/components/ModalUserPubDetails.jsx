@@ -12,20 +12,30 @@ const ModalUserPubDetails = ({ isOpen, onClose, userId }) => {
     }
   }, [isOpen, userId]);
 
-  const fetchUserDetails = async () => {
-    try {
-      const token = localStorage.getItem('access_token'); 
-      const response = await axios.get(`http://127.0.0.1:8000/api/user_public_details/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  const fetchUserDetails = () => {
+    const token = localStorage.getItem('access_token');
+  
+    axios.get(`http://127.0.0.1:8000/api/user_public_details/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
       console.log(response.data.detail);
       setUserDetails(response.data.detail);
-    } catch (error) {
-      setError(error.response?.data?.detail || "An error occurred");
-    }
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 401) {
+        localStorage.clear();
+        navigate('/login');
+        console.error('Unauthorized: Redirecting to login');
+      } else {
+        setError(error.response?.data?.detail || "An error occurred");
+        console.error('Error fetching user details:', error.response?.data || error.message);
+      }
+    });
   };
+  
 
   if (!isOpen) return null;
 

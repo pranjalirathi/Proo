@@ -21,35 +21,36 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
   const navigate = useNavigate();
   const baseURL = 'http://127.0.0.1:8000';
   useEffect(() => {
-    if (isSearchActive && componentRef.current) {
-      componentRef.current.scrollTop = 0; 
-    }
-  }, [isSearchActive]);
-
-
-  useEffect(() => {
-    const fetchRooms = async () => {
-      try {
-        const token = localStorage.getItem('access_token');
-        const response = await axios.get(`${baseURL}/api/rooms`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            q: selectedTopic,
-          },
-        });
+    const fetchRooms = () => {
+      const token = localStorage.getItem('access_token');
+      axios.get(`${baseURL}/api/rooms`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          q: selectedTopic,
+        },
+      })
+      .then(response => {
         if (response.data.detail && Array.isArray(response.data.detail)) {
           setRooms(response.data.detail);
           setSearchResults(response.data.detail);
         } else {
           console.error('API response does not contain an array:', response.data);
         }
+      })
+      .catch(error => {
+        if (error.response && error.response.status === 401) {
+          // Clear local storage and navigate to the login page
+          localStorage.clear();
+          navigate('/login');
+        } else {
+          console.error('Error fetching rooms:', error);
+        }
+      })
+      .finally(() => {
         setLoading(false);
-      } catch (error) {
-        console.error('Error fetching rooms:', error);
-        setLoading(false);
-      }
+      });
     };
 
     fetchRooms();
@@ -61,6 +62,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [selectedTopic]);
+
 
 
   const handleSearchChange = async (e) => {

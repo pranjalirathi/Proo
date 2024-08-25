@@ -1,27 +1,40 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const ModalDeactivateUser = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
   
-  const handleDelete = async () => {
+  const handleDelete = () => {
     setLoading(true);
-    try {
-      const token = localStorage.getItem('accessToken');
-      const response = await axios.delete('http://127.0.0.1:8000/api/delete', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+  
+    const token = localStorage.getItem('accessToken');
+  
+    axios.delete('http://127.0.0.1:8000/api/delete', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
       console.log(response.data);
       onClose();
-    } catch (err) {
-      setError('Failed to delete account.');
+    })
+    .catch((err) => {
+      if (err.response && err.response.status === 401) {
+        localStorage.clear();
+        navigate('/login');
+        throw new Error('Unauthorized: Redirecting to login');
+      } else {
+        setError('Failed to delete account.');
+      }
+    })
+    .finally(() => {
       setLoading(false);
-    }
+    });
   };
-
+  
   if (!isOpen) return null;
 
   return (

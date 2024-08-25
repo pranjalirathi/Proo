@@ -8,15 +8,17 @@ const Topics = ({ onSelectTopic, selectedTopic }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTopics = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/api/topics');
-        setTopics(response.data);
-      } catch (error) {
-        console.error('Error fetching topics:', error);
-      } finally {
-        setLoading(false);
-      }
+    const fetchTopics = () => {
+      axios.get('http://127.0.0.1:8000/api/topics')
+        .then(response => {
+          setTopics(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching topics', error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     };
 
     fetchTopics();

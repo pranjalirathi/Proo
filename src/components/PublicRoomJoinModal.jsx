@@ -1,70 +1,53 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const PublicRoomJoinModal = ({ isOpen, onclose, roomId }) => {
-  // const [error, setError] = useState(null);
-
-  // const handleJoin = async () => {
-  //   try {
-  //     console.log("joining");
-  //     const token = localStorage.getItem('access_token');
-  //     const response = await axios.post(
-  //       `http://127.0.0.1:8000/api/join_room/${roomId}`,
-  //       {},
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-
-  //     console.log("joined in public room");
-  //     onclose();
-  //     console.log("closed");
-  //   } catch (err) {
-  //     setError('Failed to join the room. Please try again.', err.response || err.message);
-  //     console.log(err);
-  //   }
-  // };
-
-  // if (!isOpen) return null;
 
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-const handleJoin = () => {
-  console.log("joining");
-
-  const token = localStorage.getItem('access_token');
-
-  axios.post(
-    `http://127.0.0.1:8000/api/join_room/${roomId}`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  )
-  .then((response) => {
-    if (response.status === 200) {
-      console.log("joined in public room");
-      onclose();
-      console.log("closed");
-    } else {
-      setError(`Unexpected response status: ${response.status}`);
-    }
-  })
-  .catch((err) => {
-    if (err.response) {
-      setError(`Failed to join the room. Status: ${err.response.status}, Message: ${err.response.data}`);
-      console.log(`Failed to join the room. Status: ${err.response.status}, Message: ${err.response.data}`);
-    } else if (err.request) {
-      setError(`Failed to join the room. No response received.`);
-    } else {
-      setError(`Failed to join the room. Error: ${err.message}`);
-    }
-  });
-};
+  const handleJoin = () => {
+    console.log("joining");
+  
+    const token = localStorage.getItem('access_token');
+  
+    axios.post(
+      `http://127.0.0.1:8000/api/join_room/${roomId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      if (response.status === 200) {
+        console.log("joined in public room");
+        onclose(); 
+        console.log("closed");
+      } else {
+        setError(`Unexpected response status: ${response.status}`);
+      }
+    })
+    .catch((err) => {
+      if (err.response) {
+        if (err.response.status === 401) {
+          localStorage.clear();
+          navigate('/login');
+          console.log("Unauthorized: Redirecting to login");
+        } else {
+          setError(`Failed to join the room. Status: ${err.response.status}, Message: ${err.response.data}`);
+          console.log(`Failed to join the room. Status: ${err.response.status}, Message: ${err.response.data}`);
+        }
+      } else if (err.request) {
+        setError("Failed to join the room. No response received.");
+      } else {
+        setError(`Failed to join the room. Error: ${err.message}`);
+      }
+    });
+  };
+  
 
 if (!isOpen) return null;
 

@@ -40,32 +40,34 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
   }, []);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserData = () => {
       const token = localStorage.getItem('access_token'); 
       if (!token) {
         console.error('No access token found');
         return;
       }
-
-      try {
-        const response = await axios.get(`${baseURL}/api/user_detail`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+  
+      axios.get(`${baseURL}/api/user_detail`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
         setUserData({
           username: response.data.username,
           profile_pic: `${response.data.profile_pic}`,
           name: response.data.name
         });
         localStorage.setItem('username', response.data.username);
-      } 
-      catch (error) {
+      })
+      .catch(error => {
         console.error('Error fetching user data:', error);
-      }
+      });
     };
+  
     fetchUserData();
   }, []);
+  
 
   const Menus = [
     { title: "Search", icon: <Search className='text-green-500' />, search: true, onClick: () => setIsSearchActive(true) },

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import FormData from 'form-data';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,64 +14,74 @@ const CreateRoomModal = ({ onClose, refreshRooms }) => {
   const [isPublic, setIsPublic] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [topics, setTopics] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchTopics = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/api/topics');
-        setTopics(response.data);
-      } catch (error) {
-        console.error('Error fetching topics:', error);
-      }
+    const fetchTopics = () => {
+      axios.get('http://127.0.0.1:8000/api/topics')
+        .then(response => {
+          setTopics(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching topics:', error);
+        });
     };
-
+  
     fetchTopics();
   }, []);
+  
 
   const handleCheckboxChange = () => {
     setIsPublic(!isPublic);
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    try {
-      const token = localStorage.getItem('access_token');
-      if (!token) {
-        throw new Error('No access token found');
-      }
-
-      let data = new FormData();
-      data.append('name', roomName);
-      data.append('description', description);
-      data.append('topic', topic?topic:"Others");
-      data.append('is_public', isPublic);
-
-      const config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: 'http://127.0.0.1:8000/api/create_room',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
-        },
-        data: data
-      };
-
-      const response = await axios.request(config);
-      const responseData = response.data;
-
-      console.log('API response: ', responseData);
-
-      if (response.status === 200 && response.data.detail === "Room created successfully") {
-        console.log('closing modal');
-        // refreshRooms();
-        onClose();
-      } else {
-        console.error('API response is not as expected:', responseData);
-      }
-    } catch (error) {
-      console.error('Error creating room:', error);
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      console.error('No access token found');
+      return;
     }
+
+    let data = new FormData();
+    data.append('name', roomName);
+    data.append('description', description);
+    data.append('topic', topic ? topic : "Others");
+    data.append('is_public', isPublic);
+
+    const config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'http://127.0.0.1:8000/api/create_room',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
+      },
+      data: data
+    };
+
+    axios.request(config)
+      .then(response => {
+        const responseData = response.data;
+
+        console.log('API response: ', responseData);
+
+        if (response.status === 200 && response.data.detail === "Room created successfully") {
+          console.log('closing modal');
+          // refreshRooms();
+          onClose();
+        } else {
+          console.error('API response is not as expected:', responseData);
+        }
+      })
+      .catch(error => {
+        if (error.response && error.response.status === 401) {
+          localStorage.clear();
+          navigate('/login');
+        } else {
+          console.error('Error creating room:', error);
+        }
+      });
   };
 
   const toggleDropdown = () => {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const PublicUserRoomModal = ({ isOpen, onClose, roomId }) => {
@@ -13,29 +14,39 @@ const PublicUserRoomModal = ({ isOpen, onClose, roomId }) => {
     is_public: false,
     room_pic: '',
   });
+  const navigate = useNavigate();
 
   const baseURL = 'http://127.0.0.1:8000';
 
   useEffect(() => {
     if (isOpen) {
-      const fetchRoomDetails = async () => {
-        try {
-          const token = localStorage.getItem('access_token');
-          const response = await axios.get(`${baseURL}/api/room_details/${roomId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          console.log(response.data);
-          setRoomDetails(response.data.detail);
-        } catch (error) {
-          console.error('Error fetching the room details: ', error.response.data);
+      const token = localStorage.getItem('access_token');
+      
+      axios.get(`${baseURL}/api/room_details/${roomId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setRoomDetails(response.data.detail);
+      })
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status === 401) {
+            localStorage.clear();
+            navigate('/login');
+            console.log("Unauthorized: Redirecting to login");
+          } else {
+            console.error('Error fetching the room details: ', error.response.data);
+          }
+        } else {
+          console.error('Error fetching the room details: ', error.message);
         }
-      };
-
-      fetchRoomDetails();
+      });
     }
   }, [isOpen, roomId]);
+  
 
   if (!isOpen) return null;
 

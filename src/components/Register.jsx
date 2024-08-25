@@ -59,6 +59,7 @@ const SignUp = () => {
       setError('Registration failed. Please check your details and try again.');
     }
   };
+  
   return (
     <section className="relative flex justify-center items-center min-h-screen w-full bg-gradient-to-br from-orange-300 to-orange-600 overflow-hidden" style={{ 
       backgroundImage: `url(${midbot})`, 

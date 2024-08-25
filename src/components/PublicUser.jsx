@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import BlueTick from '../assets/blueTick.svg';
 import PublicUserRoomModal from './PublicUserRoomModal';
+import { useNavigate } from 'react-router-dom';
 
 const PublicUser = ({ username }) => {
 
@@ -15,38 +16,50 @@ const PublicUser = ({ username }) => {
     joined_rooms_count: 0,
   });
 
+  const navigate = useNavigate(); 
 
   const [selectedRoomId, setSelectedRoomId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const token = localStorage.getItem('access_token');
-        const response = await axios.get(`http://127.0.0.1:8000/api/user_public_details/${username}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
+    
+  
+    const fetchUserDetails = () => {
+      const token = localStorage.getItem('access_token');
+  
+      axios.get(`http://127.0.0.1:8000/api/user_public_details/${username}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        if (response.status === 200) {
+          const userData = response.data.detail;
+  
+          if (!userData.bio) {
+            userData.bio = "Hey Everyone!, I'm new here and exploring the community. 😊";
           }
-        });
-
-        const userData = response.data.detail;
-        if (!userData.bio) {
-          userData.bio = "Hey Everyone!, I'm new here and exploring the community. 😊";
+          if (!userData.name) {
+            userData.name = "Anonymous User";
+          }
+          if (!userData.rooms) {
+            userData.rooms = [];
+          }
+  
+          setUserDetails(userData);
+          console.log(userData);
         }
-        if (!userData.name) {
-          userData.name = "Anonymous User";
+      })
+      .catch(error => {
+        if (error.response && error.response.status === 401) {
+          localStorage.clear();
+          navigate('/login'); 
+        } else {
+          console.error('Error fetching the user details: ', error.response ? error.response.data : error.message);
         }
-        if (!userData.rooms) {
-          userData.rooms = []
-        }
-
-        setUserDetails(userData);
-        console.log(userData);
-      } catch (error) {
-        console.error('Error fetching the user details: ', error.reponse.data);
-      }
+      });
     };
-
+  
     fetchUserDetails();
   }, [username]);
 
@@ -85,9 +98,9 @@ const PublicUser = ({ username }) => {
               </div>
               {/* Divider line */}
               <div className="w-full h-[1px] bg-gray-600 my-2"></div>
-              <div className="text-lg mb-4">@{userDetails.username}
+              <div className="text-sm sm:text-lg mb-4">@{userDetails.username}
                 {userDetails.verified && (
-                  <img src={BlueTick} alt="Verified" className="inline-block ml-2 h-6 w-6" />
+                  <img src={BlueTick} alt="Verified" className="inline-block ml-2 h-4 w-4 sm:h-6 sm:w-6" />
                 )}
               </div>
               <div className="text-sm ">{userDetails.bio}</div>
@@ -99,19 +112,19 @@ const PublicUser = ({ username }) => {
         {/* Content Section */}
         <div className="w-full md:w-4/5 p-0 sm:p-4 flex-grow">
           <div className="flex flex-col space-y-4 h-full">
-            <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+            <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 justify-center items-center">
 
-              <div className="w-full md:w-1/2 p-4 rounded-2xl shadow text-black min-h-[100px] md:min-h-[150px] backdrop-blur backdrop-brightness-75 relative room-card">
+              <div className="justify-center items-center w-4/5 md:w-1/2 p-4 rounded-2xl shadow text-black min-h-[100px] md:min-h-[150px] backdrop-blur backdrop-brightness-75 relative room-card">
                 <div className="text-xl sm:text-4xl text-gray-200 pl-2"> Created</div>
-                <div className='text-white mt-2 pt-4 text-7xl bottom-0 gradient-text pl-2'>{userDetails.rooms.length} <span className='text-2xl'>rooms</span></div>
+                <div className='text-white mt-2 pt-4 text-4xl sm:text-7xl bottom-0 gradient-text pl-2'>{userDetails.rooms.length} <span className='text-2xl'>rooms</span></div>
               </div>
 
 
               {/* Joined Rooms Card */}
-              <div className="w-full md:w-1/2 p-4 rounded-2xl shadow text-black min-h-[100px] md:min-h-[150px] backdrop-blur backdrop-brightness-75 relative room-card">
+              <div className="justify-center items-center w-4/5 md:w-1/2 p-4 rounded-2xl shadow text-black min-h-[100px] md:min-h-[150px] backdrop-blur backdrop-brightness-75 relative room-card">
                 <div className="text-xl sm:text-4xl text-gray-200 pl-2"> Joined</div>
-                <div className='text-white mt-2 pt-4 text-7xl bottom-0 gradient-text pl-2'>{userDetails.joined_rooms_count} <span className='text-2xl'>rooms</span>
-                </div>
+                <div className='text-white mt-2 pt-4 text-4xl sm:text-7xl bottom-0 gradient-text pl-2'>{userDetails.joined_rooms_count} <span className='text-2xl'>rooms</span>
+              </div>
               </div>
               {/* Join Room Card Ends */}
 
@@ -120,9 +133,9 @@ const PublicUser = ({ username }) => {
 
 
 
-            <div className="text-white mb-4 rounded-2xl shadow flex-grow room-card">
+            <div className="justify-center items-center w-4/5 sm:w-full ml-12 pl-2 sm:ml-0 text-white mb-4 sm:mb-4 rounded-2xl shadow flex-grow room-card">
               <div className="text-gray-200 text-center px-4 py-2 rounded-2xl">
-                <div className="text-xl font-bold ">{userDetails.name} Rooms</div>
+                <div className="text-sm sm:text-xl font-bold ">{userDetails.name} Rooms</div>
               </div>
               <div className="w-full h-[1px] bg-gray-600 my-2"></div>
               <div className="room-list-container">

@@ -15,8 +15,13 @@ const JoinByCode = ({ onClose, onSubmit, roomId }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError(null);
-
+  
     const token = localStorage.getItem('access_token');
+    if (!token) {
+      console.error('No access token found');
+      return;
+    }
+  
     axios.post(
       `http://127.0.0.1:8000/api/join_room/${roomId}`,
       { code },
@@ -34,10 +39,12 @@ const JoinByCode = ({ onClose, onSubmit, roomId }) => {
       }
     })
     .catch((error) => {
-      if (error.response && error.response.data && error.response.data.detail) {
-        setError(error.response.data.detail);
+      if (error.response && error.response.status === 401) {
+        // Clear local storage and navigate to the login page
+        localStorage.clear();
+        navigate('/login');
       } else {
-        setError('Something went wrong. Please try again.');
+        setError(error.response?.data?.detail || 'Something went wrong. Please try again.');
       }
     });
   };

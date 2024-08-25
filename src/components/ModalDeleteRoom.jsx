@@ -41,8 +41,14 @@ const ModalDeleteRoom = ({ roomId, isOpen, onClose }) => {
         }
       })
       .catch((error) => {
-        setError('Error deleting the room');
-        console.error('Error deleting the room: ', error.response?.data || error.message);
+        if (error.response && error.response.status === 401) {
+          localStorage.clear();
+          navigate('/login');
+          console.error('Unauthorized: Redirecting to login');
+        } else {
+          setError('Error deleting the room');
+          console.error('Error deleting the room: ', error.response?.data || error.message);
+        }
       })
       .finally(() => {
         setLoading(false);

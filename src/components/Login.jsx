@@ -20,43 +20,50 @@ const Login = () => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-
+  
     const requestBody = {
       email: email,
       password: password,
     };
-
-    try {
-      const response = await fetch('http://127.0.0.1:8000/api/login/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      });
-
+  
+    fetch('http://127.0.0.1:8000/api/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    })
+    .then((response) => {
+      if (response.status === 401) {
+        localStorage.clear();
+        navigate('/login');
+        throw new Error('Unauthorized: Redirecting to login');
+      }
       if (!response.ok) {
         throw new Error('Login failed');
       }
-
-      const data = await response.json();
-
+      return response.json();
+    })
+    .then((data) => {
       localStorage.setItem('access_token', data.access);
-
+  
       updateUser({
         email: email,
         username: email.slice(0, 5),
         name: null,
         profilePic: 'path/to/default-profile-pic.png',
       });
-
+  
       navigate('/test');
-    } catch (error) {
+    })
+    .catch((error) => {
       setError('Login failed. Please check your email and password and try again.');
-    }
+      console.error('Error:', error);
+    });
   };
+  
 
   return (
     <section className="relative flex justify-center items-center min-h-screen w-full bg-gradient-to-br" style={{ 

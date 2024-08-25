@@ -115,7 +115,7 @@ const UserAccount = () => {
     fileInputRef.current.click();
   };
 
-  const handleFileChange = async (event) => {
+  const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
@@ -128,21 +128,29 @@ const UserAccount = () => {
     const formData = new FormData();
     formData.append('profile_pic', file);
 
-    try {
-      await axios.patch(
-        'http://127.0.0.1:8000/api/updateprofilepic',
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      );
-      fetchUserData();
-    } catch (error) {
-      console.error('Error updating profile picture:', error);
-    }
+    axios.patch(
+      'http://127.0.0.1:8000/api/updateprofilepic',
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    )
+    .then(response => {
+      if (response.status === 200) {
+        fetchUserData(); 
+      }
+    })
+    .catch(error => {
+      if (error.response && error.response.status === 401) {
+        localStorage.clear();
+        navigate('/login'); 
+      } else {
+        console.error('Error updating profile picture:', error);
+      }
+    });
   };
 
   return (
