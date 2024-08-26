@@ -40,7 +40,6 @@ const JoinByCode = ({ onClose, onSubmit, roomId }) => {
     })
     .catch((error) => {
       if (error.response && error.response.status === 401) {
-        // Clear local storage and navigate to the login page
         localStorage.clear();
         navigate('/login');
       } else {

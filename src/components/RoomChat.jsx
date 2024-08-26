@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Send, CodeXml, BadgeX, Trash, EllipsisVertical, ClipboardList } from 'lucide-react';
+import { Send, CodeXml, BadgeX, Trash, EllipsisVertical, ClipboardList, BellPlus } from 'lucide-react';
 import { isMobile } from 'react-device-detect'
 import RoomDetails from './RoomDetailsModal';
 import MembersList from './MembersList';
 import PublicRoomJoinModal from './PublicRoomJoinModal';
 import ModalLeaveRoom from './ModalLeaveRoom';
 import ModalDeleteRoom from './ModalDeleteRoom';
+import ModalUpdateRoom from './ModalUpdateRoom';
 import tgbg1 from '../assets/tgbg1.png';
 
 import Prism from 'prismjs';
@@ -56,6 +57,7 @@ const RoomChat = ({ roomId }) => {
   const [isInfoMenuOpen, setIsInfoMenuOpen] = useState(false);
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isPublicJoinModalOpen, setIsPublicJoinModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const socketRef = useRef(null);
@@ -73,9 +75,14 @@ const RoomChat = ({ roomId }) => {
     setIsDeleteModalOpen(true);
   };
 
+  const handleOpenUpdateModal = () => {
+    setIsUpdateModalOpen(true);
+  }
+
   const handleCloseModals = () => {
     setIsLeaveModalOpen(false);
     setIsDeleteModalOpen(false);
+    setIsUpdateModalOpen(false);
     setIsPublicJoinModalOpen(false);
   };
 
@@ -389,6 +396,12 @@ const handleMessageChange = (e) => {
                   Delete Room
                 </button>
               )}
+              { (localStorage.getItem('username') == roomDetails.host)  && (
+                <button className="flex items-center px-4 py-2 hover:bg-gray-700" onClick={handleOpenUpdateModal}>
+                  <BellPlus className="w-4 h-4 mr-2" />
+                  Update Room
+                </button>
+              )}
             </div>
           </div>
         )}
@@ -566,6 +579,7 @@ const handleMessageChange = (e) => {
 
       <ModalLeaveRoom roomId={roomId} isOpen={isLeaveModalOpen} onClose={handleCloseModals} />
       <ModalDeleteRoom roomId={roomId} isOpen={isDeleteModalOpen} onClose={handleCloseModals} />
+      <ModalUpdateRoom roomId={roomId} isOpen={isUpdateModalOpen} onClose={handleCloseModals}/>
       {isPublicJoinModalOpen && (<PublicRoomJoinModal isOpen={isPublicJoinModalOpen} onclose={handleCloseModals} roomId={roomId} />)}
     </div>
   );
