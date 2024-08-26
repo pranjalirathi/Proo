@@ -149,7 +149,7 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
           {open && (
             <div className="ml-2">
               <div className="text-sm">{userData.name || 'Anonymous User'}</div>
-              <div className="text-sm mt-1 text-logoColour2 hover:text-logoColour3 hover:underline hover:cursor-pointer">@{userData.username}</div>
+              <div className="text-sm mt-1 text-logoColour2 ">@{userData.username}</div>
             </div>
           )}
         </div>

@@ -41,7 +41,7 @@ const Profile = ({userdata, onClose }) => {
         </div>
         <div className="mt-4">
           <h2 className="text-gray-400 text-sm font-bold">Bio</h2>
-          <p className="text-gray-100 text-sm mt-1">{userData.bio}</p>
+          <p className="text-gray-100 text-sm mt-1">{userData.bio || "Hey Everyone!, I'm new here and exploring the community. 😊" }</p>
         </div>
         <div className="mt-4">
           <button
