@@ -70,12 +70,12 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
   
 
   const Menus = [
-    { title: "Search", icon: <Search className='text-green-500' />, search: true, onClick: () => setIsSearchActive(true) },
-    { title: "Topics", icon: <ScrollText className='text-orange-500' />, onClick: () => setActiveComponent('Topics') },
-    { title: "Rooms", icon: <User className='text-blue-600' />, onClick: () => setActiveComponent('Rooms') },
-    { title: "Blogs", icon: <MessageCircle className='text-green-700' />, onClick: () => setActiveComponent('Blogs') },
-    { title: "Welcome", icon: <Folder className='text-yellow-500' />, gap: true, onClick: () => setIsWelcomeModalOpen(true) },
-    { title: "Rules", icon: <Settings className='text-gray-400' />, onClick: () => setIsModalOpen(true) },
+    { title: "Search", icon: <Search className='text-green-500 icon-shake' />, search: true, onClick: () => setIsSearchActive(true) },
+    { title: "Topics", icon: <ScrollText className='text-orange-500 icon-shake' />, onClick: () => setActiveComponent('Topics') },
+    { title: "Rooms", icon: <User className='text-blue-600 icon-shake' />, onClick: () => setActiveComponent('Rooms') },
+    { title: "Blogs", icon: <MessageCircle className='text-green-700 icon-shake' />, onClick: () => setActiveComponent('Blogs') },
+    { title: "Welcome", icon: <Folder className='text-yellow-500 icon-shake' />, gap: true, onClick: () => setIsWelcomeModalOpen(true) },
+    { title: "Rules", icon: <Settings className='text-gray-400 icon-shake' />, onClick: () => setIsModalOpen(true) },
   ];
 
 
