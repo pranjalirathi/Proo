@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useCallback } from 'react';
 import axios from 'axios';
 
 export const RoomDetailsContext = createContext();
@@ -10,7 +10,7 @@ export const RoomDetailsProvider = ({ children }) => {
 
   const baseURL = 'http://127.0.0.1:8000';
 
-  const fetchRoomDetails = async (roomId) => {
+  const fetchRoomDetails = useCallback(async (roomId) => {
     setLoading(true);
     setError(null);
     try {
@@ -22,12 +22,13 @@ export const RoomDetailsProvider = ({ children }) => {
       });
       setRoomDetails(response.data.detail);
     } catch (error) {
-      setError('Error fetching the room details');
-      console.error('Error fetching the room details: ', error.response?.data || error.message);
+      const errorMessage = error.response?.data?.message || 'Error fetching the room details';
+      setError(errorMessage);
+      console.error('Error fetching the room details: ', errorMessage);
     } finally {
       setLoading(false);
     }
-  };
+  }, [baseURL]);
 
   return (
     <RoomDetailsContext.Provider value={{ roomDetails, loading, error, fetchRoomDetails }}>

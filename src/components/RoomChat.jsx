@@ -555,7 +555,7 @@ const handleMessageChange = (e) => {
 
       <ModalLeaveRoom roomId={roomId} isOpen={isLeaveModalOpen} onClose={handleCloseModals} />
       <ModalDeleteRoom roomId={roomId} isOpen={isDeleteModalOpen} onClose={handleCloseModals} />
-      <ModalUpdateRoom roomId={roomId} isOpen={isUpdateModalOpen} onClose={handleCloseModals}/>
+      <ModalUpdateRoom roomId={roomId} isOpen={isUpdateModalOpen} onClose={handleCloseModals} roomDetails={roomDetails}/>
       {isPublicJoinModalOpen && (<PublicRoomJoinModal isOpen={isPublicJoinModalOpen} onclose={handleCloseModals} roomId={roomId} />)}
     </div>
   );

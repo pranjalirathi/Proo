@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const ModalUpdateRoom = ({ roomId, isOpen, onClose }) => {
+const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails }) => {
     const [roomName, setRoomName] = useState('');
     const [limit, setLimit] = useState('');
     const [description, setDescription] = useState('');
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+
+    useEffect(() => {
+        if(roomDetails){
+            setRoomName(roomDetails.name || '');
+            setLimit(roomDetails.limit || '');
+            setDescription(roomDetails.description || '');
+        }
+    }, [roomDetails]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -36,7 +44,7 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose }) => {
             if (response.status === 200) {
                 setSuccess('Room updated successfully!');
                 setError(null);
-                onRoomUpdate(response.data);
+                // onRoomUpdate(response.data);
                 onClose(); 
             }
         })
