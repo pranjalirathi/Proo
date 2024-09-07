@@ -2,15 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Edit3 } from 'lucide-react';
 
-const UserAccount = () => {
-  const [userData, setUserData] = useState({
-    name: '',
-    username: '',
-    email: '',
-    bio: '',
-    profile_pic: ''
-  });
 
+
+
+const UserAccount = ({userdata={name: '',username: '',email: '',bio: '',profile_pic: ''}}) => {
+  const [userData, setUserData] = useState(userdata);
+  const baseURL = "http://localhost:8000"
   const [editMode, setEditMode] = useState({
     name: false,
     username: false,
@@ -18,9 +15,9 @@ const UserAccount = () => {
   });
 
   const [inputValues, setInputValues] = useState({
-    name: '',
-    username: '',
-    bio: ''
+    name: userdata.name,
+    username: userdata.username,
+    bio: userdata.bio
   });
 
   const nameRef = useRef(null);
@@ -37,7 +34,7 @@ const UserAccount = () => {
     
 
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/user_detail', {
+      const response = await axios.get(baseURL+'/api/user_detail', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -61,7 +58,7 @@ const UserAccount = () => {
   };
 
   useEffect(() => {
-    fetchUserData();
+    if (userdata.name=='') {fetchUserData();}
   }, []);
 
   const handleSave = async (field) => {
@@ -72,8 +69,8 @@ const UserAccount = () => {
     }
 
     try {
-      await axios.patch(
-        'http://127.0.0.1:8000/api/update_profile',
+      let response = await axios.patch(
+        baseURL+'/api/update_profile',
         { [field]: inputValues[field] },
         {
           headers: {
@@ -81,7 +78,22 @@ const UserAccount = () => {
           }
         }
       );
-      fetchUserData();
+      
+      console.log(response)
+      // fetchUserData();
+      let updateduserdata = {
+        name: userData.name,
+        username: userData.username,
+        email: userData.email,
+        bio: userData.bio,
+        profile_pic: userData.profile_pic
+      }
+      for(let key in response.data.data){
+        console.log("key: ",  response.data.data[key])
+        updateduserdata[key] = response.data.data[key]
+      }
+      console.log(updateduserdata)
+      setUserData(updateduserdata)
       setEditMode((prev) => ({ ...prev, [field]: false }));
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -129,7 +141,7 @@ const UserAccount = () => {
     formData.append('profile_pic', file);
 
     axios.patch(
-      'http://127.0.0.1:8000/api/updateprofilepic',
+      baseURL+'/api/updateprofilepic',
       formData,
       {
         headers: {
@@ -140,7 +152,9 @@ const UserAccount = () => {
     )
     .then(response => {
       if (response.status === 200) {
-        fetchUserData(); 
+        // fetchUserData(); 
+        setUserData({name: userData.name,username: userData.username,email:  userData.email,bio:  userData.bio, profile_pic: baseURL+response.data.data.profile_pic})
+        console.log(response.data.data, "from line 143")
       }
     })
     .catch(error => {
@@ -335,4 +349,4 @@ const UserAccount = () => {
   );
 };
 
-export default UserAccount;
+export {UserAccount};

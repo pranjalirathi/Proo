@@ -4,7 +4,6 @@ import axios from 'axios';
 const ModalUpdateRoom = ({ roomId, isOpen, onClose }) => {
     const [roomName, setRoomName] = useState('');
     const [limit, setLimit] = useState('');
-    // const [topics, setTopic] = useState(Topics);
     const [description, setDescription] = useState('');
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
@@ -37,6 +36,7 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose }) => {
             if (response.status === 200) {
                 setSuccess('Room updated successfully!');
                 setError(null);
+                onRoomUpdate(response.data);
                 onClose(); 
             }
         })
@@ -134,25 +134,6 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose }) => {
                                     required
                                 />
                             </div>
-                            {/* <div className="col-span-2 sm:col-span-1">
-                                <label
-                                    htmlFor="topic"
-                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                    Topic
-                                </label>
-                                <select
-                                    id="topic"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    value={topic}
-                                    onChange={(e) => setTopic(e.target.value)}
-                                >
-                                    <option value="">Select topic</option>
-                                    <option value="General">General</option>
-                                    <option value="Tech">Tech</option>
-                                    <option value="Gaming">Gaming</option>
-                                </select>
-                            </div> */}
                             <div className="col-span-2">
                                 <label
                                     htmlFor="description"

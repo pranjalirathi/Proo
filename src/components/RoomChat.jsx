@@ -10,6 +10,7 @@ import ModalLeaveRoom from './ModalLeaveRoom';
 import ModalDeleteRoom from './ModalDeleteRoom';
 import ModalUpdateRoom from './ModalUpdateRoom';
 import tgbg1 from '../assets/tgbg1.png';
+import useClickOutside from '../hooks/useClickOutside';
 
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
@@ -17,7 +18,7 @@ import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-python';
 import 'prismjs/plugins/line-numbers/prism-line-numbers';
 import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
-
+var firstmsg = true;
 const AvatarSkeleton = () => (
   <svg className="w-6 h-6 text-gray-500 dark:text-gray-700 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
     <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
@@ -52,6 +53,9 @@ const RoomChat = ({ roomId }) => {
   const [roomDetails, setRoomDetails] = useState(null);
   const [activeModal, setActiveModal] = useState(null);
   const [messages, setMessages] = useState([]);
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const limit = 10;
   const [message, setMessage] = useState('');
   const [isCode, setIsCode] = useState(false);
   const [isInfoMenuOpen, setIsInfoMenuOpen] = useState(false);
@@ -62,10 +66,25 @@ const RoomChat = ({ roomId }) => {
   const [isCopied, setIsCopied] = useState(false);
   const socketRef = useRef(null);
   const messagesEndRef = useRef(null);
+  const infoMenuRef = useRef(null);
+  const membersListRef = useRef(null);
+  const roomDetailsRef = useRef(null);
   const baseURL = 'http://127.0.0.1:8000';
   const navigate = useNavigate();
 
   let lastMessageDate = null;
+
+  const closeModal = () => {
+    setActiveModal(null);
+  };
+
+  const closeInfoMenu = () => {
+    setIsInfoMenuOpen(false);
+  };
+
+  useClickOutside(infoMenuRef, closeInfoMenu, isInfoMenuOpen);
+  useClickOutside(membersListRef, closeModal, activeModal === 'membersList');
+  useClickOutside(roomDetailsRef, closeModal, activeModal === 'roomDetails');
 
   const handleOpenLeaveModal = () => {
     setIsLeaveModalOpen(true);
@@ -120,11 +139,11 @@ const RoomChat = ({ roomId }) => {
   }, [roomId]);
   
 
-  useEffect(() => {
-    const fetchMessages = () => {
+  // useEffect(() => {
+    const fetchMessages = (newOffset) => {
       const token = localStorage.getItem('access_token');
   
-      axios.get(`${baseURL}/api/message/${roomId}`, {
+      axios.get(`${baseURL}/api/message/${roomId}?limit=${limit}&offset=${newOffset}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -132,7 +151,13 @@ const RoomChat = ({ roomId }) => {
       .then((response) => {
         if (response.data.detail) {
           console.log('Fetched messages:', response.data.detail);
-          setMessages(response.data.detail);
+          // setMessages(response.data.detail);
+          if (response.data.detail.length < limit) {
+            setHasMore(false); 
+          }
+          setMessages(prevMessages => [...response.data.detail, ...prevMessages]);
+          setOffset(newOffset + limit); 
+          console.log("From line 144: ", offset);
         }
       })
       .catch((error) => {
@@ -153,10 +178,23 @@ const RoomChat = ({ roomId }) => {
       });
     };
   
-    fetchMessages();
-  }, [roomId]);
-  
+  //   fetchMessages();
+  // }, [roomId]);
 
+  useEffect(() => {
+    console.log("line 169");
+    fetchMessages(offset); // Fetch the first batch of messages on component mount
+  }, [roomId]);
+
+
+  const handleScroll = (e) => {
+    if (e.target.scrollTop === 0 && hasMore) { 
+      console.log("from line 176")
+      fetchMessages(offset); 
+    }
+  };
+
+  
   useEffect(() => {
     const token = localStorage.getItem('access_token');
 
@@ -237,10 +275,6 @@ const RoomChat = ({ roomId }) => {
 
   const openMembersList = () => {
     setActiveModal('membersList');
-  };
-
-  const closeModal = () => {
-    setActiveModal(null);
   };
 
 
@@ -325,8 +359,11 @@ const handleMessageChange = (e) => {
 
 
   useEffect(() => {
-    if (messagesEndRef.current) {
+    console.log("firstmsg: ", firstmsg)
+    if (messagesEndRef.current && firstmsg) {
+      console.log("from line 354")
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      firstmsg=false;
     }
   }, [messages]);
   
@@ -340,13 +377,13 @@ const handleMessageChange = (e) => {
       {/* Room Title and Room Pic */}
       <div className="flex items-center p-2 sm:p-4 border-b border-gray-700 bg-customBackground2 rounded-lg">
         {activeModal === 'roomDetails' && (
-          <div className="absolute left-2 top-16 w-full sm:w-80">
+          <div ref={roomDetailsRef} className="absolute left-2 top-16 w-full sm:w-80">
             <RoomDetails roomDetails={roomDetails} onClose={closeModal} />
           </div>
         )}
         
         {activeModal === 'membersList' && (
-          <div className="absolute right-2 top-16 w-full sm:w-80">
+          <div ref={membersListRef} className="absolute right-2 top-16 w-full sm:w-80">
             <MembersList members={roomDetails.members} onClose={closeModal} baseURL={baseURL} />
           </div>
         )}
@@ -381,7 +418,7 @@ const handleMessageChange = (e) => {
         />
         
         {isInfoMenuOpen && (
-          <div className="absolute right-0 top-12 z-50 mt-2 bg-gray-800 text-gray-300 rounded-lg shadow-lg w-48">
+          <div ref={infoMenuRef} className="absolute right-0 top-12 z-50 mt-2 bg-gray-800 text-gray-300 rounded-lg shadow-lg w-48">
             <div className="flex flex-col py-2">
               { (roomDetails.is_member && (localStorage.getItem('username') != roomDetails.host)) && (
                 <button className="flex items-center px-4 py-2 hover:bg-gray-700" onClick={handleOpenLeaveModal}>
@@ -408,70 +445,9 @@ const handleMessageChange = (e) => {
 
       </div>
 
-      {/* Messaging Area */}
-      {/* <div className="flex-1 overflow-y-auto p-2 sm:p-4 custom-scrollbar messages-container" >
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`flex items-start mb-4 ${msg.username === localStorage.getItem('username') ? 'justify-end' : 'justify-start'}`}
-          >
-            <div className={`flex ${msg.sender_id === localStorage.getItem('username') ? 'flex-row-reverse ' : ''}`}>
-
-              {msg.username !== localStorage.getItem('username') ?
-                <img
-                  src={`${baseURL}${msg.profile_pic}`}
-                  alt="Profile Pic"
-                  className="sm:w-10 sm:h-10 w-6 h-6 rounded-full sm:mr-4 mr-1"
-                /> : ''}
-
-              <div className="flex flex-col max-w-lg w-auto min-w-[50px]">
-                <div
-                  className={` rounded-lg m-1 p-2 sm:m-1 sm:p-2  ${msg.is_code ? 'bg-gray-800 text-sm' : (msg.username === localStorage.getItem('username') ? 'bg-customBackground1 ' : 'bg-gray-700 ')} ${msg.username === localStorage.getItem('username') ? 'rounded-tl-2xl roudned-tr-2xl rounded-bl-2xl rounded-br-none ' : 'rounded-tl-2xl rounded-tr-2xl rounded-bl-none rounded-br-2xl'} `}
-                  style={{ overflowWrap: 'break-word', wordWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}
-                >
-                  <div className='flex justify-between items-center'>
-                      {msg.username !== localStorage.getItem('username')  ? (
-                        <span className="text-xs pl-1 text-gray-400 mb-1 block">{msg.username}</span>
-                      ) : <span className="text-xs pl-1 text-gray-400 mb-1 block">You</span> }
-
-                      added this block for copying
-                      {msg.is_code && (
-                        <button className="text-gray-400 hover:text-gray-200 focus:outline-none p-1"
-                        onClick={handleCopy}>
-                          <ClipboardList size={16} />
-                        </button>
-                      )}
-                      {isCopied && <span className="text-xs text-green-500">Copied!</span>}
-                  </div>
-
-                  {msg.is_code ? (
-                    <pre className="line-numbers text-base">
-                      <code className="language-javascript">{msg.content}</code>
-                    </pre>
-                  ) : (
-                    <span className="whitespace-pre-wrap">{msg.content}</span>
-                  )}
-                </div>
-                <span className="text-[10px] sm:text-xs text-gray-400 mt-1 self-end">{formatTime(msg.created)}</span>
-{isCopied && (
-                                                <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white text-xs rounded py-1 px-2">
-                                                  Copied!
-                                                </div>
-                                              )}
-
-              </div>
-            </div>
-          </div>
-        ))}
-
-        For scrolling
-         <div ref={messagesEndRef} />
-      </div> */}
-
-
 
       {/* Messaging area with the dates */}
-      <div className="flex-1 overflow-y-auto p-2 sm:p-2 custom-scrollbar messages-container">
+      <div onScroll={handleScroll} className="flex-1 overflow-y-auto p-2 sm:p-2 custom-scrollbar messages-container">
             {messages.map((msg, index) => {
                 const { time, date } = formatTime(msg.created);
                 const showDateTag = date !== lastMessageDate;
@@ -590,11 +566,12 @@ export default RoomChat;
 
 
 //search dropdown
-//public user page resposnice
+//public user page resposive
 //room details modal
-//polls
 //enter does not work after code enabling
 
+//leave and other modals auto close on outside click by hook
+//message to be fetched after 10 by api (by riyansh)
 //roomchat responsive
 //center the date tag
 //copying of the message content of the code

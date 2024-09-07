@@ -10,17 +10,21 @@ import ModalRules from './ModalRules';
 import WelcomeModal from './WelcomeModal';
 import Profile from './Profile';
 
-const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
+const Sidebar = ({ setIsSearchActive, setActiveComponent, userdata={username: '',
+  profile_pic: '',
+  name: ''}}) => {
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  const [userData, setUserData] = useState({
-    username: '',
-    profile_pic: '',
-    name: ''
-  });
+  // const setUserData= (userdata)=>{
+  //   console.log("getting from functoin: ", userdata)
+  //   console.log("Prop: ", userData)
+  //   userData = userdata;
+  //   console.log("Prop: ", userData)
+  // }
+  const [userData, setUserData] = useState(userdata);
   const baseURL = 'http://127.0.0.1:8000';
 
   const navigate = useNavigate();
@@ -38,7 +42,7 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
+  if (userdata.profile_pic==''){
   useEffect(() => {
     const fetchUserData = () => {
       const token = localStorage.getItem('access_token'); 
@@ -64,9 +68,10 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
         console.error('Error fetching user data:', error);
       });
     };
-  
+
     fetchUserData();
   }, []);
+}
   
 
   const Menus = [
@@ -140,6 +145,7 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent }) => {
       {/* PROFILE SECTION */}
       <div className={`flex flex-col items-center pt-1 pb-1 border-t bg-customBackground2 rounded-lg border-gray-700 ${!open ? 'justify-center' : ''}`}>
         <div className="flex items-center">
+          {console.log("hey")}
           <img
             src={userData.profile_pic}
             alt="Profile"
