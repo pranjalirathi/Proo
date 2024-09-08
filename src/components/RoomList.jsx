@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Modal from './CreateRoomModal';
 import JoinByCode from './JoinByCode';
-import { Search } from 'lucide-react';
+import { Search, Bell } from 'lucide-react';
 import BlueTick from '../assets/blueTick.svg';
 
 const RoomList = ({ isSearchActive, selectedTopic }) => {
@@ -16,10 +16,20 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 780);
   const [loading, setLoading] = useState(true);
   const [userSearchResults, setUserSearchResults] = useState([]);
+  const [alertMessage, setAlertMessage] = useState('');
+  
   const componentRef = useRef(null);
 
   const navigate = useNavigate();
   const baseURL = 'http://127.0.0.1:8000';
+
+  const handleRoomUpdateSuccess = (message) => {
+    setAlertMessage(message); 
+    setTimeout(() => {
+      setAlertMessage(''); 
+    }, 3000);
+  };
+
   useEffect(() => {
     const fetchRooms = () => {
       const token = localStorage.getItem('access_token');
@@ -218,6 +228,19 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
           </div>
       )}
 
+      {alertMessage && (
+              <div className="fixed top-4 right-4 bg-green-400/50 backdrop-blur-lg text-white p-4 rounded-lg shadow-lg flex items-center space-x-2 animate-slide-in border border-white/20">
+                <Bell className="w-6 h-6 shake shake-rotation" />
+                <span>{alertMessage}</span>
+                <button
+                  onClick={() => setAlertMessage('')} 
+                  className="text-lg font-bold ml-4 hover:text-gray-200 focus:outline-none"
+                >
+                  &times;
+                </button>
+              </div>
+            )}
+
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl mt-1 font-bold sm:text-xl">Rooms</h1>
         <button
@@ -338,7 +361,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
       )}
 
       {showModal && (
-        <Modal isOpen={showModal} onClose={toggleModal} />
+        <Modal isOpen={showModal} onClose={toggleModal}  onRoomUpdateSuccess={handleRoomUpdateSuccess}/>
       )}
       {showJoinModal && selectedRoom && (
         <JoinByCode isOpen={showJoinModal} onClose={() => setShowJoinModal(false)} roomId={selectedRoom.id} />

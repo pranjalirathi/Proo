@@ -2,9 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Edit3 } from 'lucide-react';
 
-
-
-
 const UserAccount = ({userdata={name: '',username: '',email: '',bio: '',profile_pic: ''}}) => {
   const [userData, setUserData] = useState(userdata);
   const baseURL = "http://localhost:8000"
@@ -39,7 +36,7 @@ const UserAccount = ({userdata={name: '',username: '',email: '',bio: '',profile_
           Authorization: `Bearer ${token}`
         }
       });
-
+      
       setUserData({
         name: response.data.name || "Anonymous User",
         username: response.data.username,

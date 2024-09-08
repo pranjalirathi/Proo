@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails }) => {
+const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails, onRoomUpdateSuccess }) => {
     const [roomName, setRoomName] = useState('');
     const [limit, setLimit] = useState('');
     const [description, setDescription] = useState('');
@@ -42,10 +42,14 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails }) => {
         )
         .then(response => {
             if (response.status === 200) {
-                setSuccess('Room updated successfully!');
+                // setSuccess('Room updated successfully!');
                 setError(null);
                 // onRoomUpdate(response.data);
                 onClose(); 
+                if (onRoomUpdateSuccess) {
+                    onRoomUpdateSuccess('Room updated successfully!'); 
+                  }
+                // setSuccess(null);
             }
         })
         .catch(error => {
@@ -188,3 +192,4 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails }) => {
 }
 
 export default ModalUpdateRoom;
+

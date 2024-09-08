@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Send, CodeXml, BadgeX, Trash, EllipsisVertical, ClipboardList, BellPlus } from 'lucide-react';
+import { Send, CodeXml, BadgeX, Trash, EllipsisVertical, ClipboardList, BellPlus, Bell } from 'lucide-react';
 import { isMobile } from 'react-device-detect'
 import RoomDetails from './RoomDetailsModal';
 import MembersList from './MembersList';
@@ -64,6 +64,7 @@ const RoomChat = ({ roomId }) => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isPublicJoinModalOpen, setIsPublicJoinModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const socketRef = useRef(null);
   const messagesEndRef = useRef(null);
   const infoMenuRef = useRef(null);
@@ -103,6 +104,13 @@ const RoomChat = ({ roomId }) => {
     setIsDeleteModalOpen(false);
     setIsUpdateModalOpen(false);
     setIsPublicJoinModalOpen(false);
+  };
+
+  const handleRoomUpdateSuccess = (message) => {
+    setAlertMessage(message); 
+    setTimeout(() => {
+      setAlertMessage(''); 
+    }, 3000);
   };
 
   useEffect(() => {
@@ -375,6 +383,20 @@ const handleMessageChange = (e) => {
   return (
     <div className="flex flex-col mt-2 mr-2 mb-2 rounded-lg w-full text-white bg-customBackground2 relative custom-scrollbar" style={{ backgroundImage: `url(${tgbg1})` }}>
       {/* Room Title and Room Pic */}
+      
+      {alertMessage && (
+        <div className="fixed top-4 right-4 bg-green-400/50 backdrop-blur-lg text-white p-4 rounded-lg shadow-lg flex items-center space-x-2 animate-slide-in border border-white/20">
+          <Bell className="w-6 h-6 shake shake-rotation" />
+          <span>{alertMessage}</span>
+          <button
+            onClick={() => setAlertMessage('')} 
+            className="text-lg font-bold ml-4 hover:text-gray-200 focus:outline-none"
+          >
+            &times;
+          </button>
+        </div>
+      )}
+
       <div className="flex items-center p-2 sm:p-4 border-b border-gray-700 bg-customBackground2 rounded-lg">
         {activeModal === 'roomDetails' && (
           <div ref={roomDetailsRef} className="absolute left-2 top-16 w-full sm:w-80">
@@ -555,7 +577,7 @@ const handleMessageChange = (e) => {
 
       <ModalLeaveRoom roomId={roomId} isOpen={isLeaveModalOpen} onClose={handleCloseModals} />
       <ModalDeleteRoom roomId={roomId} isOpen={isDeleteModalOpen} onClose={handleCloseModals} />
-      <ModalUpdateRoom roomId={roomId} isOpen={isUpdateModalOpen} onClose={handleCloseModals} roomDetails={roomDetails}/>
+      <ModalUpdateRoom roomId={roomId} isOpen={isUpdateModalOpen} onClose={handleCloseModals} roomDetails={roomDetails} onRoomUpdateSuccess={handleRoomUpdateSuccess}/>
       {isPublicJoinModalOpen && (<PublicRoomJoinModal isOpen={isPublicJoinModalOpen} onclose={handleCloseModals} roomId={roomId} />)}
     </div>
   );
