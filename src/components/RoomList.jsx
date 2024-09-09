@@ -74,7 +74,6 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
   }, [selectedTopic]);
 
 
-
   const handleSearchChange = async (e) => {
 
     let query = e.target.value;

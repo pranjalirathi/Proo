@@ -68,7 +68,7 @@ const CreateRoomModal = ({ onClose, refreshRooms , onRoomUpdateSuccess}) => {
 
         if (response.status === 200 && response.data.detail === "Room created successfully") {
           console.log('closing modal');
-          // refreshRooms();
+          refreshRooms();
           onClose(); 
           if (onRoomUpdateSuccess) {
             onRoomUpdateSuccess('Yay! Room Created Successfully!'); 

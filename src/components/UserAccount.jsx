@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Edit3 } from 'lucide-react';
+import { Edit3, Bell } from 'lucide-react';
 
 const UserAccount = ({userdata={name: '',username: '',email: '',bio: '',profile_pic: ''}}) => {
   const [userData, setUserData] = useState(userdata);
@@ -17,6 +17,8 @@ const UserAccount = ({userdata={name: '',username: '',email: '',bio: '',profile_
     bio: userdata.bio
   });
 
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertType, setAlertType] = useState('success');
   const nameRef = useRef(null);
   const usernameRef = useRef(null);
   const bioRef = useRef(null);
@@ -92,8 +94,25 @@ const UserAccount = ({userdata={name: '',username: '',email: '',bio: '',profile_
       console.log(updateduserdata)
       setUserData(updateduserdata)
       setEditMode((prev) => ({ ...prev, [field]: false }));
+      setAlertMessage('Profile updated successfully!');
+      setAlertType('success'); 
     } catch (error) {
-      console.error('Error updating profile:', error);
+      if (error.response) {
+        console.log("check");
+        console.log(error.response.data.username)
+        console.log(error.response); 
+        if (error.response.data.username && error.response.data.username[0]) {
+          setAlertMessage("Username already exists"); 
+          setAlertType('error');
+        } else {
+          setAlertMessage("Error updating profile");
+          setAlertType('error');
+
+        }
+      } else {
+        console.error('Error updating profile:', error);
+        setAlertMessage("Network error or server issue");
+      }
     }
   };
 
@@ -164,8 +183,27 @@ const UserAccount = ({userdata={name: '',username: '',email: '',bio: '',profile_
     });
   };
 
+  useEffect(() => {
+    if (alertMessage) {
+      const timeout = setTimeout(() => setAlertMessage(''), 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [alertMessage]);
+
   return (
     <div className="flex flex-col m-2 rounded-xl w-full max-w-2xl bg-customBackground1 text-white backdrop-blur">
+      {alertMessage && (  
+        <div className={`fixed z-50 top-4 right-4 ${alertType === 'success' ? 'bg-green-500/70' : 'bg-red-500/70'} backdrop-blur-lg text-white p-4 rounded-lg shadow-lg flex items-center space-x-2 animate-slide-in border border-white/20`}>
+          <Bell className="w-6 h-6 shake shake-rotation" />
+          <span>{alertMessage}</span>
+          <button
+            onClick={() => setAlertMessage('')}
+            className="text-lg font-bold ml-4 hover:text-gray-200 focus:outline-none"
+          >
+            &times;
+          </button>
+        </div>
+      )}
       <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg w-full">
         <div className="relative bg-logoColour3 p-6 flex items-center">
           <div className="relative group">
