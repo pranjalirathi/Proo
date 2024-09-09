@@ -5,6 +5,7 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails, onRoomUpdateSuc
     const [roomName, setRoomName] = useState('');
     const [limit, setLimit] = useState('');
     const [description, setDescription] = useState('');
+    const [image, setImage] = useState(null);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
 
@@ -15,6 +16,13 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails, onRoomUpdateSuc
             setDescription(roomDetails.description || '');
         }
     }, [roomDetails]);
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        console.log(file);
+        setImage(file); 
+    };
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -43,6 +51,8 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails, onRoomUpdateSuc
         .then(response => {
             if (response.status === 200) {
                 // setSuccess('Room updated successfully!');
+                uploadRoomImage();
+
                 setError(null);
                 // onRoomUpdate(response.data);
                 onClose(); 
@@ -63,8 +73,46 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails, onRoomUpdateSuc
             setSuccess(null);
         });
     };
-    
-    
+
+    const uploadRoomImage = () => {
+        if (!image) {
+            onClose();
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', image);
+
+        const token = localStorage.getItem('access_token');
+        
+        axios.patch(
+            `http://127.0.0.1:8000/api/update_room_pic/${roomId}`,
+            formData,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
+        )
+        .then(response => {
+            if (response.status === 200) {
+                setError(null);
+                onClose(); 
+                if (onRoomUpdateSuccess) {
+                    onRoomUpdateSuccess('Room updated successfully!');
+                }
+            }
+        })
+        .catch(error => {
+            if (error.response) {
+                setError(error.response.data.detail || 'Failed to upload image. Please try again.');
+            } else {
+                setError('An unexpected error occurred');
+            }
+            setSuccess(null);
+        });
+    };
 
     if (!isOpen) return null;
 
@@ -162,6 +210,34 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails, onRoomUpdateSuc
                                     onChange={(e) => setDescription(e.target.value)}
                                 ></textarea>
                             </div>
+
+
+                            <div className="col-span-2">
+                                <label
+                                    htmlFor="image"
+                                    className="block mb-2 text-sm font-medium text-white"
+                                >
+                                    Upload Room Image
+                                </label>
+                                <div className="relative">
+                                    <input
+                                    type="file"
+                                    id="image"
+                                    accept="image/*"
+                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                    onChange={handleFileChange}
+                                    />
+                                    <div className="flex items-center bg-gray-800 border border-gray-700 text-gray-400 p-2 rounded-lg w-full">
+                                    <span className="flex-1">Choose File</span>
+                                    <span className="text-gray-500">{image ? image.name : 'No file chosen'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* room image ends */}
+
+
+
+
                         </div>
                         <button
                         type="submit"

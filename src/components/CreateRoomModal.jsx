@@ -7,7 +7,7 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { X } from 'lucide-react';
 
 
-const CreateRoomModal = ({ onClose, refreshRooms , onRoomUpdateSuccess}) => {
+const CreateRoomModal = ({ onClose, onRoomUpdateSuccess}) => {
   const [roomName, setRoomName] = useState('');
   const [description, setDescription] = useState('');
   const [topic, setTopic] = useState('');
@@ -68,7 +68,7 @@ const CreateRoomModal = ({ onClose, refreshRooms , onRoomUpdateSuccess}) => {
 
         if (response.status === 200 && response.data.detail === "Room created successfully") {
           console.log('closing modal');
-          refreshRooms();
+  
           onClose(); 
           if (onRoomUpdateSuccess) {
             onRoomUpdateSuccess('Yay! Room Created Successfully!'); 
