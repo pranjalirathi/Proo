@@ -211,31 +211,27 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails, onRoomUpdateSuc
                                 ></textarea>
                             </div>
 
-
                             <div className="col-span-2">
                                 <label
-                                    htmlFor="image"
+                                    htmlFor="user_avatar"
                                     className="block mb-2 text-sm font-medium text-white"
                                 >
                                     Upload Room Image
                                 </label>
-                                <div className="relative">
+
+                                <div className="max-w-lg mx-auto">
                                     <input
+                                    className="block w-full text-sm border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
+                                    aria-describedby="user_avatar_help"
+                                    id="user_avatar"
                                     type="file"
-                                    id="image"
                                     accept="image/*"
-                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                    onChange={handleFileChange}
+                                    onChange={handleFileChange} 
                                     />
-                                    <div className="flex items-center bg-gray-800 border border-gray-700 text-gray-400 p-2 rounded-lg w-full">
-                                    <span className="flex-1">Choose File</span>
-                                    <span className="text-gray-500">{image ? image.name : 'No file chosen'}</span>
-                                    </div>
                                 </div>
                             </div>
+
                             {/* room image ends */}
-
-
 
 
                         </div>
