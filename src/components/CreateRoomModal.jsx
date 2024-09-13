@@ -7,7 +7,7 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { X } from 'lucide-react';
 
 
-const CreateRoomModal = ({ onClose, onRoomUpdateSuccess}) => {
+const CreateRoomModal = ({ onClose, onRoomUpdateSuccess, onRoomCreated}) => {
   const [roomName, setRoomName] = useState('');
   const [description, setDescription] = useState('');
   const [topic, setTopic] = useState('');

@@ -73,6 +73,14 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, [selectedTopic]);
 
+  const handleRoomCreated = (newRoom) => {
+    // Option 1: Re-fetch rooms from the server
+    fetchRooms();
+
+    // Option 2 (Alternative): Append the new room to the current state
+    // setRooms((prevRooms) => [...prevRooms, newRoom]);
+};
+
 
   const handleSearchChange = async (e) => {
 
@@ -360,7 +368,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
       )}
 
       {showModal && (
-        <Modal isOpen={showModal} onClose={toggleModal}  onRoomUpdateSuccess={handleRoomUpdateSuccess}/>
+        <Modal isOpen={showModal} onClose={toggleModal}  onRoomUpdateSuccess={handleRoomUpdateSuccess} onRoomCreated={handleRoomCreated}/>
       )}
       {showJoinModal && selectedRoom && (
         <JoinByCode isOpen={showJoinModal} onClose={() => setShowJoinModal(false)} roomId={selectedRoom.id} />

@@ -17,6 +17,47 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails, onRoomUpdateSuc
         }
     }, [roomDetails]);
 
+    const uploadRoomImage = () => {
+        if (!image) {
+            // onClose();
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('room_pic', image);
+
+        const token = localStorage.getItem('access_token');
+        
+        axios.patch(
+            `http://127.0.0.1:8000/api/update_room_pic/${roomId}`,
+            formData,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
+        )
+        .then(response => {
+            if (response.status === 200) {
+                setError(null);
+                onClose(); 
+                if (onRoomUpdateSuccess) {
+                    onRoomUpdateSuccess('Room updated successfully!');
+                }
+            }
+        })
+        .catch(error => {
+            if (error.response) {
+                setError(error.response.data.detail || 'Failed to upload image. Please try again.');
+            } else {
+                setError('An unexpected error occurred');
+            }
+            setSuccess(null);
+        });
+    };
+
+
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         console.log(file);
@@ -74,53 +115,13 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails, onRoomUpdateSuc
         });
     };
 
-    const uploadRoomImage = () => {
-        if (!image) {
-            onClose();
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('image', image);
-
-        const token = localStorage.getItem('access_token');
-        
-        axios.patch(
-            `http://127.0.0.1:8000/api/update_room_pic/${roomId}`,
-            formData,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data',
-                },
-            }
-        )
-        .then(response => {
-            if (response.status === 200) {
-                setError(null);
-                onClose(); 
-                if (onRoomUpdateSuccess) {
-                    onRoomUpdateSuccess('Room updated successfully!');
-                }
-            }
-        })
-        .catch(error => {
-            if (error.response) {
-                setError(error.response.data.detail || 'Failed to upload image. Please try again.');
-            } else {
-                setError('An unexpected error occurred');
-            }
-            setSuccess(null);
-        });
-    };
-
+    
     if (!isOpen) return null;
 
     return (
         <div
             id="crud-modal"
             tabIndex="-1"
-            aria-hidden="true"
             className="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto overflow-x-hidden w-full md:inset-0 max-h-full"
             style={{backgroundColor: 'rgb(17,18,22, 0.83)'}}
         >
@@ -139,7 +140,6 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails, onRoomUpdateSuc
                         >
                             <svg
                                 className="w-3 h-3"
-                                aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 14 14"
@@ -264,4 +264,3 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails, onRoomUpdateSuc
 }
 
 export default ModalUpdateRoom;
-
