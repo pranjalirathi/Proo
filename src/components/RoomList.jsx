@@ -5,6 +5,7 @@ import Modal from './CreateRoomModal';
 import JoinByCode from './JoinByCode';
 import { Search, Bell } from 'lucide-react';
 import BlueTick from '../assets/blueTick.svg';
+import useClickOutside from '../hooks/useClickOutside';
 
 const RoomList = ({ isSearchActive, selectedTopic }) => {
   const [rooms, setRooms] = useState([]);
@@ -19,6 +20,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
   const [alertMessage, setAlertMessage] = useState('');
   
   const componentRef = useRef(null);
+  const dropdownRef = useRef(null);
 
   const navigate = useNavigate();
   const baseURL = 'http://127.0.0.1:8000';
@@ -51,7 +53,6 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
       })
       .catch(error => {
         if (error.response && error.response.status === 401) {
-          // Clear local storage and navigate to the login page
           localStorage.clear();
           navigate('/login');
         } else {
@@ -184,10 +185,12 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
     isSearchActive(false);
   };
 
+  useClickOutside(dropdownRef, handleClearSearch, isSearchActive);
+
   return (
     <div ref={componentRef} className="w-full mr-2 mt-2 rounded-lg flex flex-col h-screen bg-customBackground2 text-white sm:p-4 p-2 overflow-y-scroll custom-scrollbar" style={{ height: "97.5vh" }}>
       {isSearchActive && (
-        <div className="relative mb-4">
+        <div className="relative mb-4" ref={dropdownRef}>
           <input
             type="text"
             value={searchQuery}
