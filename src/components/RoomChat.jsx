@@ -587,11 +587,10 @@ export default RoomChat;
 
 
 
-//search dropdown
-//public user page resposive
 //room details modal
-//enter does not work after code enabling
 
+//public user page resposive
+//search dropdown
 //leave and other modals auto close on outside click by hook
 //message to be fetched after 10 by api (by riyansh)
 //roomchat responsive
