@@ -1,13 +1,23 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Sidebar from '../components/Sidebar';
 import RoomChat from '../components/RoomChat';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const RoomPage = () => {
   const { roomId } = useParams();
+  const navigate = useNavigate();
+  const [activeComponent, setActiveComponent] = useState('');
+
+  useEffect(() => {
+    if (activeComponent) {
+      navigate('/test');
+    }
+  }, [activeComponent, navigate]); 
+
+
   return (
     <div className='flex h-screen bg-customBackground1 overflow-hidden'>
-      <Sidebar />
+      <Sidebar setActiveComponent={setActiveComponent}  />  
       <div className='flex flex-1 overflow-x-auto w-full' style={{"marginLeft": '4rem' }}>
         <RoomChat roomId={roomId} />
       </div>

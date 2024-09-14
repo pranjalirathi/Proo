@@ -7,20 +7,48 @@ import Continue from '../components/Continue';
 import { useNavigate } from 'react-router-dom';
 import { X } from 'lucide-react'; 
 
-async function setdata(){
+// async function setdata(){
+//   const token = localStorage.getItem('access_token');
+//   const response = await axios.get('http://127.0.0.1:8000/api/user_detail', {
+//     headers: {
+//       Authorization: `Bearer ${token}`
+//     }
+//   });
+//   return {name: response.data.name || "Anonymous User",
+//     username: response.data.username,
+//     email: response.data.email,
+//     bio: response.data.bio || "Hey Everyone!, I'm new here and exploring the community. 😊",
+//     profile_pic: response.data.profile_pic
+//   };
+// }
+
+async function setdata() {
   const token = localStorage.getItem('access_token');
-  const response = await axios.get('http://127.0.0.1:8000/api/user_detail', {
-    headers: {
-      Authorization: `Bearer ${token}`
+  
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/api/user_detail', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    return {
+      name: response.data.name || "Anonymous User",
+      username: response.data.username,
+      email: response.data.email,
+      bio: response.data.bio || "Hey Everyone!, I'm new here and exploring the community. 😊",
+      profile_pic: response.data.profile_pic
+    };
+    
+  } catch (error) {
+    if (error.response && error.response.status === 401) {
+      window.location.href = '/login';
+    } else {
+      console.error('Error fetching user data:', error);
     }
-  });
-  return {name: response.data.name || "Anonymous User",
-    username: response.data.username,
-    email: response.data.email,
-    bio: response.data.bio || "Hey Everyone!, I'm new here and exploring the community. 😊",
-    profile_pic: response.data.profile_pic
-  };
+  }
 }
+
 var userData = await setdata();
 const AccountPage = () => {
   
