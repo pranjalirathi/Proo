@@ -178,7 +178,8 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
   }
 
   const handleClearSearch = () => {
-    setSearchQuery('');       
+    setSearchQuery('');    
+    setSearchResults(rooms);   
     setUserSearchResults([]); 
     isSearchActive(false);
   };
