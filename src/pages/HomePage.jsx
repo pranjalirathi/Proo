@@ -7,22 +7,24 @@ import CTA from "../components/CTA";
 import styles from "../style";
 import CardDeal from "../components/CardDeal";
 import Footer from "../components/Footer";
+import RevealAnimation from '../components/RevealAnimation';
 
 const HomePage = () => {
   return (
     <>
-      <HeroSectionFinal />
+      <RevealAnimation><HeroSectionFinal/></RevealAnimation>
 
       <div className={`bg-primary ${styles.paddingX} ${styles.flexCenter}`}>
         <div className={`${styles.boxWidth}`}>
-          <CardDeal />
-          <Languages />
-          <RoomDesc />
-          <Roadmap />
-          <CTA />
+          <RevealAnimation><CardDeal /></RevealAnimation>
+          <RevealAnimation><Languages/></RevealAnimation>
+          <RevealAnimation><RoomDesc /></RevealAnimation>
+          <RevealAnimation><Roadmap /></RevealAnimation>
+          <RevealAnimation><CTA /></RevealAnimation>          
         </div>
       </div>
-      <Footer />
+      
+      <RevealAnimation><Footer/></RevealAnimation>
     </>
   )
 }
