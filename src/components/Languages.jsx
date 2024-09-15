@@ -77,8 +77,6 @@ const Languages = () => {
             <motion.div 
               key={index} 
               className="developer-card flex items-center py-2 px-3 bg-gray-800 rounded-md transition-shadow"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
               <img className="w-12 h-12 mr-3 rounded-full" src={language.img} alt={language.name} />
