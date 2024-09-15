@@ -103,7 +103,7 @@ const PublicUser = ({ username }) => {
                   <img src={BlueTick} alt="Verified" className="inline-block ml-2 h-4 w-4 sm:h-6 sm:w-6" />
                 )}
               </div>
-              <div className="text-sm ">{userDetails.bio}</div>
+              <div className="text-[0.8rem] ">{userDetails.bio}</div>
             </div>
           </div>
           {/* User Section Ends */}
