@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import Typed from 'typed.js';
 import { motion } from 'framer-motion';
-import midbot from '../assets/midbot.svg';
+import midbot from '../assets/chakkar111.png';
 import { Link } from 'react-router-dom';
 
-const HeroSection = () => {
+const HeroSectionFinal = () => {
   const typedElement = useRef(null);
 
   useEffect(() => {
@@ -17,7 +17,6 @@ const HeroSection = () => {
 
     const typed = new Typed(typedElement.current, options);
 
-    // Cleanup
     return () => {
       typed.destroy();
     };
@@ -54,7 +53,7 @@ const HeroSection = () => {
             className='md:text-5xl sm:text-4xl text-xl font-bold md:pl-4 pl-2'
           />
         </div>
-        <Link to="/login" className='rounded-md  w-[200px] font-medium my-6 mx-auto py-3 text-black bg-white hover:bg-gray-200 '>
+        <Link to="/test" className='rounded-md  w-[200px] font-medium my-6 mx-auto py-3 text-black bg-white hover:bg-gray-200 '>
           Get Started
         </Link>
 
@@ -64,5 +63,6 @@ const HeroSection = () => {
   );
 };
 
-export default HeroSection;
+export default HeroSectionFinal;
+
 

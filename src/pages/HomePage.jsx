@@ -1,20 +1,29 @@
 import React from 'react'
-import EarthSection from '../components/EarthSection'
-import About from '../components/About'
-import About2 from '../components/About2'
-import Developers from '../components/Developers'
-import HeroSection from '../components/HeroSection'
-
+import HeroSectionFinal from '../components/HeroSectionFinal';
+import Roadmap from "../components/Roadmap";
+import RoomDesc from "../components/RoomDesc";
+import Languages from "../components/Languages";
+import CTA from "../components/CTA";
+import styles from "../style";
+import CardDeal from "../components/CardDeal";
+import Footer from "../components/Footer";
 
 const HomePage = () => {
   return (
-    <div>
-         <HeroSection/>
-         <About2/>
-         <About/>
-         <Developers/>
-         <EarthSection/>
-    </div>
+    <>
+      <HeroSectionFinal />
+
+      <div className={`bg-primary ${styles.paddingX} ${styles.flexCenter}`}>
+        <div className={`${styles.boxWidth}`}>
+          <CardDeal />
+          <Languages />
+          <RoomDesc />
+          <Roadmap />
+          <CTA />
+        </div>
+      </div>
+      <Footer />
+    </>
   )
 }
 

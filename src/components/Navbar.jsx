@@ -1,6 +1,6 @@
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
-import imglogo from "../assets/imglogo.png"
+import imglogo from "../assets/coderoom1.png"
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
@@ -53,7 +53,7 @@ const Navbar = () => {
 
 
         {mobileDrawerOpen && (
-          <div className="fixed right-0 z-20 bg-neutral-900 w-full p-12 flex flex-col justify-center items-center lg:hidden">
+          <div className="fixed right-0 z-20 bg-slate-950 w-full p-12 flex flex-col justify-center items-center lg:hidden">
             <div className="flex space-x-6">
              {isAuthenticated ? (
                <Link to="/test" className="py-2 px-3 border rounded-md transition duration-300 ease-in-out hover:bg-[#f5f5f5] hover:text-black">

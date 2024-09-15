@@ -13,7 +13,7 @@ import mongodb from '../assets/mongodb.webp'
 import grid from '../assets/grid.png'
 
 
-const Developers = () => {
+const Languages = () => {
   const controls = useAnimation();
   const sectionRef = useRef(null);
 
@@ -39,7 +39,7 @@ const Developers = () => {
       }
     };
   }, [controls]);
-  const developers = [
+  const languages = [
     { name: 'Python', img: python },
     { name: 'SpringBoot', img: spring},
     { name: 'C++', img: c },
@@ -53,7 +53,7 @@ const Developers = () => {
   ];
 
   return (
-    <div ref={sectionRef} className="developers" style={{ 
+    <div ref={sectionRef} className="languages" style={{ 
       backgroundImage: `url(${grid})`, 
       backgroundSize: 'cover', 
       backgroundPosition: 'center', 
@@ -73,16 +73,16 @@ const Developers = () => {
             visible: { opacity: 1, y: 0, transition: { duration: 1.5, ease: 'easeInOut', delay: 0.5 } },
           }}
         >
-          {developers.map((developer, index) => (
+          {languages.map((language, index) => (
             <motion.div 
               key={index} 
-              className="developer-card flex items-center py-2 px-3 bg-gray-800 rounded-md transition-shadow shadow-orange-md hover:shadow-orange-lg"
+              className="developer-card flex items-center py-2 px-3 bg-gray-800 rounded-md transition-shadow"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
-              <img className="w-12 h-12 mr-3 rounded-full" src={developer.img} alt={developer.name} />
-              <h6 className="text-white m-0">{developer.name}</h6>
+              <img className="w-12 h-12 mr-3 rounded-full" src={language.img} alt={language.name} />
+              <h6 className="text-white m-0">{language.name}</h6>
             </motion.div>
           ))}
         </motion.div>
@@ -91,6 +91,6 @@ const Developers = () => {
   );
 };
 
-export default Developers;
+export default Languages;
 
 // bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-500 to-violet-500
