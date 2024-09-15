@@ -1,11 +1,14 @@
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import imglogo from "../assets/coderoom1.png"
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -18,12 +21,16 @@ const Navbar = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
   };
 
+  const handleLogoClick = () => {
+    navigate('/');
+  }
+
   return (
     <nav className=" sticky top-0 z-50 py-3 backdrop-blur-lg border-b border-neutral-700/80">
       <div className="container px-4 mx-auto relative lg:text-sm">
         <div className="flex justify-between items-center">
           <div className="flex items-center flex-shrink-0">
-            <img className="h-10 w-10 mr-2" src={imglogo} alt="Logo" />
+            <img className="h-10 w-10 mr-2 hover:cursor-pointer" src={imglogo} alt="Logo" onClick={handleLogoClick} />
             <span className="text-3xl font-bold tracking-tight font-mono">C O D E R O O M</span>
           </div>
           <div className="hidden lg:flex justify-center space-x-6 items-center">
