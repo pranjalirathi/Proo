@@ -225,12 +225,12 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
                   />
                   <div className="ml-2 ">
                    <div className="flex items-center">
-                  <h1 className="text-white text-xs sm:text-sm">{user.username}</h1>
-                  {user.verified && (
-                    <img src={BlueTick} className="ml-1 h-3 w-3" />
-                  )}
-                </div>
-                <h2 className="text-gray-300 text-[12px] sm:text-[12px] mt-1">{user.name || 'null'}</h2>
+                    <h1 className="text-white text-xs sm:text-sm">{user.username}</h1>
+                    {user.verified && (
+                      <img src={BlueTick} className="ml-1 h-3 w-3" />
+                    )}
+                  </div>
+                <h2 className="text-gray-300 text-[12px] sm:text-[12px] mt-1">{user.name || ''}</h2>
                   </div>
                 </div>
               ))}
