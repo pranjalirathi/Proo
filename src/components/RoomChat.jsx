@@ -11,6 +11,16 @@ import ModalDeleteRoom from './ModalDeleteRoom';
 import ModalUpdateRoom from './ModalUpdateRoom';
 import tgbg1 from '../assets/tgbg1.png';
 import useClickOutside from '../hooks/useClickOutside';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/night-owl.css'; 
+
+// nord
+// monokai
+// github-dark-dimmed
+// atom-one-dark
+// night-owl
+// shades-of-purple
+
 
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
@@ -113,6 +123,34 @@ const RoomChat = ({ roomId }) => {
     }, 3000);
   };
 
+const addLineNumbers = (code) => {
+  const lines = code.split('\n');
+  const totalLines = lines.length;
+  const maxDigits = totalLines.toString().length; 
+
+  return lines
+    .map((line, index) => {
+        const lineNumber = index + 1; 
+        const paddedLineNumber = lineNumber.toString().padStart(maxDigits, ' '); 
+        return `<span class="line-number">${paddedLineNumber} | </span>${line}`;
+    })
+    .join('\n');
+};
+
+
+  const handleHighlightCode = (code, language) => {
+    let highlightedCode;
+    if (language && hljs.getLanguage(language)) {
+      highlightedCode = hljs.highlight(code, { language }).value;
+    } else {
+      highlightedCode = hljs.highlightAuto(code).value;
+    }
+  
+    const codeWithLineNumbers = addLineNumbers(highlightedCode);
+    return codeWithLineNumbers;
+  };
+
+  
   useEffect(() => {
     const fetchRoomDetails = () => {
       const token = localStorage.getItem('access_token');
@@ -497,9 +535,9 @@ const handleMessageChange = (e) => {
                                     />
                                 )}
                                 {/* */}
-                                <div className="flex flex-col max-w-lg w-auto min-w-[50px] ">
+                                <div className="flex flex-col w-fit" style={{"min-width":'60px', "max-width":"70vw"}}>
                                     <div
-                                        className={`rounded-lg m-1 p-[0.5rem] sm:m-1 sm:p-2  ${msg.is_code ? 'bg-gray-800 w-60 sm:w-auto text-xs ' : (msg.username === localStorage.getItem('username') ? 'bg-customBackground1 ' : 'bg-gray-700 text-xs sm:text-sm')} ${msg.username === localStorage.getItem('username') ? 'rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-none ' : 'rounded-tl-2xl rounded-tr-2xl rounded-bl-none rounded-br-2xl'}`}
+                                        className={`rounded-lg p-[0.5rem] sm:m-1 sm:p-2  ${msg.is_code ? 'bg-gray-800 w-60 sm:w-auto text-xs ' : (msg.username === localStorage.getItem('username') ? 'bg-customBackground1 ' : 'bg-gray-700 text-xs sm:text-sm')} ${msg.username === localStorage.getItem('username') ? 'rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-none ' : 'rounded-tl-2xl rounded-tr-2xl rounded-bl-none rounded-br-2xl'}`}
                                         // style={{ overflowWrap: 'break-word', wordWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'pre-wrap' , fontSize: 'xs'}}
                                     >
                                         <div className='flex justify-between items-center'>
@@ -519,9 +557,13 @@ const handleMessageChange = (e) => {
                                           )} 
                                         </div>
                                         {msg.is_code ? (
-                                            <pre className="line-numbers text-base">
-                                                <code className="language-javascript">{msg.content}</code>
+                                            <pre className="text-base code-message">
+                                              <code
+                                                dangerouslySetInnerHTML={{ __html: handleHighlightCode(msg.content, 'javascript') }}
+                                                className="hljs"
+                                              />
                                             </pre>
+
                                         ) : (
                                             <span className="whitespace-pre-wrap text-xs sm:text-sm">{msg.content}</span>
                                         )}
@@ -608,12 +650,3 @@ export default RoomChat;
 //total topics and color on all
 //margin bottom of room
 //room defualt.jpg to be chnaged
-
-
-
-
-
-
-
-
-

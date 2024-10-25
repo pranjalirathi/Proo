@@ -186,3 +186,27 @@ code {
 .animate-slide-in {
   animation: slideIn 0.5s ease-out;
 }
+
+/* Adding for the highlight.js library */
+
+.line-number {
+  color: #888; 
+  user-select: none; 
+}
+
+.code-message {
+  font-size: 0.9rem; 
+}
+
+@media (max-width: 640px) { 
+  .code-message {
+      font-size: 0.5rem; 
+      line-height: 2;
+  }
+}
+
+.hljs {
+  background-color: #23272D !important;
+  padding: 10px; 
+  border-radius: 5px; 
+}
