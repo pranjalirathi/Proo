@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import axios from 'axios';
 import { isMobile } from 'react-device-detect'
 import coderoom1 from '../assets/coderoom1.png';
@@ -154,7 +154,7 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent, userdata={username: ''
           {open && (
             <div className="ml-2">
               <div className="text-sm">{userData.name || 'Anonymous User'}</div>
-              <div className="text-sm mt-1 text-logoColour2 ">@{userData.username}</div>
+              <div className="text-sm mt-1 text-logoColour2 "> <Link to={`/user/${userData.username}`}>@{userData.username}</Link></div>
             </div>
           )}
         </div>

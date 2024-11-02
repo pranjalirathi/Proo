@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { X } from 'lucide-react';
 
 const Profile = ({userdata, onClose }) => {
@@ -30,14 +30,14 @@ const Profile = ({userdata, onClose }) => {
           <img
             className="w-20 h-20 rounded-full"
             src={userData.profile_pic}
-            alt={`${userData.username} profile`}
+            alt={`profilepic`}
           />
         </div>
       </div>
       <div className="mt-5 p-4">
         <div className="mt-4">
           <h2 className="text-gray-400 text-sm font-bold">Username</h2>
-          <h1 className="text-white text-xl font-bold">@{userData.username}</h1>
+          <h1 className="text-xl text-logoColour2"> <Link to={`/user/${userData.username}`}>@{userData.username}</Link></h1>
         </div>
         <div className="mt-4">
           <h2 className="text-gray-400 text-sm font-bold">Bio</h2>
