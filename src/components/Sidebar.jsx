@@ -145,7 +145,6 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent, userdata={username: ''
       {/* PROFILE SECTION */}
       <div className={`flex flex-col items-center pt-1 pb-1 border-t bg-customBackground2 rounded-lg border-gray-700 ${!open ? 'justify-center' : ''}`}>
         <div className="flex items-center">
-          {console.log("hey")}
           <img
             src={userData.profile_pic}
             alt="Profile"

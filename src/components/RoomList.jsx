@@ -84,10 +84,9 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
 
 
   const handleSearchChange = async (e) => {
-
+    
     let query = e.target.value;
     setSearchQuery(query);
-    
     let searchType = '';
     if (query.startsWith('@')) {
       query = query.slice(1);
@@ -95,8 +94,9 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
     } else {
       searchType = 'room';
     }
-    
-    if (query) {
+    let topic = selectedTopic && searchType === "room" ? selectedTopic : null;
+
+    if (query || query==='') {
       const token = localStorage.getItem('access_token');
       axios.get(`${baseURL}/api/search`, {
         headers: {
@@ -105,7 +105,8 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
         params: {
           q: query,
           type: searchType,
-        },
+          topic: topic
+        } ,
       })
       .then(response => {
         if (response.status === 200) {
@@ -142,7 +143,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
 
   const handleJoinByCode = async (code) => {
     try {
-      console.log("From RoomList: ", selectedRoom.id);
+
       const token = localStorage.getItem('access_token');
       const response = await axios.post(`http://127.0.0.1:8000/api/join_room/${selectedRoom.id}`, { code }, {
         headers: {
