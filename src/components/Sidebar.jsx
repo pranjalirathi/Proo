@@ -75,10 +75,30 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent, userdata={username: ''
   
 
   const Menus = [
-    { title: "Search", icon: <Search className='text-green-500 icon-shake' />, search: true, onClick: () => setIsSearchActive(true) },
-    { title: "Topics", icon: <ScrollText className='text-orange-500 icon-shake' />, onClick: () => setActiveComponent('Topics') },
-    { title: "Rooms", icon: <User className='text-blue-600 icon-shake' />, onClick: () => setActiveComponent('Rooms') },
-    { title: "Blogs", icon: <MessageCircle className='text-green-700 icon-shake' />, onClick: () => setActiveComponent('Blogs') },
+    { title: "Search", icon: <Search className='text-green-500 icon-shake' />, search: true, onClick: () => { 
+      setIsSearchActive(true);
+      if (location.pathname !== '/test') {
+        navigate('/test');
+      }
+    } },
+    { title: "Topics", icon: <ScrollText className='text-orange-500 icon-shake' />, onClick: () => {
+      setActiveComponent('Topics');
+      if (location.pathname !== '/test') {
+      navigate('/test');
+      }
+    } },
+    { title: "Rooms", icon: <User className='text-blue-600 icon-shake' />, onClick: () => {
+      setActiveComponent('Rooms');
+      if (location.pathname !== '/test') {
+      navigate('/test');
+      }
+     } },
+    { title: "Blogs", icon: <MessageCircle className='text-green-700 icon-shake' />, onClick: () => { 
+      setActiveComponent('Blogs');
+      if (location.pathname !== '/test') {
+      navigate('/test');
+      }
+    } },
     { title: "Welcome", icon: <Folder className='text-yellow-500 icon-shake' />, gap: true, onClick: () => setIsWelcomeModalOpen(true) },
     { title: "Rules", icon: <Settings className='text-gray-400 icon-shake' />, onClick: () => setIsModalOpen(true) },
   ];

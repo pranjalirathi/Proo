@@ -103,7 +103,7 @@
 // ------------------pehle vaala code
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
-import {UserAccount} from '../components/UserAccount';
+import { UserAccount } from '../components/UserAccount';
 import axios from 'axios';
 
 import Continue from '../components/Continue';
@@ -128,6 +128,8 @@ async function setdata(){
 // const userData = await setdata();
 const AccountPage = () => {
   
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [activeComponent, setActiveComponent] = useState('Rooms');
   
   const [isMobile, setIsMobile] = useState(window.innerWidth < 750);
   const navigate = useNavigate();
@@ -151,7 +153,7 @@ const AccountPage = () => {
       >
         <X size={24} />
       </button>
-      {!isMobile && <Sidebar/>}
+      {!isMobile && <Sidebar  setIsSearchActive={setIsSearchActive} setActiveComponent={setActiveComponent}/>}
       <div className={`flex-1 flex flex-col items-center p-4 ${isMobile ? 'ml-0' : 'ml-20'}`}>
       {/* style={{"marginLeft": '4rem' }} */}
         <UserAccount />
