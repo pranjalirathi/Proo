@@ -14,6 +14,7 @@ import useClickOutside from '../hooks/useClickOutside';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/night-owl.css'; 
 
+// Other themes for code
 // nord
 // monokai
 // github-dark-dimmed
@@ -435,6 +436,13 @@ const handleMessageChange = (e) => {
         </div>
       )}
 
+      {isCopied && (
+        <div className="fixed top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded shadow-md">
+          Copied to Clipboard
+        </div>
+      )}
+
+
       <div className="flex items-center p-2 sm:p-4 border-b border-gray-700 bg-customBackground2 rounded-lg">
         {activeModal === 'roomDetails' && (
           <div ref={roomDetailsRef} className="absolute left-2 top-16 w-full sm:w-80">
@@ -535,7 +543,7 @@ const handleMessageChange = (e) => {
                                     />
                                 )}
                                 {/* */}
-                                <div className="flex flex-col w-fit" style={{"min-width":'60px', "max-width":"70vw"}}>
+                                <div className="flex flex-col w-fit" style={{"minWidth":'60px', "maxWidth":"70vw"}}>
                                     <div
                                         className={`rounded-lg p-[0.5rem] sm:m-1 sm:p-2  ${msg.is_code ? 'bg-gray-800 w-60 sm:w-auto text-xs ' : (msg.username === localStorage.getItem('username') ? 'bg-customBackground1 ' : 'bg-gray-700 text-xs sm:text-sm')} ${msg.username === localStorage.getItem('username') ? 'rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-none ' : 'rounded-tl-2xl rounded-tr-2xl rounded-bl-none rounded-br-2xl'}`}
                                         // style={{ overflowWrap: 'break-word', wordWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'pre-wrap' , fontSize: 'xs'}}
@@ -587,7 +595,7 @@ const handleMessageChange = (e) => {
           type="text"
           placeholder="Type your message here..."
           rows="1"
-          className="flex-1 bg-customBackground1 custom-scrollbar text-white p-1 sm:p-2 rounded-lg outline-none border-none text-sm sm:text-base resize-none overflow-hidden"
+          className="flex-1 bg-customBackground1 text-white p-1 sm:p-2 rounded-lg outline-none border-none text-sm sm:text-base resize-none overflow-auto"
           value={message}
           // onChange={(e) => setMessage(e.target.value)}
           onChange={handleMessageChange}
@@ -597,7 +605,7 @@ const handleMessageChange = (e) => {
               handleSendMessage();
             }
           }}
-          style={{ height: 'auto', maxHeight: '96px' }}
+          style={{ height: 'auto', maxHeight: '96px', overflowY: 'auto' }}
         />
         <CodeXml
           size={isMobile ? 20 : 34}
@@ -629,7 +637,13 @@ export default RoomChat;
 
 
 
-//room details modal
+//room details modal not working because the api is private
+//google authentication
+//forget password functionality
+//responsivenss in the public page
+//messages suddenly going up instaed of loading
+//refreshes and goes at the end only some times and some times not works
+
 
 //public user page resposive
 //search dropdown

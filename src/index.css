@@ -210,3 +210,18 @@ code {
   padding: 10px; 
   border-radius: 5px; 
 }
+
+/* ScrollBar for typing bar */
+textarea::-webkit-scrollbar {
+  width: 8px; 
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+  cursor: pointer;
+}
