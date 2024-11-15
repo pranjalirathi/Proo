@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import midbot from '../assets/midbot.svg';
+import googleImg from '../assets/google-logo.svg';
 import UserContext from '../context/UserContext.jsx';
 
 const Login = () => {
@@ -63,6 +64,10 @@ const Login = () => {
       console.error('Error:', error);
     });
   };
+
+  const handleGoogleLogin = () => {
+    console.log("logging from google");
+  }
   
 
   return (
@@ -98,17 +103,32 @@ const Login = () => {
               />
               <FontAwesomeIcon icon={faLock} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white text-2xl" />
             </div>
-            {/* <div className="flex justify-between items-center text-md text-white mb-6">
+            <div className="flex justify-between items-left text-md text-white mb-6">
               <label className="flex items-center">
                 <input type="checkbox" className="mr-2" /> Remember Me
               </label>
-              <a href="#" className="hover:underline">Forgot Password</a>
-            </div> */}
+              <Link to="/reset_password" className="hover:underline">Forgot Password</Link>
+            </div> 
             <button className="w-full h-12 bg-white text-black rounded-full font-semibold hover:bg-gray-200">Log In</button>
             {error && <div className="text-red-500 text-center mt-4">{error}</div>}
+
+            <div className="flex items-center my-4">
+            <hr className="flex-grow border-t border-white" />
+            <span className="px-2 text-white">OR</span>
+            <hr className="flex-grow border-t border-white" />
+          </div>
+
+            <button
+              onClick={handleGoogleLogin}
+              className="w-full h-12 bg-gray-400 text-white rounded-full font-semibold hover:bg-gray-600 mt-4 flex items-center justify-center">
+              <img src={googleImg} alt="Google logo" className="h-5 w-5 mr-3" />
+              Continue with Google
+            </button>
+
             <div className="text-md text-white text-center mt-8">
               <p>Don't have an account? <Link to="/register" className="font-semibold hover:underline">Sign Up</Link></p>
             </div>
+            
           </form>
         </div>
       </div>
