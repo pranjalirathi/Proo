@@ -8,6 +8,7 @@ import Test from './components/Test';
 import Error from './components/Error';
 import RoomPage from './pages/RoomPage';
 import AccountPage from './pages/AccountPage';
+import ForgetPassword from './components/ForgetPassword';
 import ResetPassword from './components/ResetPassword';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicUserPage from './pages/PublicUserPage'
@@ -32,8 +33,9 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoggedInCheck><Login /></LoggedInCheck>} />
         <Route path="/register" element={<LoggedInCheck><Register /></LoggedInCheck>} />
-        <Route path="/reset_password" element={<ResetPassword/>}></Route>
+        <Route path="/forget_password" element={<ForgetPassword/>}></Route>
         <Route path="/test" element={<ProtectedRoute><Test /></ProtectedRoute>} />
+        <Route path="/resetkey" element={<ResetPassword/>} />
         <Route path="/user/:username" element = {
           <ProtectedRoute>
             <PublicUserPage/>

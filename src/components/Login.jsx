@@ -107,7 +107,7 @@ const Login = () => {
               <label className="flex items-center">
                 <input type="checkbox" className="mr-2" /> Remember Me
               </label>
-              <Link to="/reset_password" className="hover:underline">Forgot Password</Link>
+              <Link to="/forget_password" className="hover:underline">Forgot Password</Link>
             </div> 
             <button className="w-full h-12 bg-white text-black rounded-full font-semibold hover:bg-gray-200">Log In</button>
             {error && <div className="text-red-500 text-center mt-4">{error}</div>}
