@@ -373,7 +373,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
       )}
 
       {showModal && (
-        <Modal isOpen={showModal} onClose={toggleModal}  onRoomUpdateSuccess={handleRoomUpdateSuccess} onRoomCreated={handleRoomCreated}/>
+        <Modal isOpen={showModal} onClose={toggleModal}  onRoomUpdateSuccess={handleRoomUpdateSuccess}/>
       )}
       {showJoinModal && selectedRoom && (
         <JoinByCode isOpen={showJoinModal} onClose={() => setShowJoinModal(false)} roomId={selectedRoom.id} />

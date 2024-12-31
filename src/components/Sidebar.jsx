@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate,Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 import { isMobile } from 'react-device-detect'
 import coderoom1 from '../assets/coderoom1.png';
 import { ScrollText, User, MessageCircle } from 'lucide-react';
-import { Search, ChevronLeft, ChevronRight, Folder, Settings } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, Folder, Settings, House } from 'lucide-react';
 
 import ModalRules from './ModalRules';
 import WelcomeModal from './WelcomeModal';
@@ -28,6 +28,7 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent, userdata={username: ''
   const baseURL = 'http://127.0.0.1:8000';
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.removeItem('access_token');
@@ -75,6 +76,17 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent, userdata={username: ''
   
 
   const Menus = [
+    ...(location.pathname !== '/test'
+      ? [
+          {
+            title: "Home",
+            icon: <House className="text-purple-500 icon-shake" />,
+            onClick: () => {
+              navigate('/test');
+            },
+          },
+        ]
+      : []),
     { title: "Search", icon: <Search className='text-green-500 icon-shake' />, search: true, onClick: () => { 
       setIsSearchActive(true);
       if (location.pathname !== '/test') {
@@ -103,8 +115,6 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent, userdata={username: ''
     { title: "Rules", icon: <Settings className='text-gray-400 icon-shake' />, onClick: () => setIsModalOpen(true) },
   ];
 
-
-
   const handleLogoClick = () => {
     navigate('/');
   };
@@ -112,9 +122,11 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent, userdata={username: ''
   const handleProfileClick = () => {
     setIsProfileOpen(!isProfileOpen);
   };
+
   const filteredMenus = screenWidth <= 780 
     ? Menus 
-    : Menus.filter(menu => ["Search", "Welcome", "Rules"].includes(menu.title));
+    : Menus.filter(menu => ["Search", "Welcome", "Rules", "Home"].includes(menu.title));
+    
   return (
     <div className={`fixed top-0 left-0 h-screen z-50 ${open ? 'w-56 bg-customBackground1 p-4' : isMobile ? 'fixed-width bg-customBackground1 p-2' : 'fixed-width bg-customBackground1 pl-2 pr-1 pb-2'} pt-8 transition-width duration-300 flex flex-col justify-between`}>
       <div>
