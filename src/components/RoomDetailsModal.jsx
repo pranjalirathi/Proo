@@ -1,65 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React from 'react';
 import { X } from 'lucide-react';
-import ReactDOM from 'react-dom';
 
 const RoomDetails = ({ roomDetails, onClose }) => {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const token = localStorage.getItem('access_token');
-        if (!token) {
-          throw new Error('No access token found');
-        }
-        const config = {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        };
-        const response = await axios.get('http://127.0.0.1:8000/api/user_detail', config);
-        const userDetails = response.data;
-        setIsAdmin(userDetails.username === roomDetails.host);
-      } catch (error) {
-        console.error('Error fetching user details:', error);
-      }
-    };
-
-    fetchUserDetails();
-  }, [roomDetails.host]);
-
-  const handleDeleteRoom = async () => {
-    try {
-      const token = localStorage.getItem('access_token');
-      if (!token) {
-        throw new Error('No access token found');
-      }
-      const config = {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      };
-      const response = await axios.delete(`http://127.0.0.1:8000/api/delete_room/${roomDetails.id}`, config);
-      if (response.status === 200) {
-        setSuccessMessage('Room deleted successfully');
-        setTimeout(() => {
-          setSuccessMessage('');
-          navigate('/test');
-          onClose();
-        }, 2000);
-      } else {
-        alert('Failed to delete the room');
-      }
-    } catch (error) {
-      console.error('Error deleting room:', error);
-      alert('An error occurred while trying to delete the room');
-    }
-  };
-
   const calculateDaysAgo = (dateString) => {
     const createdDate = new Date(dateString);
     const currentDate = new Date();
@@ -75,12 +17,6 @@ const RoomDetails = ({ roomDetails, onClose }) => {
 
   return (
     <div>
-      {successMessage && ReactDOM.createPortal(
-        <div className="fixed top-0 left-0 w-full p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-          <span className="font-medium">Success!</span> {successMessage}
-        </div>,
-        document.body
-      )}
     <div className="bg-customBackground1 text-white p-2 rounded-lg shadow-lg w-full max-w-xs sm:max-w-sm md:max-w-md relative">
       <button className="absolute top-1 right-1 text-gray-400 hover:text-gray-200" onClick={onClose}>
         <X size={18} />
