@@ -11,7 +11,7 @@ const RoomPage = () => {
 
   useEffect(() => {
     if (activeComponent) {
-      navigate('/test');
+      navigate('/home');
     }
   }, [activeComponent, navigate]); 
 

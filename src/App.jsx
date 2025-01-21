@@ -17,7 +17,7 @@ import LoggedInCheck from './components/LoggedInCheck';
 const App = () => {
   const location = useLocation();
 
-  const pathsWithoutNavbar = ['*', '/reset_password' , '/test',  /^\/user(\/.*)?$/ ,'/myAccount', /^\/roomchat\/.+$/];
+  const pathsWithoutNavbar = ['*', '/reset_password' , '/home',  /^\/user(\/.*)?$/ ,'/myAccount', /^\/roomchat\/.+$/];
   
   const showNavbar = !pathsWithoutNavbar.some(path => {
     if (typeof path === 'string') {
@@ -34,7 +34,7 @@ const App = () => {
         <Route path="/login" element={<LoggedInCheck><Login /></LoggedInCheck>} />
         <Route path="/register" element={<LoggedInCheck><Register /></LoggedInCheck>} />
         <Route path="/forget_password" element={<ForgetPassword/>}></Route>
-        <Route path="/test" element={<ProtectedRoute><Test /></ProtectedRoute>} />
+        <Route path="/home" element={<ProtectedRoute><Test /></ProtectedRoute>} />
         <Route path="/resetkey" element={<ResetPassword/>} />
         <Route path="/user/:username" element = {
           <ProtectedRoute>

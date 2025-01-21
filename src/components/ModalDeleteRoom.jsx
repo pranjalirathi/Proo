@@ -32,7 +32,7 @@ const ModalDeleteRoom = ({ roomId, isOpen, onClose }) => {
       .then((response) => {
         if (response.status === 200) {
           onClose();
-          navigate('/test', { state: { successMessage: 'Room deleted successfully!', action: 'delete' } });
+          navigate('/home', { state: { successMessage: 'Room deleted successfully!', action: 'delete' } });
         } else if(response.status === 400) {
           setError('You are not allowed to delete the room');
           console.error('Failed to delete the room, unexpected status:', response.status);

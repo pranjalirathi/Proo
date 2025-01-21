@@ -34,7 +34,7 @@ const Navbar = () => {
             <span className="text-3xl font-bold tracking-tight font-mono">C O D E R O O M</span>
           </div>
           <div className="hidden lg:flex justify-center space-x-6 items-center">
-            {isAuthenticated ? ( <Link to="/test" className="py-2 px-3 border rounded-md transition duration-300 ease-in-out hover:bg-[#f5f5f5] hover:text-black">
+            {isAuthenticated ? ( <Link to="/home" className="py-2 px-3 border rounded-md transition duration-300 ease-in-out hover:bg-[#f5f5f5] hover:text-black">
                 Go to rooms
               </Link>) 
               : (
@@ -63,7 +63,7 @@ const Navbar = () => {
           <div className="fixed right-0 z-20 bg-slate-950 w-full p-12 flex flex-col justify-center items-center lg:hidden">
             <div className="flex space-x-6">
              {isAuthenticated ? (
-               <Link to="/test" className="py-2 px-3 border rounded-md transition duration-300 ease-in-out hover:bg-[#f5f5f5] hover:text-black">
+               <Link to="/home" className="py-2 px-3 border rounded-md transition duration-300 ease-in-out hover:bg-[#f5f5f5] hover:text-black">
                Go to rooms
              </Link>
              ) : (<>

@@ -57,7 +57,7 @@ const Login = () => {
         profilePic: 'path/to/default-profile-pic.png',
       });
   
-      navigate('/test');
+      navigate('/home');
     })
     .catch((error) => {
       setError('Login failed. Please check your email and password and try again.');

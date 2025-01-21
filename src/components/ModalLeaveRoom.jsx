@@ -33,7 +33,7 @@ const ModalLeaveRoom = ({ roomId, isOpen, onClose }) => {
     .then((response) => {
       if (response.status === 200) {
         onClose();
-        navigate('/test', { state: { successMessage: 'You have successfully left the room!', action: 'leave' } });
+        navigate('/home', { state: { successMessage: 'You have successfully left the room!', action: 'leave' } });
       } else if (response.status === 400) {
         setError('Host cannot leave the room');
         console.error('Failed to leave the room, unexpected status:', response.status);

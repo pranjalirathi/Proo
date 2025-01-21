@@ -53,7 +53,7 @@ const HeroSectionFinal = () => {
             className='md:text-5xl sm:text-4xl text-xl font-bold md:pl-4 pl-2'
           />
         </div>
-        <Link to="/test" className='rounded-md  w-[200px] font-medium my-6 mx-auto py-3 text-black bg-white hover:bg-gray-200 '>
+        <Link to="/home" className='rounded-md  w-[200px] font-medium my-6 mx-auto py-3 text-black bg-white hover:bg-gray-200 '>
           Get Started
         </Link>
 
