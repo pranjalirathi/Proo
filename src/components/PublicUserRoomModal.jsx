@@ -28,7 +28,6 @@ const PublicUserRoomModal = ({ isOpen, onClose, roomId }) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
         setRoomDetails(response.data.detail);
       })
       .catch((error) => {
@@ -36,7 +35,6 @@ const PublicUserRoomModal = ({ isOpen, onClose, roomId }) => {
           if (error.response.status === 401) {
             localStorage.clear();
             navigate('/login');
-            console.log("Unauthorized: Redirecting to login");
           } else {
             console.error('Error fetching the room details: ', error.response.data);
           }
@@ -93,84 +91,3 @@ const PublicUserRoomModal = ({ isOpen, onClose, roomId }) => {
 };
 
 export default PublicUserRoomModal;
-
-
-// import React, { useContext, useEffect } from 'react';
-// import { RoomDetailsContext } from '../context/RoomDetailsContext';
-
-// const PublicUserRoomModal = ({ isOpen, onClose, roomId }) => {
-//   const { roomDetails, loading, error, fetchRoomDetails } = useContext(RoomDetailsContext);
-
-//   useEffect(() => {
-//     if (isOpen && roomId) {
-//       fetchRoomDetails(roomId);
-//     }
-//   }, [isOpen, roomId, fetchRoomDetails]);
-
-//   if (!isOpen || loading) return null;
-
-//   if (error) {
-//     return (
-//       <div className="fixed inset-0 flex items-center justify-center z-50 mycontainer p-4">
-//         <div className="relative bg-gray-700 bg-opacity-90 p-6 rounded-lg shadow-lg max-w-lg w-full md:w-3/4 lg:w-2/3 xl:w-1/2 sm:max-w-full sm:w-full border border-gray-400">
-//           <h2 className="text-2xl font-bold mb-4 text-center text-gray-200">Error</h2>
-//           <p className="text-white text-center">{error}</p>
-//           <div className="flex justify-end mt-4">
-//             <button
-//               onClick={onClose}
-//               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-//             >
-//               Close
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="fixed inset-0 flex items-center justify-center z-50 mycontainer p-4">
-//       <div className="relative bg-gray-700 bg-opacity-90 p-6 rounded-lg shadow-lg max-w-lg w-full md:w-3/4 lg:w-2/3 xl:w-1/2 sm:max-w-full sm:w-full border border-gray-400">
-//         <h2 className="text-2xl font-bold mb-4 text-center text-gray-200">{roomDetails?.name}</h2>
-//         <hr className="border-gray-500 mb-4" />
-//         <div className="flex flex-col space-y-2">
-//           {roomDetails?.room_pic && (
-//             <img
-//               src={`http://127.0.0.1:8000${roomDetails.room_pic}`}
-//               className="h-24 w-24 sm:h-32 sm:w-32 rounded-full mx-auto mb-4"
-//               alt="Room"
-//             />
-//           )}
-//           <div className="text-white text-md sm:text-xl">
-//             <strong>Topic:</strong> {roomDetails?.topic || 'N/A'}
-//           </div>
-//           <div className="text-white text-md sm:text-xl">
-//             <strong>Description:</strong> {roomDetails?.description || 'No description provided.'}
-//           </div>
-//           <div className="text-white text-md sm:text-xl">
-//             <strong>Host:</strong> {roomDetails?.host || 'Unknown'}
-//           </div>
-//           <div className="text-white text-md sm:text-xl">
-//             <strong>Members:</strong> {roomDetails?.members?.length || 0} members
-//           </div>
-//           <div className="text-white text-md sm:text-xl">
-//             <strong>Created:</strong> {roomDetails?.created ? new Date(roomDetails.created).toLocaleDateString() : 'N/A'}
-//           </div>
-//           <div className="text-white text-md sm:text-xl">
-//             <strong>Public:</strong> {roomDetails?.is_public ? 'Yes' : 'No'}
-//           </div>
-//         </div>
-//         <div className="flex justify-end mt-4">
-//           <button
-//             onClick={onClose}
-//             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-//           >
-//             Close
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default PublicUserRoomModal;

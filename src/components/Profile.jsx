@@ -13,8 +13,6 @@ const Profile = ({userdata, onClose }) => {
   const handleAccountSettings = () => {
     navigate('/myAccount');
   };
-  console.log("this is from profile: ", userData);
-  console.log(userData.profile_pic)
   const isAccountPage = location.pathname === '/myAccount';
 
   return (
@@ -57,6 +55,3 @@ const Profile = ({userdata, onClose }) => {
 };
 
 export default Profile;
-
-
-//the image was nnot coming directly from the data, so i craeted a baseurl, and then used it , The issue is likely due to the fact that the image path provided by the backend is relative, and the browser needs an absolute URL to correctly load the image.

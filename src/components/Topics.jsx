@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-// import homeimg from '../assets/home.jpg';
 
 const Topics = ({ onSelectTopic, selectedTopic }) => {
   const [topics, setTopics] = useState([]);
@@ -66,11 +65,6 @@ const Topics = ({ onSelectTopic, selectedTopic }) => {
             }`}
             onClick={() => onSelectTopic()}
           >
-            {/* <img
-              src={homeimg}
-              alt="All"
-              className="h-8 w-8 rounded-full"
-            /> */}
             {!isMobile && (
               <span className="ml-3 flex-grow">All</span>
             )}
@@ -84,11 +78,6 @@ const Topics = ({ onSelectTopic, selectedTopic }) => {
               }`}
               onClick={() => onSelectTopic(topic.name)}
             >
-              {/* <img
-                src="path/to/your/image.png"
-                alt="Topic"
-                className="h-8 w-8 rounded-full"
-              /> */}
               {!isMobile && (
                 <>
                   <span className="ml-3 flex-grow">{topic.name}</span>

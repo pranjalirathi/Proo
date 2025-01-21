@@ -18,12 +18,6 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent, userdata={username: ''
   const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  // const setUserData= (userdata)=>{
-  //   console.log("getting from functoin: ", userdata)
-  //   console.log("Prop: ", userData)
-  //   userData = userdata;
-  //   console.log("Prop: ", userData)
-  // }
   const [userData, setUserData] = useState(userdata);
   const baseURL = 'http://127.0.0.1:8000';
 

@@ -78,8 +78,6 @@ const UserAccount = ({userdata={name: '',username: '',email: '',bio: '',profile_
         }
       );
       
-      console.log(response)
-      // fetchUserData();
       let updateduserdata = {
         name: userData.name,
         username: userData.username,
@@ -88,19 +86,14 @@ const UserAccount = ({userdata={name: '',username: '',email: '',bio: '',profile_
         profile_pic: userData.profile_pic
       }
       for(let key in response.data.data){
-        console.log("key: ",  response.data.data[key])
         updateduserdata[key] = response.data.data[key]
       }
-      console.log(updateduserdata)
       setUserData(updateduserdata)
       setEditMode((prev) => ({ ...prev, [field]: false }));
       setAlertMessage('Profile updated successfully!');
       setAlertType('success'); 
     } catch (error) {
       if (error.response) {
-        console.log("check");
-        console.log(error.response.data.username)
-        console.log(error.response); 
         if (error.response.data.username && error.response.data.username[0]) {
           setAlertMessage("Username already exists"); 
           setAlertType('error');
@@ -170,7 +163,6 @@ const UserAccount = ({userdata={name: '',username: '',email: '',bio: '',profile_
       if (response.status === 200) {
         // fetchUserData(); 
         setUserData({name: userData.name,username: userData.username,email:  userData.email,bio:  userData.bio, profile_pic: baseURL+response.data.data.profile_pic})
-        console.log(response.data.data, "from line 143")
       }
     })
     .catch(error => {

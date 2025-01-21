@@ -65,9 +65,8 @@ const Login = () => {
     });
   };
 
-  const handleGoogleLogin = () => {
-    console.log("logging from google");
-  }
+  // const handleGoogleLogin = () => {
+  // }
   
 
   return (
@@ -118,12 +117,12 @@ const Login = () => {
             <hr className="flex-grow border-t border-white" />
           </div>
 
-            <button
+            {/* <button
               onClick={handleGoogleLogin}
               className="w-full h-12 bg-gray-400 text-white rounded-full font-semibold hover:bg-gray-600 mt-4 flex items-center justify-center">
               <img src={googleImg} alt="Google logo" className="h-5 w-5 mr-3" />
               Continue with Google
-            </button>
+            </button> */}
 
             <div className="text-md text-white text-center mt-8">
               <p>Don't have an account? <Link to="/register" className="font-semibold hover:underline">Sign Up</Link></p>

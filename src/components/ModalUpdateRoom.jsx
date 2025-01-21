@@ -19,7 +19,6 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails, onRoomUpdateSuc
 
     const uploadRoomImage = () => {
         if (!image) {
-            // onClose();
             return;
         }
 
@@ -60,7 +59,6 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails, onRoomUpdateSuc
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        console.log(file);
         setImage(file); 
     };
     
@@ -91,16 +89,12 @@ const ModalUpdateRoom = ({ roomId, isOpen, onClose, roomDetails, onRoomUpdateSuc
         )
         .then(response => {
             if (response.status === 200) {
-                // setSuccess('Room updated successfully!');
                 uploadRoomImage();
-
                 setError(null);
-                // onRoomUpdate(response.data);
                 onClose(); 
                 if (onRoomUpdateSuccess) {
                     onRoomUpdateSuccess('Room updated successfully!'); 
                   }
-                // setSuccess(null);
             }
         })
         .catch(error => {

@@ -18,7 +18,6 @@ const ModalDeactivateUser = ({ isOpen, onClose }) => {
       },
     })
     .then((response) => {
-      console.log(response.data);
       onClose();
     })
     .catch((err) => {

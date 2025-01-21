@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-// import homeimg from '../assets/home.jpg'
 
 const Topics = ( {onSelectTopic, selectedTopic} ) => {
   const [topics, setTopics] = useState([]);
@@ -36,11 +35,6 @@ const Topics = ( {onSelectTopic, selectedTopic} ) => {
           }`}
           onClick={() => onSelectTopic()}
         >
-          {/* <img
-            src={homeimg}
-            alt="All"
-            className="h-8 w-8 rounded-full"
-          /> */}
             <span className="ml-3 flex-grow">All</span>
             <span className="text-sm text-gray-500">[{totalTopicCount}]</span>
           
@@ -51,11 +45,6 @@ const Topics = ( {onSelectTopic, selectedTopic} ) => {
             className="flex items-center text-gray-400 mr-0 p-2 rounded-lg cursor-pointer hover:bg-customBackground1 transition-colors"
             onClick={() => onSelectTopic(topic.name)}
           >
-            {/* <img
-              src="path/to/your/image.png"
-              alt="Topic"
-              className="h-8 w-8 rounded-full"
-            /> */}
             <span className="ml-3 flex-grow">{topic.name}</span>
             <span className="text-sm text-gray-500">[{topic.room_count}]</span>
           </li>

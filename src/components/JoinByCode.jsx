@@ -9,7 +9,6 @@ const JoinByCode = ({ onClose, onSubmit, roomId }) => {
 
   const handleCodeChange = (e) => {
     setCode(e.target.value);
-    console.log(e.target.value);
   };
 
   const handleSubmit = (e) => {

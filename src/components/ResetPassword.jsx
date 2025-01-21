@@ -161,16 +161,3 @@ const ResetPassword = () => {
 };
 
 export default ResetPassword;
-
-//case 1: vaidate the token 
-// then i have to ckeck it based on that response will be shiwn on the page
-// if token is valid:
-    //  then show the reset password page and hit the api
-// if not:
-    //  show that the link is expired in the same css format
-    // and resend mail
-
-// from forget password:
-// agar mail send kar dia hia toh new static successful page
-// saying that the mail has been sent with video webm and 2 buttons: resend mail and back to login
-// also add a preloader in resend mail button

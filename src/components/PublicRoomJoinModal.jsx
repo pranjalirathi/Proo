@@ -7,9 +7,7 @@ const PublicRoomJoinModal = ({ isOpen, onclose, roomId }) => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleJoin = () => {
-    console.log("joining");
-  
+  const handleJoin = () => {  
     const token = localStorage.getItem('access_token');
   
     axios.post(
@@ -23,9 +21,7 @@ const PublicRoomJoinModal = ({ isOpen, onclose, roomId }) => {
     )
     .then((response) => {
       if (response.status === 200) {
-        console.log("joined in public room");
         onclose(); 
-        console.log("closed");
       } else {
         setError(`Unexpected response status: ${response.status}`);
       }
@@ -35,10 +31,8 @@ const PublicRoomJoinModal = ({ isOpen, onclose, roomId }) => {
         if (err.response.status === 401) {
           localStorage.clear();
           navigate('/login');
-          console.log("Unauthorized: Redirecting to login");
         } else {
           setError(`Failed to join the room. Status: ${err.response.status}, Message: ${err.response.data}`);
-          console.log(`Failed to join the room. Status: ${err.response.status}, Message: ${err.response.data}`);
         }
       } else if (err.request) {
         setError("Failed to join the room. No response received.");

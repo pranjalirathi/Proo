@@ -14,15 +14,6 @@ import useClickOutside from '../hooks/useClickOutside';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/night-owl.css'; 
 
-// Other themes for code
-// nord
-// monokai
-// github-dark-dimmed
-// atom-one-dark
-// night-owl
-// shades-of-purple
-
-
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
 import 'prismjs/components/prism-javascript';
@@ -197,14 +188,11 @@ const addLineNumbers = (code) => {
       })
       .then((response) => {
         if (response.data.detail) {
-          console.log('Fetched messages:', response.data.detail);
-          // setMessages(response.data.detail);
           if (response.data.detail.length < limit) {
             setHasMore(false); 
           }
           setMessages(prevMessages => [...response.data.detail, ...prevMessages]);
           setOffset(newOffset + limit); 
-          console.log("From line 144: ", offset);
         }
       })
       .catch((error) => {
@@ -225,18 +213,14 @@ const addLineNumbers = (code) => {
       });
     };
   
-  //   fetchMessages();
-  // }, [roomId]);
 
   useEffect(() => {
-    console.log("line 169");
-    fetchMessages(offset); // Fetch the first batch of messages on component mount
+    fetchMessages(offset); 
   }, [roomId]);
 
 
   const handleScroll = (e) => {
     if (e.target.scrollTop === 0 && hasMore) { 
-      console.log("from line 176")
       fetchMessages(offset); 
     }
   };
@@ -249,13 +233,11 @@ const addLineNumbers = (code) => {
       socketRef.current = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${roomId}`);
 
       socketRef.current.onopen = () => {
-        console.log('WebSocket connection opened');
         socketRef.current.send(JSON.stringify({ type: 'authenticate', token }));
       };
 
       socketRef.current.onmessage = (e) => {
         const data = JSON.parse(e.data);
-        console.log('Received message:', data);
         if(data.status_code === 404) setIsPublicJoinModalOpen(true);
         else {
           setMessages((prevMessages) => [...prevMessages, data]);
@@ -406,9 +388,7 @@ const handleMessageChange = (e) => {
 
 
   useEffect(() => {
-    console.log("firstmsg: ", firstmsg)
     if (messagesEndRef.current && firstmsg) {
-      console.log("from line 354")
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
       firstmsg=false;
     }
@@ -546,7 +526,6 @@ const handleMessageChange = (e) => {
                                 <div className="flex flex-col w-fit" style={{"minWidth":'60px', "maxWidth":"70vw"}}>
                                     <div
                                         className={`rounded-lg p-[0.5rem] sm:m-1 sm:p-2  ${msg.is_code ? 'bg-gray-800 w-60 sm:w-auto text-xs ' : (msg.username === localStorage.getItem('username') ? 'bg-customBackground1 ' : 'bg-gray-700 text-xs sm:text-sm')} ${msg.username === localStorage.getItem('username') ? 'rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-none ' : 'rounded-tl-2xl rounded-tr-2xl rounded-bl-none rounded-br-2xl'}`}
-                                        // style={{ overflowWrap: 'break-word', wordWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'pre-wrap' , fontSize: 'xs'}}
                                     >
                                         <div className='flex justify-between items-center'>
                                             {msg.username !== localStorage.getItem('username') ? (
@@ -634,33 +613,3 @@ const handleMessageChange = (e) => {
 };
 
 export default RoomChat;
-
-
-
-//room details modal not working because the api is private
-//google authentication
-//forget password functionality
-//responsivenss in the public page
-//messages suddenly going up instaed of loading
-//refreshes and goes at the end only some times and some times not works
-
-
-//public user page resposive
-//search dropdown
-//leave and other modals auto close on outside click by hook
-//message to be fetched after 10 by api (by riyansh)
-//roomchat responsive
-//center the date tag
-//copying of the message content of the code
-//textarea auto resizing according to the content
-//leave delte room authentication
-//yesterday today message
-//time of message
-//profile pic on searched users by set
-// message Box
-// shape of message
-//username at messages
-//search user
-//total topics and color on all
-//margin bottom of room
-//room defualt.jpg to be chnaged

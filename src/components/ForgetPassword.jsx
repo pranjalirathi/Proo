@@ -35,7 +35,6 @@ const ForgetPassword = () => {
         setEmail('');
       })
       .catch((error) => {
-        console.log('Error:', error.response); 
         const errorMsg =
           error.response && error.response.data && error.response.data.detail
             ? error.response.data.detail

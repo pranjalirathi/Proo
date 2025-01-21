@@ -21,7 +21,6 @@ const ModalUserPubDetails = ({ isOpen, onClose, userId }) => {
       },
     })
     .then((response) => {
-      console.log(response.data.detail);
       setUserDetails(response.data.detail);
     })
     .catch((error) => {

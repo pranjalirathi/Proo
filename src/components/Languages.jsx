@@ -90,5 +90,3 @@ const Languages = () => {
 };
 
 export default Languages;
-
-// bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-500 to-violet-500

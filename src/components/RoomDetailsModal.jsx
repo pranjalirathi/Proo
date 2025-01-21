@@ -87,10 +87,6 @@ const RoomDetails = ({ roomDetails, onClose }) => {
       </button>
       
       <div className="flex items-center mb-4">
-        {/* <img src="path/to/roompic.png" alt="Room" className="h-12 w-12 rounded-full mr-4" />
-        <div>
-          <h1 className="text-lg font-medium">{roomDetails.name}</h1>
-        </div> */}
       </div>
       <div className="mb-2 text-sm">
         <span className="font-bold">Host: </span>
