@@ -109,14 +109,6 @@ const RoomDetails = ({ roomDetails, onClose }) => {
         {formatDaysAgo(roomDetails.created)}
       </div>
       <div className="flex justify-end pr-2 pb-2">
-      {isAdmin && (
-        <button
-          onClick={handleDeleteRoom}
-          className="text-white right-0 bg-red-600 hover:bg-red-800 font-medium rounded-lg text-sm px-4 py-2.5 mt-4"
-        >
-          Delete Room
-        </button>
-      )}
       </div>
     </div>
     </div>
