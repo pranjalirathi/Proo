@@ -145,7 +145,7 @@ const Sidebar = ({ setIsSearchActive, setActiveComponent, userdata={username: ''
           {filteredMenus.map((Menu, index) => (
             <li
               key={index}
-              className={`flex items-center gap-x-4 p-2 text-sm text-gray-300 cursor-pointer hover:bg-gray-800 rounded-md ${Menu.gap ? "mt-9" : "mt-2"} ${index === 0 && "bg-light-white"}`}
+              className={`flex items-center gap-x-4 p-2 text-sm text-gray-300 cursor-pointer hover:bg-gray-800 rounded-md mt-2 ${index === 0 && "bg-light-white"}`}
               onClick={Menu.onClick}
             >
               {/* <div className="w-6 h-6">{Menu.icon}</div>
