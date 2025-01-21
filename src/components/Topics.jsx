@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { BookOpenCheck } from 'lucide-react';
 
 const Topics = ({ onSelectTopic, selectedTopic }) => {
   const [topics, setTopics] = useState([]);
@@ -73,17 +74,23 @@ const Topics = ({ onSelectTopic, selectedTopic }) => {
           {topics.map((topic, index) => (
             <li
               key={index}
-              className={`flex items-center text-gray-400 mr-0 p-2 rounded-lg cursor-pointer transition-colors ${isMobile ? 'justify-center' : ''} ${
+              className={` text-gray-400 mr-0 p-2 rounded-lg cursor-pointer transition-colors ${isMobile ? 'justify-center' : ''} ${
                 selectedTopic === topic.name ? 'bg-customBackground1 text-white' : 'hover:bg-customBackground1'
               }`}
               onClick={() => onSelectTopic(topic.name)}
             >
               {!isMobile && (
-                <>
-                  <span className="ml-3 flex-grow">{topic.name}</span>
-                  <span className="text-sm text-gray-500">[{topic.room_count}]</span>
-                </>
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center">
+                    <BookOpenCheck className="text-blue-500" />
+                    <span className="ml-3">{topic.name}</span>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-500">[{topic.room_count}]</span>
+                  </div>
+                </div>
               )}
+              
             </li>
           ))}
         </ul>
