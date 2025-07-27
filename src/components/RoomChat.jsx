@@ -54,11 +54,12 @@ const LoadingSkeleton = () => (
 const RoomChat = ({ roomId }) => {
   const [roomDetails, setRoomDetails] = useState(null);
   const [activeModal, setActiveModal] = useState(null);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(new Map());
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const limit = 10;
+  const limit = 60;
   const [message, setMessage] = useState('');
+  // const [messagesMap, setMessagesMap] = useState(new Map());
   const [isCode, setIsCode] = useState(false);
   const [isInfoMenuOpen, setIsInfoMenuOpen] = useState(false);
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
@@ -180,7 +181,11 @@ const addLineNumbers = (code) => {
   // useEffect(() => {
     const fetchMessages = (newOffset) => {
       const token = localStorage.getItem('access_token');
-  
+      
+      // const chatContainer = document.getElementById('chat-container');
+      // const firstVisibleMsg = chatContainer?.firstChild;
+      // const firstMessageOffSet = firstVisibleMsg?.offset || 0;
+
       axios.get(`${baseURL}/api/message/${roomId}?limit=${limit}&offset=${newOffset}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -191,8 +196,24 @@ const addLineNumbers = (code) => {
           if (response.data.detail.length < limit) {
             setHasMore(false); 
           }
-          setMessages(prevMessages => [...response.data.detail, ...prevMessages]);
-          setOffset(newOffset + limit); 
+          const newMessages = new Map(messages); 
+          console.log('Fetched messages:', response.data.detail);
+          console.log('Messages Map before update:', Array.from(messages.entries()));
+          response.data.detail.forEach((msg) => {
+            console.log(msg.created, msg);
+          newMessages.set(msg.created, msg); 
+          });
+          console.log('Messages Map after update:', Array.from(newMessages.entries()));
+
+          setMessages(new Map(newMessages)); 
+          // setMessages(prevMessages => [...response.data.detail, ...prevMessages]);
+          setOffset((prevOffset) => prevOffset + limit); 
+
+          // setTimeout(() => {
+          //   if(chatContainer && firstVisibleMsg) {
+          //     chatContainer.scrollTop = firstMessageOffSet;
+          //   }
+          // },0)
         }
       })
       .catch((error) => {
@@ -220,9 +241,14 @@ const addLineNumbers = (code) => {
 
 
   const handleScroll = (e) => {
-    if (e.target.scrollTop === 0 && hasMore) { 
-      fetchMessages(offset); 
-    }
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
+
+  if (scrollTop === 0 && hasMore) {
+    const previousHeight = scrollHeight; 
+    fetchMessages(offset).then(() => {
+      e.target.scrollTop = e.target.scrollHeight - previousHeight; 
+    });
+  }
   };
 
   
@@ -240,7 +266,10 @@ const addLineNumbers = (code) => {
         const data = JSON.parse(e.data);
         if(data.status_code === 404) setIsPublicJoinModalOpen(true);
         else {
-          setMessages((prevMessages) => [...prevMessages, data]);
+          // setMessages((prevMessages) => [...prevMessages, data]);
+          const newMessages = new Map(messages); 
+          newMessages.set(data.created, data); 
+          setMessages(new Map(newMessages)); 
           setTimeout(() => {
             const chatContainer = document.querySelector('.messages-container');
             if (chatContainer) {
@@ -258,7 +287,7 @@ const addLineNumbers = (code) => {
         socketRef.current.close();
       };
     }
-  }, [roomId]);
+  }, [roomId, messages]);
 
   useEffect(() => {
     Prism.highlightAll();
@@ -451,13 +480,13 @@ const handleMessageChange = (e) => {
               onClick={openMembersList}
             />
           ))}
-          {roomDetails.members.length > 4 && (
+          {roomDetails.members.length > 10 && (
             <a
               className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 text-xs font-medium text-white bg-gray-700 border-2 rounded-full hover:bg-gray-600 dark:border-gray-800"
               href="#"
               onClick={openMembersList}
             >
-              +{roomDetails.member.length - 4}
+              +{roomDetails.member.length - 10}
             </a>
           )}
         </div>
@@ -495,8 +524,9 @@ const handleMessageChange = (e) => {
 
 
       {/* Messaging area with the dates */}
-      <div onScroll={handleScroll} className="flex-1 overflow-y-auto p-2 sm:p-2 custom-scrollbar messages-container">
-            {messages.map((msg, index) => {
+      <div id="chat-container" onScroll={handleScroll} className="flex-1 overflow-y-auto p-2 sm:p-2 custom-scrollbar messages-container">
+            {/* {messages.map((msg, index) => { */}
+            {Array.from(messages.values()).sort((a, b) => new Date(a.created) - new Date(b.created)).map((msg, index) => {
                 const { time, date } = formatTime(msg.created);
                 const showDateTag = date !== lastMessageDate;
 

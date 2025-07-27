@@ -178,7 +178,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
   };
 
   useClickOutside(dropdownRef, handleClearSearch, isSearchActive);
-
+  
   return (
     <div ref={componentRef} className="w-full mr-2 mt-2 rounded-lg flex flex-col h-screen bg-customBackground2 text-white sm:p-4 p-2 overflow-y-scroll custom-scrollbar" style={{ height: "97.5vh" }}>
       {isSearchActive && (
@@ -308,7 +308,7 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
                     {room.members.length > 0 ? (
                       <div className="flex items-center">
                         <div className="flex -space-x-2 rtl:space-x-reverse ml-2 sm:ml-4">
-                          {room.members.slice(0, 5).map((member) => (
+                          {room.members.slice(0, 4).map((member) => (
                             <img
                               key={member.id}
                               className="w-4 h-4 sm:w-5 sm:h-5 rounded-full dark:border-gray-800"
@@ -316,9 +316,9 @@ const RoomList = ({ isSearchActive, selectedTopic }) => {
                               alt={member.username}
                             />
                           ))}
-                          {room.members.length > 5 && (
-                            <div className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 text-xs font-medium text-white bg-gray-700 border-2 border-white rounded-full dark:border-gray-800">
-                              +{room.members.length - 5}
+                          {room.members.length > 4 && (
+                            <div className="flex items-center justify-center w-4 h-4 sm:w-5 sm:h-5 text-xs font-medium text-white bg-gray-700 border-2 border-white rounded-full dark:border-gray-800">
+                              +{room.members.length - 4}
                             </div>
                           )}
                         </div>
